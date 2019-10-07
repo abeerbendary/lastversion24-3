@@ -34,7 +34,7 @@ import com.google.gson.Gson;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-
+//112121
 public class CheckUp_Lots extends AppCompatActivity {
 
 ActivityCheckUpLotsBinding ActivityCheckUpLotsBinding;
