@@ -1,5 +1,5 @@
 package com.example.abeer.quarantine.activity;
-
+//fz 7-10-2019
 import android.content.Context;
 import android.content.Intent;
 import android.os.StrictMode;
