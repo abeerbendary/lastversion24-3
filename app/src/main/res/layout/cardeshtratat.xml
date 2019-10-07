@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data  class="ItemDatadaconstraintabinding">
+        <variable
+            name="detailItemDataList2"
+            type="com.example.abeer.quarantine.viewmodel.ItemConstrainsData">
+        </variable>
+</data>
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:layoutDirection="rtl"
+    android:padding="8dp"
+    android:paddingBottom="16dp">
+
+    <android.support.v7.widget.CardView
+        android:layout_width="450dp"
+        android:layout_height="178dp"
+        android:layout_gravity="center"
+        android:layoutDirection="rtl">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="284dp"
+            android:layout_marginRight="284dp"
+            android:layout_marginBottom="8dp"
+            android:text="الإشتراطات"
+            android:textColor="#1f90a5"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="200dp"
+            android:layout_height="42dp"
+            android:layout_marginStart="184dp"
+            android:layout_marginLeft="184dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@{detailItemDataList2.ConstrainText_Ar}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.736"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.v7.widget.CardView>
+</LinearLayout>
+</layout>

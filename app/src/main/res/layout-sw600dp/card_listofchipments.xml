@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout2">
+
+    <data class="CheckRequestdatabinding">
+
+        <variable
+            name="CheckRequest"
+            type="com.example.abeer.quarantine.viewmodel.ExportCheckRequest"></variable>
+
+        <variable
+            name="clicked"
+            type="com.example.abeer.quarantine.presenter.ClickCustomCheckRequest"></variable>
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layoutDirection="rtl"
+        android:padding="8dp"
+        android:paddingBottom="16dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="450dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layoutDirection="rtl">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="#E9F7F5"
+                android:layoutDirection="rtl">
+
+                <LinearLayout
+                    android:id="@+id/linearLayout16"
+                    android:layout_width="wrap_content"
+                    android:layout_height="68dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout14"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/tit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="64dp"
+                        android:fontFamily="@font/droid"
+                        android:text="اللجنة "
+                        android:textColor="#1f90a5"
+                        android:textSize="35sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/value_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/droid"
+                        android:text="@{``+CheckRequest.row_Num}"
+                        android:textColor="#1f90a5"
+                        android:textSize="35sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout14"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="76dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout17"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/layout2">
+
+                    <TextView
+                        android:id="@+id/title"
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:fontFamily="@font/droid"
+                        android:text="طلب الفحص"
+                        android:textColor="#1f90a5"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/value_lot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:fontFamily="@font/droid"
+                        android:text="@{CheckRequest.checkRequest_Number}"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout17"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout18"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.919">
+
+                    <TextView
+                        android:id="@+id/titl"
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:fontFamily="@font/droid"
+                        android:text="إسم اللجنة"
+                        android:textColor="#1f90a5"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/values"
+                        android:layout_width="200dp"
+                        android:layout_height="40dp"
+                        android:fontFamily="@font/droid"
+                        android:text="@{CheckRequest.committe_Type_Name}"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toTopOf="@+id/status" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout18"
+                    android:layout_width="wrap_content"
+                    android:layout_height="43dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="176dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintBottom_toTopOf="@+id/linearLayout19"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/statustitle"
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:fontFamily="@font/droid"
+                        android:text="حالة الشحنة"
+                        android:textColor="#1f90a5"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/status"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:fontFamily="@font/droid"
+                        android:text="@{CheckRequest.requestCommittee_Status}"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/linearLayout19"
+                    android:layout_width="410dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="24dp"
+                    android:layout_marginRight="24dp"
+                    app:layout_constraintBottom_toTopOf="@+id/buttsss"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0">
+
+                    <TextView
+                        android:id="@+id/membertitle"
+                        android:layout_width="120dp"
+                        android:layout_height="40dp"
+                        android:fontFamily="@font/droid"
+                        android:text="أعضاء اللجنة"
+                        android:textColor="#1f90a5"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/droid"
+                        android:singleLine="false"
+                        android:text="@{CheckRequest.emp_Committe}"
+                        android:textSize="18sp" />
+
+                    <!--<ListView-->
+                    <!--android:id="@+id/Listmember"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:adapter="@{CheckRequest.emp_Committe}"-->
+                    <!--android:layout_height="130dp">-->
+
+                    <!--</ListView>-->
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttsss"
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="150dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="25dp"
+                    android:background="@drawable/btnshadow"
+                    android:fontFamily="@font/droid"
+                    android:onClick="@{(view)->clicked.CheckRequest_click(view,CheckRequest)}"
+                    android:text="تفاصيل الشحنة"
+                    android:textColor="#fff"
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0" />
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+
+</layout>

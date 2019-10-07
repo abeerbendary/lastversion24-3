@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data class="Itemsbacodbinding">
+        <variable
+            name="cardBarcod"
+            type="com.example.abeer.quarantine.viewmodel.sampleWithDraw.Barcod_Card"></variable>
+    </data>
+<android.support.constraint.ConstraintLayout
+
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="8dp"
+    android:gravity="center"
+    android:layoutDirection="rtl">
+
+
+    <android.support.v7.widget.CardView
+        android:layout_width="562dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.071">
+
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="425dp"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/linearLayout22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.073">
+
+                <TextView
+                    android:id="@+id/title_num"
+                    android:layout_width="180dp"
+                    android:layout_height="70dp"
+                    android:fontFamily="@font/droid"
+                    android:layoutDirection="rtl"
+                    android:text="رقم الطلب"
+                    android:textColor="#1f90a5"
+                    android:textDirection="rtl"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/linear_Layout_Examination_full"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="1.0"
+                    tools:ignore="MissingConstraints"
+                    tools:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/title_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/droid"
+                    android:gravity="center"
+                    android:inputType="numberSigned"
+                    android:layoutDirection="rtl"
+                    android:padding="10dp"
+                    android:text="@{cardBarcod.request_Num}"
+                    android:textColor="#000"
+                    android:textDirection="rtl"
+                    app:layout_constraintHorizontal_bias="0.262"
+                    tools:ignore="MissingConstraints"
+                    tools:textSize="25sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="100dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:layoutDirection="rtl"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                app:layout_constraintBottom_toTopOf="@+id/scrollView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints">
+
+                <TextView
+                    android:id="@+id/title_TreatmentLots"
+                    android:layout_width="180dp"
+                    android:layout_height="70dp"
+                    android:fontFamily="@font/droid"
+                    android:layoutDirection="rtl"
+                    android:text="رقم اللوط"
+                    android:textColor="#1f90a5"
+                    android:textDirection="rtl"
+                    android:textSize="30sp"
+                    android:textStyle="bold"
+                    tools:ignore="MissingConstraints"
+                    tools:textSize="30sp" />
+
+                <TextView
+                    android:id="@+id/Lots_Treatmentvalue"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/droid"
+                    android:gravity="center"
+                    android:inputType="numberSigned"
+                    android:layoutDirection="rtl"
+                    android:padding="10dp"
+                    android:text="@{cardBarcod.lot_num}"
+                    android:textColor="#000"
+                    android:textDirection="rtl"
+                    app:layout_constraintHorizontal_bias="0.262"
+                    tools:ignore="MissingConstraints"
+                    tools:textSize="25sp" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/image_barcode"
+                android:layout_width="574dp"
+                android:layout_height="148dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="188dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:imageBitmap="@{cardBarcod.barcod}"
+                app:layout_constraintBottom_toTopOf="@+id/var"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@color/cardview_shadow_end_color" />
+
+            <TextView
+                android:id="@+id/var"
+                android:layout_width="360dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="332dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:gravity="center"
+                android:letterSpacing="1"
+                android:text="@{cardBarcod.barcodetext}"
+                android:textColor="#000"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.452" />
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+</android.support.constraint.ConstraintLayout>
+</layout>

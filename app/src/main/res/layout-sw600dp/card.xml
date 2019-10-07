@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data class="ItemDatadatabinding">
+        <variable
+            name="clicked"
+            type="com.example.abeer.quarantine.presenter.ClickCustomItemData">
+
+        </variable>
+        <variable
+            name="plantItem"
+            type="com.example.abeer.quarantine.viewmodel.ItemData">
+        </variable>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:gravity="center"
+        android:layoutDirection="rtl"
+        android:paddingBottom="16dp">
+
+        <android.support.v7.widget.CardView
+            android:layout_width="450dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layoutDirection="rtl">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="449dp"
+                android:layout_height="170dp"
+                android:layout_gravity="center"
+                android:background="#E9F7F5"
+                android:layoutDirection="rtl">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="120dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="284dp"
+                    android:layout_marginRight="284dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/droid"
+                    android:text="اسم النبات"
+                    android:textColor="#1f90a5"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/buttsss"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/value_lot"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.589" />
+
+                <TextView
+                    android:id="@+id/value_lot"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="184dp"
+                    android:layout_marginLeft="184dp"
+                    android:layout_marginTop="17dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:fontFamily="@font/droid"
+                    android:text="@{plantItem.Item_Name}"
+                    app:layout_constraintBottom_toTopOf="@+id/buttsss"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.736"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/buttsss"
+                    android:layout_width="160dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="90dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/btnshadow"
+                    android:fontFamily="@font/droid"
+                    android:onClick="@{(view)->clicked.plant_click(view,plantItem)}"
+                    android:text="تفاصيل الشحنة"
+                    android:textColor="#fff"
+
+                    android:textSize="20dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.498"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.181" />
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</layout>
