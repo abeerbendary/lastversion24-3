@@ -31,14 +31,17 @@ public class Generate_barcode extends AppCompatActivity {
     List<Barcod_Card>barcod_cards=new ArrayList<>();
     ActivityGenerateBarcodeBinding activityGenerateBarcodeBinding;
     Context context=this;
+    String contextsample;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //  setContentView(R.layout.activity_generate_barcode);
+      //  setContentView(R.layout.acti
+        // vity_generate_barcode);
         activityGenerateBarcodeBinding = DataBindingUtil.setContentView((Activity) context, R.layout.activity_generate_barcode);
         Intent i=getIntent();
 //       String barcodestring = i.getStringExtra("barcode");
         barcod_cards = (List<Barcod_Card>) i.getSerializableExtra("barcode");
+        contextsample=i.getStringExtra("contextsample");
 //      Gson  gson = new Gson();
 //       barcod_cards.addAll(Arrays.asList(gson.fromJson(barcodestring, Barcod_Card.class)));
        activityGenerateBarcodeBinding.setAdapterBarcod(new AdapterBarcod(barcod_cards,context));
@@ -74,6 +77,12 @@ public class Generate_barcode extends AppCompatActivity {
     public void cancel(View view) {
 //      Intent i=new Intent(context,MainActivity_Listofchipment.class);
 //      startActivity(i);
-finish();
+
+      if(contextsample.equals("true"))
+        {
+          Intent i=new Intent(context,MainActivity_Listofchipment.class);
+          startActivity(i);
+      }
+        finish();
     }
 }

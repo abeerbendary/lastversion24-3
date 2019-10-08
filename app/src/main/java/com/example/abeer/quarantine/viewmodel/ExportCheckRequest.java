@@ -107,23 +107,27 @@ public class ExportCheckRequest extends BaseObservable {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        String text="";
 //        if(hashMap.get("treatment_data")==0 && hashMap.get("sample_data")==0){
 //            RequestCommittee_Status+=
 //        }else
        if(RequestCommittee_Status_Id==0){
-           String text="";
+
+           text=RequestCommittee_Status+"\n";
 
            if(hashMap.get("request_data")>0){
-               text+=RequestCommittee_Status;
+              text+= "1 فحص"+"/";
            }
            if(hashMap.get("treatment_data")>0){
-            text+="/"+hashMap.get("treatment_data")+"معالجة";
-           }if(hashMap.get("sample_data")>0){
-               text+="/"+hashMap.get("sample_data")+"سحب عينة";
+            text+=hashMap.get("treatment_data")+"معالجة"+"/";
            }
-          RequestCommittee_Status = text;
+           if(hashMap.get("sample_data")>0){
+               text+=hashMap.get("sample_data")+"سحب عينة";
+           }
+         return text;
+       }else {
+           return RequestCommittee_Status;
        }
-       return RequestCommittee_Status;
     }
 
     public int getCommittee_Type_Id() {

@@ -148,7 +148,7 @@
                 <LinearLayout
                     android:id="@+id/linearLayout18"
                     android:layout_width="wrap_content"
-                    android:layout_height="43dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="176dp"
@@ -174,7 +174,7 @@
                     <TextView
                         android:id="@+id/status"
                         android:layout_width="wrap_content"
-                        android:layout_height="40dp"
+                        android:layout_height="wrap_content"
                         android:fontFamily="@font/droid"
                         android:text="@{CheckRequest.requestCommittee_Status}"
                         android:textSize="18sp" />

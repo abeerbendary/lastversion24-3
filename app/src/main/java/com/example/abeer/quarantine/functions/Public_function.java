@@ -191,6 +191,8 @@ public  class  Public_function  {
                         Toast.makeText(context, "تم الحفظ بنجاح", Toast.LENGTH_LONG).show();
                         Intent i= new Intent(context,Generate_barcode.class);
                         i.putExtra("barcode", (Serializable) barcod_cards);
+                        i.putExtra("contextsample","true");
+
                         ((Activity) context).startActivity(i);
                     } else {
                         Toast.makeText(context, "حدث خطا ما", Toast.LENGTH_LONG).show();
@@ -238,8 +240,7 @@ public  class  Public_function  {
 
         } else if(context instanceof MainActivity_DetailsListOfChimpments || context instanceof MainActivity_subdetails)
           {
-            //if (Is_Admin) {
-            if (!Is_Admin) {
+            if (Is_Admin) {
                 if (RequestCommittee_Status_Id == 1) {
                     if (sample_data != 0) {
                         AlertDialog("تم سحب العينة", context,false);
@@ -297,8 +298,7 @@ public  class  Public_function  {
         }
         else if(context instanceof MainActivity_DetailsListOfChimpments || context instanceof MainActivity_subdetails)
         {
-            //if (Is_Admin) {
-            if (!Is_Admin) {
+            if (Is_Admin) {
                 if (RequestCommittee_Status_Id == 1) {
                     if (treatment_data != 0) {
                         AlertDialog("تم المعالجة", context,false);
@@ -339,8 +339,7 @@ public  class  Public_function  {
         }
         else if(context instanceof MainActivity_DetailsListOfChimpments || context instanceof MainActivity_subdetails)
         {
-            //if (Is_Admin) {
-            if (!Is_Admin) {
+            if (Is_Admin) {
                 if (RequestCommittee_Status_Id == 1 ) {
                           AlertDialog("تم فحص الشحنة", context,false);
                 } else if (RequestCommittee_Status_Id == 0 ) {
