@@ -47,8 +47,13 @@ import com.example.abeer.quarantine.model.Sample_Result_Model;
 import com.example.abeer.quarantine.presenter.Clickcustum;
 import com.example.abeer.quarantine.presenter.ISamplePresenter;
 import com.example.abeer.quarantine.remote.ApiCall;
+import com.example.abeer.quarantine.remote.PlantQurDBHelper;
 import com.example.abeer.quarantine.remote.data.DataManger;
 import com.example.abeer.quarantine.remote.data.IDataValue;
+import com.example.abeer.quarantine.viewmodel.DataForCardItems;
+import com.example.abeer.quarantine.viewmodel.ItemData;
+import com.example.abeer.quarantine.viewmodel.ItemLotatData;
+import com.example.abeer.quarantine.viewmodel.ListItemLotat;
 import com.example.abeer.quarantine.viewmodel.ex_RequestCommitteeResult.SampleData_LOts;
 import com.example.abeer.quarantine.viewmodel.sampleWithDraw.Barcod_Card;
 import com.example.abeer.quarantine.viewmodel.sampleWithDraw.ListAnalysis;
@@ -61,6 +66,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -71,9 +77,9 @@ import java.util.Locale;
 public class MainActivity_SampleWithDraw extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener//,LocationListener
 {
-Context context=this;
+    Context context = this;
     String num_Request;
-ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
+    ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
     DataManger dataManger;
     Gson gson;
     String ID_itemSelected;
@@ -91,43 +97,45 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
     Sample_Result sampleResult;
     final ListLabName[] listLabs = new ListLabName[1];
     final ListAnalysis[] listAnalysis = new ListAnalysis[1];
-    final List<SampleData_LOts>[] SampleData_LOts = new List[1];
-    Address address;
-   // double lat,longg;
     JSONObject datas;
     View viewforbutton;
     TextView value_sample;
     Location location;
-   // TextView text;
+    PlantQurDBHelper plantQurDBHelper;
     SharedPreferences sharedPreferences;
     JSONArray datasendarray = new JSONArray();
     Public_function public_function;
     SharedPreferences.Editor prefsEditor;
-    List<Barcod_Card>barcod_cards=new ArrayList<>();
+    List<Barcod_Card> barcod_cards = new ArrayList<>();
     String Request_id;
+    ItemData ItemData;
+    ListItemLotat listItemLotat;
+    String JsonTextDetails;
+    Long ID_Item;
+    ArrayList<ItemLotatData> itemLotatData22 = null;
+    int lengthsave = 0;
+    int size;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activityMainSampleWithDrawBinding = DataBindingUtil.setContentView(this,R.layout.activity_main__sample_with_draw);
+        activityMainSampleWithDrawBinding = DataBindingUtil.setContentView(this, R.layout.activity_main__sample_with_draw);
         dataManger = new DataManger(this);
-        sampleResult=new Sample_Result();
-        radioGroup_Samples  = findViewById(R.id.radioGroup_Samples);
-       // text=findViewById(R.id.txt);
-        linear_Layout_Sample_full =  findViewById(R.id.linear_Layout_Sample_full);
+        sampleResult = new Sample_Result();
+        radioGroup_Samples = findViewById(R.id.radioGroup_Samples);
+        linear_Layout_Sample_full = findViewById(R.id.linear_Layout_Sample_full);
         linear_Layout_Sample_part = findViewById(R.id.linear_Layout_Sample_part);
-        linear_Layout_btns_Sample =findViewById(R.id.btns_Sample);
-        linear_Layout_num_talab =findViewById(R.id.num);
-       // linear_Layout_num_sample=findViewById(R.id.num_sample);
-        title_radio_group =findViewById(R.id.title_radio_group_Sample);
-        sharedPreferences = getApplicationContext().getSharedPreferences("SharedPreference",0);
-        num_Request = sharedPreferences.getString("num_Request","");
-        Request_id = sharedPreferences.getString("checkRequest_Id","");
-        ipadrass= sharedPreferences.getString("ipadrass","");
-      //  EX_Request=sharedPreferences.getString("Committe_Dto","");
-      //  Toast.makeText(context, EX_Request, Toast.LENGTH_LONG).show();
-        value_sample=findViewById(R.id.value_sample);
+        linear_Layout_btns_Sample = findViewById(R.id.btns_Sample);
+        linear_Layout_num_talab = findViewById(R.id.num);
+        title_radio_group = findViewById(R.id.title_radio_group_Sample);
+        sharedPreferences = getApplicationContext().getSharedPreferences("SharedPreference", 0);
+        num_Request = sharedPreferences.getString("num_Request", "");
+        Request_id = sharedPreferences.getString("checkRequest_Id", "");
+        ipadrass = sharedPreferences.getString("ipadrass", "");
+        ID_Item = sharedPreferences.getLong("Item_id", 0);
+        value_sample = findViewById(R.id.value_sample);
         value_sample.setText(num_Request);
-        public_function=new Public_function();
+        public_function = new Public_function();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -135,7 +143,6 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
@@ -144,87 +151,76 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
     @Override
     protected void onStart() {
         super.onStart();
+        plantQurDBHelper = new PlantQurDBHelper(context);
         manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        location = public_function.getlocation(context,manager);
-        if (location.getLongitude()!=0 && location.getLatitude()!=0)
-        {
+        location = public_function.getlocation(context, manager);
+        if (location.getLongitude() != 0 && location.getLatitude() != 0) {
             prefsEditor = sharedPreferences.edit();
             prefsEditor.putLong("Latitude", (long) location.getLatitude());
             prefsEditor.putLong("Longitude", (long) location.getLongitude());
             prefsEditor.apply();
-            Toast.makeText(context,""+location.getLatitude()+ location.getLongitude() , Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "" + location.getLatitude() + location.getLongitude(), Toast.LENGTH_SHORT).show();
         }
+        JsonTextDetails = plantQurDBHelper.Get_Data_For_ItemsReturnString("JsonTextDetails", ID_Item);
+        gson = new Gson();
+        ItemData = new ItemData();
+        ItemData = gson.fromJson(JsonTextDetails, ItemData.class);
+        itemLotatData22 = new ArrayList<>();
+        Object n = ItemData.getLot_Data();
+        String d = gson.toJson(n);
+
+        listItemLotat = gson.fromJson(d, ListItemLotat.class);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         String result;
-
-     //   JSONArray popupdata=new JSONArray();
         if (requestCode == 1) {
-            if(resultCode == Activity.RESULT_OK){
-                result=data.getStringExtra("ValuesPopUpLots");
-                try {
-                    datas=new JSONObject(result);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                if (datas != null) {
-                             if(datasendarray!=null){
-                                 datasendarray.put(datas);
-                             }
-                              else {
-                                  datasendarray=new JSONArray();
-                                 datasendarray.put(datas);
-                             }
-                    try {
-                        barcod_cards.add(new Barcod_Card(num_Request,datas.getString("LotData_ID"),datas.getString("Sample_BarCode")));
-                       // barcod_cards.add(new Barcod_Card(num_Request,"0",sampleResult.getBarCode()+"0"));
-
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    // popupdata.put(datas);
-                }
-                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
-//                ValuesPopUpLots =new JSONObject();
+            if (resultCode == Activity.RESULT_OK) {
+//                result = data.getStringExtra("ValuesPopUpLots");
+                String LOTS_NUM = data.getStringExtra("Num_Lots");
+                String barcode=data.getStringExtra("barcode");
 //                try {
-//                    ValuesPopUpLots.put("Latitude",lat);
-//                    ValuesPopUpLots.put("Longitude",longg);
-//                    ValuesPopUpLots.put("Address",""+address.getAddressLine(0));
-//                    ValuesPopUpLots.put("ValuesPopUpLots",popupdata);
+//                    datas = new JSONObject(result);
+//
 //                } catch (JSONException e) {
 //                    e.printStackTrace();
 //                }
+                lengthsave += 1;
+//                if (datas != null) {
+//                    if (datasendarray != null) {
+//                        datasendarray.put(datas);
+//                    } else {
+//                        datasendarray = new JSONArray();
+//                        datasendarray.put(datas);
+//                    }
+//                    try {
+                        barcod_cards.add(new Barcod_Card(num_Request, LOTS_NUM,barcode));
+//                    } catch (JSONException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//                Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
                 viewforbutton.findViewById(R.id.buttsss).setVisibility(View.GONE);
-             //   Textsss.setText(ValuesPopUpLots.toString());
-
-
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 viewforbutton.findViewById(R.id.buttsss).setVisibility(View.VISIBLE);
-                //Write your code if there's no result
                 Toast.makeText(this, "nhvgbn", Toast.LENGTH_SHORT).show();
             }
         }
-        // super.onActivityResult(requestCode, resultCode, data);
     }
-    public void Sample_full()
-    {
 
-       // dataManger.SendVollyRequestJsonObjectGet(this, Request.Method.GET, "http://"+ipadrass+ ApiCall.AnalysisType, new IDataValue() {
-        dataManger.SendVollyRequestJsonObjectGet(this, Request.Method.GET, ipadrass+ApiCall.AnalysisType, new IDataValue() {
-
-                @Override
+    public void Sample_full() {
+        dataManger.SendVollyRequestJsonObjectGet(this, Request.Method.GET, ipadrass + ApiCall.AnalysisType, new IDataValue() {
+            @Override
             public void Success(Object response) {
-                data=response.toString();
+                data = response.toString();
                 gson = new Gson();
                 listAnalysis[0] = gson.fromJson(data, ListAnalysis.class);
                 activityMainSampleWithDrawBinding.contentSampleWithDraw.setAnalysis(listAnalysis[0]);
             }
+
             @Override
             public void Error(VolleyError error) {
 
@@ -237,13 +233,10 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
         activityMainSampleWithDrawBinding.contentSampleWithDraw.setISamplePresenter(new ISamplePresenter() {
             @Override
             public void OnItemSelectedSpinner_Treatment(AdapterView<?> parent, View view, int pos, long id, Sample_Result sample_result) {
-
-                // CheckUpResult.setKingdom_ID(Integer.parseInt(IDItemSelect));
                 ID_itemSelected = String.valueOf(listAnalysis[0].obj.get(pos).Value);
                 sample_result.setAnalysisType_ID(Short.parseShort(ID_itemSelected));
-                Toast.makeText(MainActivity_SampleWithDraw.this, ""+ID_itemSelected, Toast.LENGTH_SHORT).show();
-               // dataManger.SendVollyRequestJsonObjectGet(MainActivity_SampleWithDraw.this, Request.Method.GET, ApiCall.UrlLabName+ID_itemSelected, new IDataValue() {
-                dataManger.SendVollyRequestJsonObjectGet(MainActivity_SampleWithDraw.this, Request.Method.GET, ipadrass+ApiCall.UrlLabName+ID_itemSelected, new IDataValue() {
+                Toast.makeText(MainActivity_SampleWithDraw.this, "" + ID_itemSelected, Toast.LENGTH_SHORT).show();
+                dataManger.SendVollyRequestJsonObjectGet(MainActivity_SampleWithDraw.this, Request.Method.GET, ipadrass + ApiCall.UrlLabName + ID_itemSelected, new IDataValue() {
                     @Override
                     public void Success(Object response) {
                         data = response.toString();
@@ -251,6 +244,7 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
                         listLabs[0] = gson.fromJson(data, ListLabName.class);
                         activityMainSampleWithDrawBinding.contentSampleWithDraw.setLabs(listLabs[0]);
                     }
+
                     @Override
                     public void Error(VolleyError error) {
                         Toast.makeText(MainActivity_SampleWithDraw.this, error.getMessage(), Toast.LENGTH_SHORT).show();
@@ -268,134 +262,76 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
 
             @Override
             public void OnClickSaveLots(View view, Sample_Result sampleResult) {
-              //  manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                    // TODO: Consider calling
-//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
-//                }
-//                Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                if(location==null){
-//                    location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//                }
-////                lat = ;
-////                longg = ;
-
                 manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                location=public_function.getlocation(context,manager);
-                if(location.getLatitude()==0 && location.getLongitude()==0){
-                    location.setLatitude(sharedPreferences.getLong("Latitude",0));
-                    location.setLongitude(sharedPreferences.getLong("Longitude",0));
+                location = public_function.getlocation(context, manager);
+                if (location.getLatitude() == 0 && location.getLongitude() == 0) {
+                    location.setLatitude(sharedPreferences.getLong("Latitude", 0));
+                    location.setLongitude(sharedPreferences.getLong("Longitude", 0));
                 }
                 sampleResult.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
                 sampleResult.setLot_ID((long) 0);
                 sampleResult.setLatitude(location.getLatitude());
                 sampleResult.setLongitude(location.getLongitude());
-                sampleResult.setBarCode(sharedPreferences.getString("BarCode","")+0);
-                sampleResult.setCommittee_ID(sharedPreferences.getLong("Committee_ID",0));
-                sampleResult.setEmployeeId(sharedPreferences.getLong("EmpId",0));
-                sampleResultModel=new Sample_Result_Model(sampleResult);
-                if(sampleResult.getAnalysisType_ID()==0) {
+                sampleResult.setBarCode(sharedPreferences.getString("BarCode", "") + 0);
+                sampleResultModel = new Sample_Result_Model(sampleResult);
+                if (sampleResult.getAnalysisType_ID() == 0) {
 
-                    public_function.AlertDialog("برجاء تحديد نوع التحليل ",context,false);
-                }
-                else {
+                    public_function.AlertDialog("برجاء تحديد نوع التحليل ", context, false);
+                } else {
                     final String json = new Gson().toJson(sampleResultModel);
-                    try {
-                        JSONObject datasend = new JSONObject(json);
-                        barcod_cards.add(new Barcod_Card(num_Request,"0",sampleResult.getBarCode()+"0"));
-                        prefsEditor=sharedPreferences.edit();
-                        prefsEditor.putInt("sample_data",sharedPreferences.getInt("sample_data",-2)-1);
-                        prefsEditor.putInt("totalprocess",sharedPreferences.getInt("totalprocess",-2)-1);
-                        prefsEditor.apply();
-                        String SampleDto=sharedPreferences.getString("SampleDto","");
-                        if(SampleDto==""){
-                            JSONArray jsonArray=new JSONArray();
-                            jsonArray.put(datasend);
-                            prefsEditor=sharedPreferences.edit();
-                            prefsEditor.putString("SampleDto",String.valueOf(jsonArray));
-                            prefsEditor.apply();
-                        }else {
-                            JSONArray jsonArray=new JSONArray(SampleDto);
-                            jsonArray.put(datasend);
-                            prefsEditor=sharedPreferences.edit();
-                            prefsEditor.putString("SampleDto",String.valueOf(jsonArray));
-                            prefsEditor.apply();
-                        }
+                    plantQurDBHelper.Insert_result("SampleData", Long.valueOf(Request_id), "Isanalysis", sharedPreferences.getLong("Item_id", (long) 0), 0, json, json);
 
-                        int totalprocess=sharedPreferences.getInt("totalprocess",0);
-
-                        if(totalprocess==0){
-                            JSONObject jsonObject = new JSONObject();
-                            jsonObject.put("Committe_Dto", sharedPreferences.getString("Committe_Dto",""));
-                            jsonObject.put("SampleDto", sharedPreferences.getString("SampleDto",""));
-                            jsonObject.put("Treatment_Dto", sharedPreferences.getString("Treatment_Dto",""));
-                            public_function.senddataonlinetoserverformoreprocess(jsonObject,context,ipadrass + ApiCall.UrlSavemultprocess,barcod_cards);
-                            //////fabrc code comfirm /////////
-//                            prefsEditor = sharedPreferences.edit();
-//                            prefsEditor.putString("confirmresult", String.valueOf(jsonObject));
-//                            prefsEditor.apply();
-                            ///////////////////
-                        }else {
-                            public_function.showbarcodelist(context,barcod_cards);
-                            public_function.AlertDialog("برجاء اتمام العمليات ",context,true);
-
-                        }
-                        barcod_cards=null;
-                        datasendarray=null;
-
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    barcod_cards.add(new Barcod_Card(num_Request, "0", sampleResult.getBarCode() + "0"));
+                    Intent intent = new Intent(context, Generate_barcode.class);
+                    intent.putExtra("barcode", (Serializable) barcod_cards);
+                    intent.putExtra("contextsample", "true");
+                    ((Activity) context).startActivity(intent);
+                    barcod_cards = null;
+                    datasendarray = null;
                 }
             }
 
             @Override
             public void OnClickcancel(View view, Sample_Result sampleResult) {
-                datasendarray=null;
+                datasendarray = null;
                 finish();
                 startActivity(getIntent());
             }
         });
-
-
     }
-    public  void Sample_part(){
-        dataManger.SendVollyRequestJsonArrayGet(this, Request.Method.GET, ipadrass+ApiCall.UrlEx_SampleData+Request_id, new IDataValue() {
-            @Override
-            public void Success(Object response) {
-                data = response.toString();
-                gson = new Gson();
-                SampleData_LOts[0] = Arrays.asList(gson.fromJson(data, SampleData_LOts[].class));
 
-                MyAdapterforRecycler dd=new MyAdapterforRecycler(SampleData_LOts[0], context, new Clickcustum() {
-                    @Override
-                    public void button_click(View view,SampleData_LOts sampleData_lOts) {
-                        Intent i= new Intent(context, Sample_Lots.class);
-                        i.putExtra("ID",  sampleData_lOts.getLot_Id());
-                        i.putExtra("LOTS_NUM", "" + sampleData_lOts.getLot_Number());
-                        viewforbutton=view;
-                        startActivityForResult(i,1);
-                    }
-
-//                    @Override
-//                    public void Generat_barcod_click(View view, com.example.abeer.quarantine.viewmodel.ex_RequestCommitteeResult.SampleData_LOts sampleData_lOts) {
-//                        Intent i= new Intent(context, Generate_barcode.class);
-//                        i.putExtra("barcode",sharedPreferences.getString("BarCode","")+sampleData_lOts.getLot_Number());
-//
-//                       // i.putExtra("barcod",sampleData_lOts.)
-//                        startActivity(i);
-//                    }
-                });
-                activityMainSampleWithDrawBinding.contentSampleWithDraw.setMyAdapter(dd);
+    public void Sample_part() {
+        size = listItemLotat._x0040_temp_table_Lot.size();
+        MyAdapterforRecycler dd = null;
+        if (size == 2) {
+            if (listItemLotat._x0040_temp_table_Lot.get(1).getLot_Number() == 0 &&
+                    listItemLotat._x0040_temp_table_Lot.get(0).getLot_Number() == 0) {
+                itemLotatData22.add(new ItemLotatData("لا توجد لوطات"));
+                dd = new MyAdapterforRecycler(itemLotatData22, context);
+                size = 0;
+            } else {
+                if (listItemLotat._x0040_temp_table_Lot.get(1).getLot_Number() == 0) {
+                    listItemLotat._x0040_temp_table_Lot.remove(1);
+                    size -= 1;
+                }
+            }
+        }
+        if (dd == null) {
+            DataForCardItems dataForCardItems = plantQurDBHelper.GetDataForItems(ID_Item);
+            dd = new MyAdapterforRecycler(dataForCardItems, listItemLotat, context, new Clickcustum() {
+                @Override
+                public void button_click(View view, ItemLotatData sampleData_lOts) {
+                    Intent i = new Intent(context, Sample_Lots.class);
+                    i.putExtra("ID", sampleData_lOts.Lot_ID);
+                    i.putExtra("LOTS_NUM", "" + sampleData_lOts.getLot_Number());
+                    viewforbutton = view;
+                    startActivityForResult(i, 1);
+                }
+            }
+            );
+        }
+        activityMainSampleWithDrawBinding.contentSampleWithDraw.setMyAdapter(dd);
                 activityMainSampleWithDrawBinding.contentSampleWithDraw.recyclerViewSample.setLayoutManager(new LinearLayoutManager(context));
-            }
-
-            @Override
-            public void Error(VolleyError error) {
-
-            }
-        });
 
         activityMainSampleWithDrawBinding.contentSampleWithDraw.setSampleResult(sampleResult);
         activityMainSampleWithDrawBinding.contentSampleWithDraw.setISamplePresenter(new ISamplePresenter() {
@@ -411,54 +347,75 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
 
             @Override
             public void OnClickSaveLots(View view, Sample_Result sampleResult) {
-                try {
-                prefsEditor=sharedPreferences.edit();
-                prefsEditor.putInt("sample_data",sharedPreferences.getInt("sample_data",-2)-1);
-                prefsEditor.putInt("totalprocess",sharedPreferences.getInt("totalprocess",-2)-1);
-                prefsEditor.apply();
-                String SampleDto=sharedPreferences.getString("SampleDto","");
-                if(SampleDto==""){
-                        prefsEditor=sharedPreferences.edit();
-                        prefsEditor.putString("SampleDto",String.valueOf(datasendarray));
-                        prefsEditor.apply();
-                    }else {
-                    JSONArray  jsonArray = new JSONArray(SampleDto);
-                    for (int i = 0; i < datasendarray.length(); i++) {
-                        JSONObject jsonObject = datasendarray.getJSONObject(i);
-                        jsonArray.put(jsonObject);
-                    }
-                    prefsEditor=sharedPreferences.edit();
-                    prefsEditor.putString("SampleDto",String.valueOf(jsonArray));
-                    prefsEditor.apply();
-
-                }
-                int totalprocess=sharedPreferences.getInt("totalprocess",0);
-
-                if(totalprocess==0){
-                    JSONObject jsonObject = new JSONObject();
-                    jsonObject.put("Committe_Dto", sharedPreferences.getString("Committe_Dto",""));
-                    jsonObject.put("SampleDto", sharedPreferences.getString("SampleDto",""));
-                    jsonObject.put("Treatment_Dto", sharedPreferences.getString("Treatment_Dto",""));
-                    Toast.makeText(context, jsonObject.toString(), Toast.LENGTH_LONG).show();
-                    public_function.senddataonlinetoserverformoreprocess(jsonObject,context,ipadrass + ApiCall.UrlSavemultprocess,barcod_cards);
-                    prefsEditor.clear();
+//                Intent intent = new Intent(context, Generate_barcode.class);
+//                intent.putExtra("barcode", (Serializable) barcod_cards);
+//                intent.putExtra("contextsample", "true");
+//                ((Activity) context).startActivity(intent);
+                ////////////start code shared preference ////////////////////////////////////////////////////////////////
+//                try {
+//                    prefsEditor = sharedPreferences.edit();
+//                    prefsEditor.putInt("sample_data", sharedPreferences.getInt("sample_data", -2) - 1);
+//                    prefsEditor.putInt("totalprocess", sharedPreferences.getInt("totalprocess", -2) - 1);
+//                    prefsEditor.apply();
+//                    String SampleDto = sharedPreferences.getString("SampleDto", "");
+//                    if (SampleDto == "") {
+//                        prefsEditor = sharedPreferences.edit();
+//                        prefsEditor.putString("SampleDto", String.valueOf(datasendarray));
+//                        prefsEditor.apply();
+//                    } else {
+//                        JSONArray jsonArray = new JSONArray(SampleDto);
+//                        for (int i = 0; i < datasendarray.length(); i++) {
+//                            JSONObject jsonObject = datasendarray.getJSONObject(i);
+//                            jsonArray.put(jsonObject);
+//                        }
+//                        prefsEditor = sharedPreferences.edit();
+//                        prefsEditor.putString("SampleDto", String.valueOf(jsonArray));
+//                        prefsEditor.apply();
+//
+//                    }
+//                    int totalprocess = sharedPreferences.getInt("totalprocess", 0);
+//
+//                    if (totalprocess == 0) {
+//                        JSONObject jsonObject = new JSONObject();
+//                        jsonObject.put("Committe_Dto", sharedPreferences.getString("Committe_Dto", ""));
+//                        jsonObject.put("SampleDto", sharedPreferences.getString("SampleDto", ""));
+//                        jsonObject.put("Treatment_Dto", sharedPreferences.getString("Treatment_Dto", ""));
+//                        Toast.makeText(context, jsonObject.toString(), Toast.LENGTH_LONG).show();
+//                        public_function.senddataonlinetoserverformoreprocess(jsonObject, context, ipadrass + ApiCall.UrlSavemultprocess, barcod_cards);
+//                        prefsEditor.clear();
+//                    } else {
+//                        public_function.showbarcodelist(context, barcod_cards);
+//                        public_function.AlertDialog("برجاء اتمام العمليات ", context, true);
+//
+//                    }
+// } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+                ////////////end code shared preference ////////////////////////////////////////////////////////////////
+                if (size == lengthsave) {
+                    Intent intent = new Intent(context, Generate_barcode.class);
+                    intent.putExtra("barcode", (Serializable) barcod_cards);
+                    intent.putExtra("contextsample", "true");
+                    ((Activity) context).startActivity(intent);
+//                    int count = plantQurDBHelper.update_counterResultForAdmin(context, ipadrass, "Isanalysis", Long.valueOf(Request_id), sharedPreferences.getLong("Item_id", (long) 0), sharedPreferences.getLong("EmpId", (long) 0));
+//                    if (count == 0) {
+//                        Intent i = new Intent(context, MainActivity_Listofchipment.class);
+//                        startActivity(i);
+//                    } else {
+//                        Intent i = new Intent(context, MainActivity_DetailsListOfChimpments.class);
+//                        startActivity(i);
+//                    }
                 } else {
-                    public_function.showbarcodelist(context,barcod_cards);
-                    public_function.AlertDialog("برجاء اتمام العمليات ",context,true);
-
+                    public_function.AlertDialogTwoButton("يوجد لوطات لم يتم عمل سحب عينه عليها",context,false,barcod_cards);
                 }
-               datasendarray=null;
-                barcod_cards=null;
-
-                } catch (JSONException e) {
-                e.printStackTrace();
-            }
-                //////////////////
+                datasendarray = null;
+                datasendarray = null;
+                barcod_cards = null;
             }
 
             @Override
             public void OnClickcancel(View view, Sample_Result sampleResult) {
-                datasendarray=null;
+                datasendarray = null;
                 finish();
                 startActivity(getIntent());
             }
@@ -467,9 +424,7 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
 
     public void onRadioButtonClicked(View view) {
         checked = ((RadioButton) view).isChecked();
-        Button btn_generat= findViewById(R.id.btn_generat);
         switch (view.getId()) {
-
             case R.id.radio_Sample_full:
                 if (checked)
                     linear_Layout_Sample_full.setVisibility(View.VISIBLE);
@@ -502,6 +457,7 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
 
         }
     }
+
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -514,16 +470,11 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-     //   getMenuInflater().inflate(R.menu.main_activity__sample_with_draw, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
 
@@ -533,58 +484,28 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
         int id = item.getItemId();
         try {
-            public_function.NavMenuClick(id,context,sharedPreferences.getString("Token","")
-                    ,sharedPreferences.getBoolean("ISAdmin",false),
-                    sharedPreferences.getInt("RequestCommittee_Status_Id",0),
-                    sharedPreferences.getInt("treatment_data",-1),
-                    sharedPreferences.getInt("sample_data",-1),
-                    sharedPreferences.getInt("request_data",-1),
-                    sharedPreferences.getInt("Committee_Type_Id",0),ipadrass);
+            if (id == R.id.logout) {
+                //for online
+                // public_function.NavMenuClickgetsqlite(context);
+//                forOffline
+                public_function.NavMenuClickgetsqlite(context,ipadrass,sharedPreferences.getString("Token",""));
+            } else {
+                public_function.NavMenuClickgetsqlite(context, id, sharedPreferences.getLong("Item_id", (long) 0), sharedPreferences.getLong("EmpId", (long) -1), Long.parseLong(sharedPreferences.getString("checkRequest_Id", "")));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-//    @Override
-//    public void onLocationChanged(Location location) {
-//        lat = location.getLatitude();
-//        longg = location.getLongitude();
-//        /////////////address in arabic////////////////////
-////        Locale loc=new Locale("ar");
-////        Geocoder geocoder = new Geocoder(this,loc);
-////        try {
-////            address = geocoder.getFromLocation(lat, longg, 1).get(0);
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        }
-//    }
-//
-//    @Override
-//    public void onStatusChanged(String provider, int status, Bundle extras) {
-//
-//    }
-//
-//    @Override
-//    public void onProviderEnabled(String provider) {
-//
-//    }
-//
-//    @Override
-//    public void onProviderDisabled(String provider) {
-//
-//    }
-
     public void Generat_Barcode() {
 
-        Intent i= new Intent(context, Generate_barcode.class);
-        i.putExtra("barcode",sharedPreferences.getString("BarCode","")+0);
+        Intent i = new Intent(context, Generate_barcode.class);
+        i.putExtra("barcode", sharedPreferences.getString("BarCode", "") + 0);
         startActivity(i);
     }
 }

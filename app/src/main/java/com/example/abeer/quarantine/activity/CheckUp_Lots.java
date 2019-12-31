@@ -16,8 +16,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,8 +32,11 @@ import com.example.abeer.quarantine.R;
 import com.example.abeer.quarantine.databinding.ActivityCheckUpLotsBinding;
 import com.example.abeer.quarantine.functions.Public_function;
 import com.example.abeer.quarantine.model.Checkup_Result_Model;
+import com.example.abeer.quarantine.model.InputFilterMinMax;
+import com.example.abeer.quarantine.model.Plant;
 import com.example.abeer.quarantine.presenter.IPresenter;
 import com.example.abeer.quarantine.remote.ApiCall;
+import com.example.abeer.quarantine.remote.PlantQurDBHelper;
 import com.example.abeer.quarantine.remote.data.DataManger;
 import com.example.abeer.quarantine.remote.data.IDataValue;
 import com.example.abeer.quarantine.viewmodel.ex_RequestCommitteeResult.Checkup_Result;
@@ -48,13 +55,12 @@ import java.util.Locale;
 //112121
 public class CheckUp_Lots extends AppCompatActivity //implements LocationListener
 {
-
     ActivityCheckUpLotsBinding ActivityCheckUpLotsBinding;
     TextView Lotsvalue;
     Gson gson;
     String data;
     DataManger DataManger;
-    Context context = this;
+    Context context;
     String IDItemSelect;
     Checkup_Result checkup_result;
     LinearLayout linear_Layout_Damaged;
@@ -70,14 +76,17 @@ public class CheckUp_Lots extends AppCompatActivity //implements LocationListene
     long ID_lots;
     String ipadrass;
     double lat, longg;
+    int Package_Count;
+    double Net_Weight;
     SharedPreferences sharedPreferences;
     Checkup_Result_Model checkupResultModel;
     TextView num_Request;
+  String  Request_id;
     Public_function public_function;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         checkup_result = new Checkup_Result();
         DataManger = new DataManger(this);
         ActivityCheckUpLotsBinding =
@@ -85,51 +94,71 @@ public class CheckUp_Lots extends AppCompatActivity //implements LocationListene
         Intent intent = getIntent();
         sharedPreferences = getApplicationContext().getSharedPreferences("SharedPreference", 0);
         public_function=new Public_function();
-        // ID_lots =  sharedPreferences.getLong("ID",0);
-//        Num_Lots = sharedPreferences.getString("LOTS_NUM","");
-        num_Request = findViewById(R.id.value);
         ipadrass = sharedPreferences.getString("ipadrass", "");
-        ID_lots = intent.getLongExtra("ID", 0);
+        Package_Count = intent.getIntExtra("Package_Count", 0);
+        Net_Weight = intent.getDoubleExtra("Net_Weight",0);
         Num_Lots = intent.getStringExtra("LOTS_NUM");
-//          ipadrass= getIntent().getStringExtra("ipadrass");
-        Lotsvalue = findViewById(R.id.Lots_value);
-        Lotsvalue.setText(Num_Lots);
-        num_Request.setText(sharedPreferences.getString("num_Request", ""));
+        ID_lots =  intent.getLongExtra("ID",0);
+        Request_id = sharedPreferences.getString("checkRequest_Id", "");
         linear_Layout_Damaged = findViewById(R.id.damaged);
-
     }
 
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        if (requestCode == 100) {
-//            if (grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-//                try {
-//                    manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (LocationListener) this, null);
-//                    Toast.makeText(this, "phase 2", Toast.LENGTH_SHORT).show();
-//
-//                } catch (SecurityException e) {
-//
-//                    Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }
-//    }
 
     @Override
     protected void onStart() {
         super.onStart();
+        num_Request = findViewById(R.id.lotvalue);
+        Lotsvalue = findViewById(R.id.Lotss_value);
+        Lotsvalue.setText(Num_Lots);
+        num_Request.setText(sharedPreferences.getString("num_Request", ""));
+        EditText edit_num = findViewById(R.id.lotedit_num);
+        final EditText edit_ten = findViewById(R.id.lotedit_ten);
+        final EditText edit_kelo = findViewById(R.id.lotedit_kelo);
+        final EditText edit_gram = findViewById(R.id.lotedit_gram);
+        final double[] kelowaite = new double[1];
+        edit_num.setFilters(new InputFilter[]{new InputFilterMinMax("1", String.valueOf(Package_Count))});
+        edit_ten.setFilters(new InputFilter[]{new InputFilterMinMax(0, (int) (Net_Weight / 1000))});
+        edit_kelo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-//        manager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            String[] permissions={Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
-//            ActivityCompat.requestPermissions(this,permissions,100);
-//
-//            Toast.makeText(this, "phase 1", Toast.LENGTH_SHORT).show();
-//        }
-//        else{
-//            manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (LocationListener) this,null);
-//            Toast.makeText(this, "sent direct", Toast.LENGTH_SHORT).show();
-//        }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!edit_ten.getText().toString().isEmpty()) {
+                    kelowaite[0] = Net_Weight - ((Double.valueOf(edit_ten.getText().toString())) * 1000);
+                    edit_kelo.setFilters(new InputFilter[]{new InputFilterMinMax(0, (int) (kelowaite[0]))});
+                } else {
+                    edit_kelo.setFilters(new InputFilter[]{new InputFilterMinMax(0, (int) (Net_Weight))});
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+        edit_gram.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!edit_kelo.getText().toString().isEmpty()) {
+                    double gramewaite = (kelowaite[0] - (Double.valueOf(edit_kelo.getText().toString()))) * 1000;
+                    edit_gram.setFilters(new InputFilter[]{new InputFilterMinMax(0, (int) gramewaite)});
+                } else {
+                    edit_gram.setFilters(new InputFilter[]{new InputFilterMinMax(0, (int)( kelowaite[0]*1000))});
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         DataManger.SendVollyRequestJsonObjectGet(context, Request.Method.GET, ipadrass + ApiCall.UrlCommitteeResultType, new IDataValue() {
             @Override
             public void Success(Object response) {
@@ -270,29 +299,7 @@ public class CheckUp_Lots extends AppCompatActivity //implements LocationListene
             @Override
             public void OnClickSaveLots(View view, Checkup_Result checkupResult) {
                 checkupResult.setlot_ID(ID_lots);
-//                manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                    // TODO: Consider calling
-//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
-//                }
-//                Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                if(location==null){
-//                    location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//                }
                 manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//                if (Build.VERSION.SDK_INT >= 23 &&
-//                        ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
-//                        ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
-//
-//                }
-//                Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//
-//                if(location==null){
-//                    location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//                }
                location=public_function.getlocation(context,manager);
                 if(location.getLatitude()==0&&location.getLongitude()==0){
                     location.setLatitude(sharedPreferences.getLong("Latitude",0));
@@ -313,13 +320,12 @@ public class CheckUp_Lots extends AppCompatActivity //implements LocationListene
                 else {
 
                     checkupResultModel.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
-                    checkupResultModel.setCommittee_ID(sharedPreferences.getLong("Committee_ID",0));
-                    checkupResultModel.setEmployeeId(sharedPreferences.getLong("EmpId",0));
                     checkupResultModel.setLongitude(location.getLongitude());
                     checkupResultModel.setLatitude( location.getLatitude());
                     String jsonInString = gson.toJson(checkupResultModel);
+                    PlantQurDBHelper plantQurDBHelper=new PlantQurDBHelper(context);
+                    plantQurDBHelper.Insert_result("CommitteeResult",Long.valueOf(Request_id),"Ischeck",sharedPreferences.getLong("Item_id", (long) 0),ID_lots,jsonInString,jsonInString);
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra("ValuesPopUpLots", jsonInString);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
                 }
@@ -334,32 +340,4 @@ public class CheckUp_Lots extends AppCompatActivity //implements LocationListene
         });
     }
 
-//    @Override
-//    public void onLocationChanged(Location location) {
-//        lat = location.getLatitude();
-//        longg = location.getLongitude();
-//        ///////////////////////address in arabic/////////////////////////////
-////        Locale loc=new Locale("ar");
-////        Geocoder geocoder = new Geocoder(this,loc);
-////        try {
-////            address = geocoder.getFromLocation(lat, longg, 1).get(0);
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        }
-//    }
-//
-//    @Override
-//    public void onStatusChanged(String provider, int status, Bundle extras) {
-//
-//    }
-//
-//    @Override
-//    public void onProviderEnabled(String provider) {
-//
-//    }
-//
-//    @Override
-//    public void onProviderDisabled(String provider) {
-//
-//    }
 }

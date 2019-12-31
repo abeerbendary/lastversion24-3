@@ -32,7 +32,7 @@ public class Treatment_Result_Model {
 public  long ID;
 public  long Committee_ID;
 public byte TreatmentType_ID;
-public long Company_ID;
+public int Company_ID;
 public  long Station_ID;
 public String Station_Place;
 public byte TreatmentMethod_ID;
@@ -47,7 +47,7 @@ public  float Temperature;
 public  int IsLot;
 public  long Ex_Request_LotData_ID;
 public  float ThermalSealNumber;
-public  long User_Creation_Id;
+//public  long User_Creation_Id;
 public  String User_Creation_Date;
 public  String Note;
     double Longitude ,Latitude ;
@@ -56,7 +56,7 @@ public  String Note;
         this.ID = treatment_result_model.ID;
         Committee_ID = treatment_result_model.Committee_ID;
         TreatmentType_ID = treatment_result_model.TreatmentType_ID;
-        Company_ID = treatment_result_model.Company_ID;
+       Company_ID = treatment_result_model.Company_ID;
         Station_ID = treatment_result_model.Station_ID;
         Station_Place = treatment_result_model.Station_Place;
         TreatmentMethod_ID =treatment_result_model.TreatmentMethod_ID ;
@@ -78,7 +78,7 @@ public  String Note;
     public Treatment_Result_Model(TreatmentResult treatmentResult) {
 
        this.ID=0;
-       this.Committee_ID=treatmentResult.getCommittee_ID();
+//       this.Committee_ID=treatmentResult.getCommittee_ID();
        this.TreatmentType_ID=treatmentResult.getTreatment_Type_ID();
        this.Company_ID=treatmentResult.getTreatment_company_ID();
        this.Station_ID=treatmentResult.getCertified_place_ID();
@@ -101,7 +101,6 @@ public  String Note;
        this.Temperature=treatmentResult.getTemperature();
        this.Ex_Request_LotData_ID=treatmentResult.getLot_ID();
        this.ThermalSealNumber=treatmentResult.getThermalSealNumber();
-       this.User_Creation_Id=treatmentResult.getEmployeeId();
        this.User_Creation_Date=treatmentResult.getDate();
        this.Note=treatmentResult.getComment();
 
@@ -131,11 +130,11 @@ public  String Note;
         TreatmentType_ID = treatmentType_ID;
     }
 
-    public long getCompany_ID() {
+    public int getCompany_ID() {
         return Company_ID;
     }
 
-    public void setCompany_ID(long company_ID) {
+    public void setCompany_ID(int company_ID) {
         Company_ID = company_ID;
     }
 
@@ -251,13 +250,13 @@ public  String Note;
         ThermalSealNumber = thermalSealNumber;
     }
 
-    public long getUser_Creation_Id() {
-        return User_Creation_Id;
-    }
-
-    public void setUser_Creation_Id(long user_Creation_Id) {
-        User_Creation_Id = user_Creation_Id;
-    }
+//    public long getUser_Creation_Id() {
+//        return User_Creation_Id;
+//    }
+//
+//    public void setUser_Creation_Id(long user_Creation_Id) {
+//        User_Creation_Id = user_Creation_Id;
+//    }
 
     public String getUser_Creation_Date() {
         return User_Creation_Date;

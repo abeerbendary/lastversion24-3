@@ -65,7 +65,5 @@ public class AdapterEshtratat extends RecyclerView.Adapter<AdapterEshtratat.Hold
             itemDatadaconstraintabinding.setPlantItem(t);
         }
 
-
-
     }
 }

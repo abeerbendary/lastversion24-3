@@ -17,9 +17,9 @@ public class Sample_Result  extends BaseObservable {
     Long lot_ID;
     String BarCode;
     String  Comment ;
-    Long Committee_ID;
+//    Long Committee_ID;
     double Longitude ,Latitude ;
-    long EmployeeId;
+//    long EmployeeId;
 
     public Sample_Result() {
 
@@ -39,9 +39,9 @@ public class Sample_Result  extends BaseObservable {
         Comment = sampleresult.Comment;
         Longitude=sampleresult.Longitude;
         lot_ID=sampleresult.lot_ID;
-        Committee_ID=sampleresult.Committee_ID;
-        EmployeeId=sampleresult.EmployeeId;
-        notifyPropertyChanged(BR.SampleResult);
+//        Committee_ID=sampleresult.Committee_ID;
+//        EmployeeId=sampleresult.EmployeeId;
+//        notifyPropertyChanged(BR.SampleResult);
 
     }
 
@@ -52,7 +52,7 @@ public class Sample_Result  extends BaseObservable {
 
     public void setLot_ID(Long lot_ID) {
         this.lot_ID = lot_ID;
-        notifyPropertyChanged(BR.lot_ID);
+//        notifyPropertyChanged(BR.lot_ID);
     }
 
 //    @Bindable
@@ -69,13 +69,13 @@ public class Sample_Result  extends BaseObservable {
         BarCode = barCode;
     }
 
-    public Long getCommittee_ID() {
-        return Committee_ID;
-    }
-
-    public void setCommittee_ID(Long committee_ID) {
-        Committee_ID = committee_ID;
-    }
+//    public Long getCommittee_ID() {
+//        return Committee_ID;
+//    }
+//
+//    public void setCommittee_ID(Long committee_ID) {
+//        Committee_ID = committee_ID;
+//    }
 
 //    public void setAddress(String address) {
 //        Address = address;
@@ -91,7 +91,7 @@ public class Sample_Result  extends BaseObservable {
 
     public void setComment(String comment) {
         Comment = comment;
-        notifyPropertyChanged(BR.comment);
+//        notifyPropertyChanged(BR.comment);
 
     }
     @Bindable
@@ -102,7 +102,7 @@ public class Sample_Result  extends BaseObservable {
 
     public void setLatitude(double latitude) {
         Latitude = latitude;
-        notifyPropertyChanged(BR.latitude);
+//        notifyPropertyChanged(BR.latitude);
     }
 
     @Bindable
@@ -112,7 +112,7 @@ public class Sample_Result  extends BaseObservable {
 
     public void setLongitude(double longitude) {
         Longitude = longitude;
-        notifyPropertyChanged(BR.longitude);
+//        notifyPropertyChanged(BR.longitude);
     }
 
     @Bindable
@@ -122,7 +122,7 @@ public class Sample_Result  extends BaseObservable {
 
     public void setInspection_num(int inspection_num) {
         Inspection_num = inspection_num;
-        notifyPropertyChanged(BR.inspection_num);
+//        notifyPropertyChanged(BR.inspection_num);
 
     }
 
@@ -133,7 +133,7 @@ public class Sample_Result  extends BaseObservable {
 
     public void setAnalysisType_ID(Short analysisType_ID) {
         AnalysisType_ID = analysisType_ID;
-        notifyPropertyChanged(BR.analysisType_ID);
+//        notifyPropertyChanged(BR.analysisType_ID);
     }
 
     @Bindable
@@ -143,7 +143,7 @@ public class Sample_Result  extends BaseObservable {
 
     public void setLaboratory_ID(int laboratory_ID) {
         Laboratory_ID = laboratory_ID;
-        notifyPropertyChanged(BR.laboratory_ID);
+//        notifyPropertyChanged(BR.laboratory_ID);
     }
 
     @Bindable
@@ -153,7 +153,7 @@ public class Sample_Result  extends BaseObservable {
 
     public void setDate(String date) {
         Date = date;
-        notifyPropertyChanged(BR.date);
+//        notifyPropertyChanged(BR.date);
     }
 
     @Bindable
@@ -163,7 +163,7 @@ public class Sample_Result  extends BaseObservable {
 
     public void setPlace(String place) {
         this.place = place;
-        notifyPropertyChanged(BR.place);
+//        notifyPropertyChanged(BR.place);
     }
 
     @Bindable
@@ -173,7 +173,7 @@ public class Sample_Result  extends BaseObservable {
 
     public void setSampleSize(double sampleSize) {
         SampleSize = sampleSize;
-        notifyPropertyChanged(BR.sampleSize);
+//        notifyPropertyChanged(BR.sampleSize);
     }
 
     @Bindable
@@ -183,14 +183,14 @@ public class Sample_Result  extends BaseObservable {
 
     public void setSampleUnderSize(double sampleUnderSize) {
         SampleUnderSize = sampleUnderSize;
-        notifyPropertyChanged(BR.sampleUnderSize);
+//        notifyPropertyChanged(BR.sampleUnderSize);
     }
 
-    public long getEmployeeId() {
-        return EmployeeId;
-    }
-
-    public void setEmployeeId(long employeeId) {
-        EmployeeId = employeeId;
-    }
+//    public long getEmployeeId() {
+//        return EmployeeId;
+//    }
+//
+//    public void setEmployeeId(long employeeId) {
+//        EmployeeId = employeeId;
+//    }
 }

@@ -123,49 +123,17 @@ public class MainActivity_Confirm extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         try {
-            public_function.NavMenuClick(id,context,sharedPreferences.getString("Token","")
-                    ,sharedPreferences.getBoolean("ISAdmin",false)
-                    ,sharedPreferences.getInt("RequestCommittee_Status_Id",0),
-                    sharedPreferences.getInt("treatment_data",-1),
-                    sharedPreferences.getInt("sample_data",-1),
-                    sharedPreferences.getInt("request_data",-1),
-                    sharedPreferences.getInt("Committee_Type_Id",0),ipadrass);
+            if (id == R.id.logout) {
+                //for online
+                // public_function.NavMenuClickgetsqlite(context);
+//                forOffline
+                public_function.NavMenuClickgetsqlite(context,ipadrass,sharedPreferences.getString("Token",""));
+            } else {
+                public_function.NavMenuClickgetsqlite(context, id, sharedPreferences.getLong("Item_id", (long) 0), sharedPreferences.getLong("EmpId", (long) -1), Long.parseLong(sharedPreferences.getString("checkRequest_Id", "")));
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        if (id == R.id.language) {
-//            // Handle the camera action
-//        } else if (id == R.id.sample_title) {
-//            Intent i=new Intent(context,MainActivity_SampleWithDraw.class);
-//            i.putExtra("ipadrass", ipadrass);
-//         //   i.putExtra("num_Request", String.valueOf(num_Request));
-//            startActivity(i);
-//        } else if (id == R.id.treatment_title) {
-//         //   Intent i=new Intent(context,TreatmentStatement.class);
-//            Intent i=new Intent(context,MainActivity_TreatmentStatement.class);
-//            i.putExtra("ipadrass", ipadrass);
-//          //  i.putExtra("num_Request", String.valueOf(num_Request));
-//            startActivity(i);
-//
-//        } else if (id == R.id.Committee_title) {
-//            Intent i=new Intent(context,MainActivity_Ex_RequestCommitteeResult.class);
-//            i.putExtra("ipadrass", ipadrass);
-//          //  i.putExtra("num_Request", String.valueOf(num_Request));
-//            startActivity(i);
-//        }else if (id == R.id.todolist) {
-//            Intent i=new Intent(context,MainActivity_Listofchipment.class);
-//            i.putExtra("ipadrass", ipadrass);
-//           // i.putExtra("num_Request", String.valueOf(num_Request));
-//            startActivity(i);
-//        }
-//        else if (id == R.id.logout) {
-//            Intent i=new Intent(context,LogIn.class);
-//            startActivity(i);
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
-
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

@@ -5,24 +5,26 @@ import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
+
 import android.view.ViewGroup;
 
 import com.example.abeer.quarantine.R;
-import com.example.abeer.quarantine.databinding.LivingObjectsbinding;
 import com.example.abeer.quarantine.databinding.UnLivingObjectsbinding;
-import com.example.abeer.quarantine.presenter.ClicikItemLiving;
-import com.example.abeer.quarantine.presenter.ClickItemUnliving;
-import com.example.abeer.quarantine.viewmodel.livingobjects.ItemData_LivingObject;
+import com.example.abeer.quarantine.presenter.ClickCustomItemData;
+import com.example.abeer.quarantine.viewmodel.DataForCardItems;
+import com.example.abeer.quarantine.viewmodel.Emp_Committe;
 
 import java.util.List;
 
 public class AdapterUnlivingObjects extends RecyclerView.Adapter<AdapterUnlivingObjects.Holder> {
-    List<ItemData_LivingObject> itemData_livingObject;
+    List<DataForCardItems> itemData_livingObject;
+    Emp_Committe emp_committe;
     Context context;
- ClickItemUnliving clickItemUnliving;
-    public AdapterUnlivingObjects( List<ItemData_LivingObject>  itemData_livingObjects, Context context, ClickItemUnliving clickItemUnlivings) {
+    ClickCustomItemData clickItemUnliving;
+
+    public AdapterUnlivingObjects( List<DataForCardItems>  itemData_livingObjects, Emp_Committe emp_committe,Context context, ClickCustomItemData clickItemUnlivings) {
         itemData_livingObject = itemData_livingObjects;
+        this.emp_committe=emp_committe;
         this.context = context;
         this.clickItemUnliving = clickItemUnlivings;
     }
@@ -37,9 +39,9 @@ public class AdapterUnlivingObjects extends RecyclerView.Adapter<AdapterUnliving
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        ItemData_LivingObject livingObject=itemData_livingObject.get(position);
-        holder.bind(livingObject,clickItemUnliving);
-        holder.unLivingObjectsbinding.setClickun(clickItemUnliving);
+        DataForCardItems livingObject=itemData_livingObject.get(position);
+        holder.bind(livingObject,emp_committe,clickItemUnliving);
+        holder.unLivingObjectsbinding.setClicked(clickItemUnliving);
     }
 
     @Override
@@ -54,8 +56,9 @@ public class AdapterUnlivingObjects extends RecyclerView.Adapter<AdapterUnliving
             this.unLivingObjectsbinding=unLivingObjectsbinding1;
         }
 
-        public void bind(Object OBJ,final ClickItemUnliving clickunLivingObjectss){
-            unLivingObjectsbinding.setUnLivingObjectItem((ItemData_LivingObject) OBJ);
+        public void bind(Object OBJ,Emp_Committe emp_committe,final ClickCustomItemData clickunLivingObjectss){
+            unLivingObjectsbinding.setDataForCardItems((DataForCardItems) OBJ);
+            unLivingObjectsbinding.setISadmin(emp_committe);
             unLivingObjectsbinding.executePendingBindings();
         }
     }

@@ -10,6 +10,12 @@
             android:title="تغير اللغة"
            />
         <item
+            android:id="@+id/todolist"
+            android:icon="@drawable/ic_view_list_black_24dp"
+            android:title="مهام اليوم"
+
+            />
+        <item
             android:id="@+id/Committee_title"
             android:icon="@drawable/ic_check_circle_black_24dp"
             android:title="فحص الشحنة"
@@ -19,12 +25,7 @@
             android:icon="@drawable/ic_sample"
             android:title="سحب عينة"
             android:fontFamily="@font/droid"/>
-        <item
-            android:id="@+id/todolist"
-            android:icon="@drawable/ic_view_list_black_24dp"
-            android:title="مهام اليوم"
 
-           />
         <item
             android:id="@+id/treatment_title"
             android:icon="@drawable/ic_treatment"

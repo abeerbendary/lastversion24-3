@@ -1,5 +1,4 @@
 package com.example.abeer.quarantine.adapter;
-
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
@@ -8,24 +7,28 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.example.abeer.quarantine.R;
+import com.example.abeer.quarantine.databinding.ItemDatadatabinding;
 import com.example.abeer.quarantine.databinding.LivingObjectsbinding;
-import com.example.abeer.quarantine.presenter.ClicikItemLiving;
-import com.example.abeer.quarantine.viewmodel.livingobjects.ItemData_LivingObject;
+import com.example.abeer.quarantine.presenter.ClickCustomItemData;
+import com.example.abeer.quarantine.viewmodel.DataForCardItems;
+import com.example.abeer.quarantine.viewmodel.Emp_Committe;
 
+import java.util.ArrayList;
 import java.util.List;
-
-
 
 
 public class AdapterLivingObjects extends RecyclerView.Adapter<AdapterLivingObjects.Holder>  {
 
-    List<ItemData_LivingObject> itemData_livingObject;
+    List<DataForCardItems> itemData=new ArrayList<>();
+    Emp_Committe emp_committe;
     Context context;
-    ClicikItemLiving clickLivingObjects;
-    public AdapterLivingObjects( List<ItemData_LivingObject>  itemData_livingObjects, Context context, ClicikItemLiving clickLivingObject) {
-        itemData_livingObject = itemData_livingObjects;
+    ClickCustomItemData clickCustomItemData;
+
+    public AdapterLivingObjects(List<DataForCardItems> itemData, Emp_Committe emp_committe,Context context, ClickCustomItemData clickCustomItemData) {
+        this.itemData = itemData;
+        this.emp_committe=emp_committe;
         this.context = context;
-        this.clickLivingObjects = clickLivingObject;
+        this.clickCustomItemData = clickCustomItemData;
     }
 
     @NonNull
@@ -38,14 +41,14 @@ public class AdapterLivingObjects extends RecyclerView.Adapter<AdapterLivingObje
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        ItemData_LivingObject livingObject=itemData_livingObject.get(position);
-        holder.bind(livingObject,clickLivingObjects);
-        holder.livingObjectsbinding.setClickkks(clickLivingObjects);
+        DataForCardItems livingObject=itemData.get(position);
+        holder.bind(livingObject, emp_committe, clickCustomItemData);
+        holder.livingObjectsbinding.setClicked(clickCustomItemData);
     }
 
     @Override
     public int getItemCount() {
-        return itemData_livingObject.size();
+        return itemData.size();
     }
 
     public class Holder extends RecyclerView.ViewHolder {
@@ -56,8 +59,9 @@ public class AdapterLivingObjects extends RecyclerView.Adapter<AdapterLivingObje
             this.livingObjectsbinding=livingObjectsbinding;
         }
 
-        public void bind(Object OBJ,final ClicikItemLiving clickLivingObjectss){
-            livingObjectsbinding.setLivingObjectItem((ItemData_LivingObject) OBJ);
+        public void bind(Object OBJ,Emp_Committe emp_committe,final ClickCustomItemData clickLivingObjectss){
+            livingObjectsbinding.setDataForCardItems((DataForCardItems) OBJ);
+            livingObjectsbinding.setISadmin(emp_committe);
             livingObjectsbinding.executePendingBindings();
         }
 

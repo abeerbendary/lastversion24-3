@@ -33,6 +33,7 @@ import com.example.abeer.quarantine.functions.Public_function;
 import com.example.abeer.quarantine.model.Treatment_Result_Model;
 import com.example.abeer.quarantine.presenter.ITreatmentPresenter;
 import com.example.abeer.quarantine.remote.ApiCall;
+import com.example.abeer.quarantine.remote.PlantQurDBHelper;
 import com.example.abeer.quarantine.remote.data.DataManger;
 import com.example.abeer.quarantine.remote.data.IDataValue;
 import com.example.abeer.quarantine.viewmodel.ex_RequestCommitteeResult.SampleData_LOts;
@@ -78,7 +79,7 @@ public class Treatment_Lots extends AppCompatActivity  //implements LocationList
     final ListTreatmentPlace[] listTreatmentPlaces = new ListTreatmentPlace[1];
     final List<com.example.abeer.quarantine.viewmodel.ex_RequestCommitteeResult.SampleData_LOts>[] SampleData_LOts = new List[1]  ;
     TextView text;
-
+    String Request_id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,46 +94,17 @@ public class Treatment_Lots extends AppCompatActivity  //implements LocationList
         Intent intent = getIntent();
         public_function=new Public_function();
         sharedPreferences = getApplicationContext().getSharedPreferences("SharedPreference",0);
-        //Lots_id =  sharedPreferences.getLong("ID",0);
-//        Num_Lots = sharedPreferences.getString("LOTS_NUM","");
         ipadrass= sharedPreferences.getString("ipadrass","");
         ID_lots = intent.getLongExtra("ID",0);
         Num_Lots = intent.getStringExtra("LOTS_NUM");
-//        ipadrass= getIntent().getStringExtra("ipadrass");
+        Request_id = sharedPreferences.getString("checkRequest_Id","");
         Lots_Treatmentvalue.setText(Num_Lots);
         title_valuelot.setText(sharedPreferences.getString("num_Request",""));
-
-        //  setContentView(R.layout.activity_treatment__lots);
     }
-
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        if (requestCode == 100) {
-//            if (grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-//                try {
-//                    manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
-//                    Toast.makeText(this, "phase 2", Toast.LENGTH_SHORT).show();
-//
-//                } catch (SecurityException e) {
-//
-//                    Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        }
-//    }
 
     @Override
     protected void onStart() {
         super.onStart();
-//        manager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-//            ActivityCompat.requestPermissions(this, permissions, 100);
-//
-//            Toast.makeText(this, "phase 1", Toast.LENGTH_SHORT).show();
-//        } else {
-//            manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (LocationListener) this, null);
-//            Toast.makeText(this, "sent direct", Toast.LENGTH_SHORT).show();
-//        }
         dataManger.SendVollyRequestJsonObjectGet(this, Request.Method.GET, ipadrass+ApiCall.UrlTreatmentType, new IDataValue() {
             @Override
             public void Success(Object response) {
@@ -287,16 +259,6 @@ public class Treatment_Lots extends AppCompatActivity  //implements LocationList
                     public_function.AlertDialog(" برجاء تحديد كمية المادة المستخدمة",context,false);
 
                 }else {
-//                    manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                        // TODO: Consider calling
-//                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
-//                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
-//                    }
-//                    Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                    if(location==null){
-//                        location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-//                    }
                     manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
                    Location location = public_function.getlocation(context,manager);
@@ -308,13 +270,12 @@ public class Treatment_Lots extends AppCompatActivity  //implements LocationList
                     TreatmentResult.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
                     TreatmentResult.setLatitude(location.getLatitude());
                     TreatmentResult.setLongitude(location.getLongitude());
-                    TreatmentResult.setCommittee_ID(sharedPreferences.getLong("Committee_ID", 0));
-                    TreatmentResult.setEmployeeId(sharedPreferences.getLong("EmpId", 0));
                     TreatmentResult.setLot_ID(ID_lots);
                     Treatment_Result_Model treatmentResultModel = new Treatment_Result_Model(TreatmentResult);
                     String jsonInString = gson.toJson(treatmentResultModel);
+                    PlantQurDBHelper plantQurDBHelper=new PlantQurDBHelper(context);
+                    plantQurDBHelper.Insert_result("TreatmentData",Long.valueOf(Request_id),"Istreatment",sharedPreferences.getLong("Item_id", (long) 0),ID_lots,jsonInString,jsonInString);
                     Intent resultIntent = new Intent();
-                    resultIntent.putExtra("ValuesPopUpLots", jsonInString);
                     setResult(Activity.RESULT_OK, resultIntent);
                     finish();
                 }
@@ -373,34 +334,5 @@ public class Treatment_Lots extends AppCompatActivity  //implements LocationList
                 spinner_place.setVisibility(View.GONE);
         }
     }
-
-//    @Override
-//    public void onLocationChanged(Location location) {
-//        lat = location.getLatitude();
-//        longg = location.getLongitude();
-//        ///////////////////////address in arabic/////////////////////////////
-////        Locale loc=new Locale("ar");
-////        Geocoder geocoder = new Geocoder(this,loc);
-////        try {
-////            address = geocoder.getFromLocation(lat, longg, 1).get(0);
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        }
-//    }
-//
-//    @Override
-//    public void onStatusChanged(String provider, int status, Bundle extras) {
-//
-//    }
-//
-//    @Override
-//    public void onProviderEnabled(String provider) {
-//
-//    }
-//
-//    @Override
-//    public void onProviderDisabled(String provider) {
-//
-//    }
 }
 

@@ -13,10 +13,8 @@ public class Checkup_Result_Model {
 
     long ID;
     long Ex_RequestLotData_ID;
-    long Committee_ID;
-    long EmployeeId;
     int CommitteeResultType_ID;
-   float Weight;
+   double Weight;
     int QuantitySize;
     String Notes;
     int Item_ID;
@@ -27,8 +25,8 @@ public class Checkup_Result_Model {
     public Checkup_Result_Model(Checkup_Result_Model checkupResult) {
         this.ID = checkupResult.ID;
         this.Ex_RequestLotData_ID = checkupResult.Ex_RequestLotData_ID;
-        this.Committee_ID = checkupResult.Committee_ID;
-        this.EmployeeId = checkupResult.EmployeeId;
+//        this.Committee_ID = checkupResult.Committee_ID;
+//        this.EmployeeId = checkupResult.EmployeeId;
         this.CommitteeResultType_ID = checkupResult.CommitteeResultType_ID;
         this.Weight = checkupResult.Weight;
         this.QuantitySize = checkupResult.QuantitySize;
@@ -48,7 +46,7 @@ public class Checkup_Result_Model {
 //        this.Committee_ID = checkupResult.getCommittee_ID();
 //        this.EmployeeId = checkupResult.getEmployeeId();
         this.CommitteeResultType_ID = checkupResult.getResult_ID();
-        this.Weight = checkupResult.getWeight();
+        this.Weight = checkupResult.getWeight_kelo()+(checkupResult.getWeight_ten()/1000)+(checkupResult.getWeight_gram()*1000);
         this.QuantitySize = checkupResult.getCount();
         this.Notes = checkupResult.getComment();
         this.Latitude=checkupResult.getLatitude();
@@ -114,21 +112,21 @@ public class Checkup_Result_Model {
         Ex_RequestLotData_ID = ex_RequestLotData_ID;
     }
 
-    public long getCommittee_ID() {
-        return Committee_ID;
-    }
-
-    public void setCommittee_ID(long committee_ID) {
-        Committee_ID = committee_ID;
-    }
-
-    public long getEmployeeId() {
-        return EmployeeId;
-    }
-
-    public void setEmployeeId(long employeeId) {
-        EmployeeId = employeeId;
-    }
+//    public long getCommittee_ID() {
+//        return Committee_ID;
+//    }
+//
+//    public void setCommittee_ID(long committee_ID) {
+//        Committee_ID = committee_ID;
+//    }
+//
+//    public long getEmployeeId() {
+//        return EmployeeId;
+//    }
+//
+//    public void setEmployeeId(long employeeId) {
+//        EmployeeId = employeeId;
+//    }
 
     public int getCommitteeResultType_ID() {
         return CommitteeResultType_ID;
@@ -138,7 +136,7 @@ public class Checkup_Result_Model {
         CommitteeResultType_ID = committeeResultType_ID;
     }
 
-    public float getWeight() {
+    public double getWeight() {
         return Weight;
     }
 

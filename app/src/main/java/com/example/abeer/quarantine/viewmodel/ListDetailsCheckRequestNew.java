@@ -48,6 +48,100 @@ public class ListDetailsCheckRequestNew extends BaseObservable {
     public   String ImportCompany_xml;
     public  int IsExport;
 
+    public ListDetailsCheckRequestNew() {
+
+    }
+    //Item_Data=null
+    public ListDetailsCheckRequestNew(boolean IsOffline,ListDetailsCheckRequestNew L) {
+        this.$id = L.$id;
+        CheckRequest_Number = L.CheckRequest_Number;
+        Reciever_Name = L.Reciever_Name;
+        ImportCompany = L.ImportCompany;
+        ImportCountry_Name = L.ImportCountry_Name;
+        Outlet_Name = L.Outlet_Name;
+        Govern_Name = L.Govern_Name;
+        General_Admin_Name = L.General_Admin_Name;
+        PortNational_Shippment_Name = L.PortNational_Shippment_Name;
+        Exporter_ID = L.Exporter_ID;
+        ExporterType_Id =L. ExporterType_Id;
+        ExporterType_Name = L.ExporterType_Name;
+        Importer_Exporter_Id = L.Importer_Exporter_Id;
+        Importer_Exporter_Name = L.Importer_Exporter_Name;
+        this.port_arrive_Name = L.port_arrive_Name;
+        this.port_transite_Name = L.port_transite_Name;
+        this.c_transite_country_Name =L.c_transite_country_Name;
+        Shipment_Mean_Name = L.Shipment_Mean_Name;
+        Transport_Mean_Name = L.Transport_Mean_Name;
+        Ship_Name = L.Ship_Name;
+        Request_ApprovedUnapprovedID = L.Request_ApprovedUnapprovedID;
+        Request_ApprovedUnapprovedType = L.Request_ApprovedUnapprovedType;
+        Request_ApprovedUnapproved_StationName = L.Request_ApprovedUnapproved_StationName;
+        Request_ApprovedUnapproved_Place_Ar_Name = L.Request_ApprovedUnapproved_Place_Ar_Name;
+        Request_ApprovedUnapproved_Place_Address_Ar =L. Request_ApprovedUnapproved_Place_Address_Ar;
+        Committee_Type = L.Committee_Type;
+        Check_Date = L.Check_Date;
+        RequestCommittee_Status = L.RequestCommittee_Status;
+        Item_Data =null;
+        CheckRequest_Id = L.CheckRequest_Id;
+        Attachment_Data = L.Attachment_Data;
+        Exporter_Address = L.Exporter_Address;
+        ImportCompany_Address = L.ImportCompany_Address;
+        IsAccepted = L.IsAccepted;
+        TransitCountry = L.TransitCountry;
+        IsAcceppted = L.IsAcceppted;
+        ImportCompany_data = L.ImportCompany_data;
+        Request_Fees =L. Request_Fees;
+        ExportRequest_xml =L. ExportRequest_xml;
+        AttachmentData_Xml = L.AttachmentData_Xml;
+        Item_Data_xml =L.Item_Data_xml;
+        ImportCompany_xml = L.ImportCompany_xml;
+        IsExport = L.IsExport;
+    }
+    public ListDetailsCheckRequestNew(ListDetailsCheckRequestNew L) {
+        this.$id = L.$id;
+        CheckRequest_Number = L.CheckRequest_Number;
+        Reciever_Name = L.Reciever_Name;
+        ImportCompany = L.ImportCompany;
+        ImportCountry_Name = L.ImportCountry_Name;
+        Outlet_Name = L.Outlet_Name;
+        Govern_Name = L.Govern_Name;
+        General_Admin_Name = L.General_Admin_Name;
+        PortNational_Shippment_Name = L.PortNational_Shippment_Name;
+        Exporter_ID = L.Exporter_ID;
+        ExporterType_Id =L. ExporterType_Id;
+        ExporterType_Name = L.ExporterType_Name;
+        Importer_Exporter_Id = L.Importer_Exporter_Id;
+        Importer_Exporter_Name = L.Importer_Exporter_Name;
+        this.port_arrive_Name = L.port_arrive_Name;
+        this.port_transite_Name = L.port_transite_Name;
+        this.c_transite_country_Name =L.c_transite_country_Name;
+        Shipment_Mean_Name = L.Shipment_Mean_Name;
+        Transport_Mean_Name = L.Transport_Mean_Name;
+        Ship_Name = L.Ship_Name;
+        Request_ApprovedUnapprovedID = L.Request_ApprovedUnapprovedID;
+        Request_ApprovedUnapprovedType = L.Request_ApprovedUnapprovedType;
+        Request_ApprovedUnapproved_StationName = L.Request_ApprovedUnapproved_StationName;
+        Request_ApprovedUnapproved_Place_Ar_Name = L.Request_ApprovedUnapproved_Place_Ar_Name;
+        Request_ApprovedUnapproved_Place_Address_Ar =L. Request_ApprovedUnapproved_Place_Address_Ar;
+        Committee_Type = L.Committee_Type;
+        Check_Date = L.Check_Date;
+        RequestCommittee_Status = L.RequestCommittee_Status;
+        Item_Data =L. Item_Data;
+        CheckRequest_Id = L.CheckRequest_Id;
+        Attachment_Data = L.Attachment_Data;
+        Exporter_Address = L.Exporter_Address;
+        ImportCompany_Address = L.ImportCompany_Address;
+        IsAccepted = L.IsAccepted;
+        TransitCountry = L.TransitCountry;
+        IsAcceppted = L.IsAcceppted;
+        ImportCompany_data = L.ImportCompany_data;
+        Request_Fees =L. Request_Fees;
+        ExportRequest_xml =L. ExportRequest_xml;
+        AttachmentData_Xml = L.AttachmentData_Xml;
+        Item_Data_xml =L.Item_Data_xml;
+        ImportCompany_xml = L.ImportCompany_xml;
+        IsExport = L.IsExport;
+    }
 
     @Bindable
     public String get$id() {

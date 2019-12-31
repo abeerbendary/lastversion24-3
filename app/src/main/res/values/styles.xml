@@ -92,7 +92,12 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
+    <style name="confirmCheck" parent="@style/Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:colorControlNormal">#4AA6B8</item>
+        <item name="android:colorControlActivated">#4AA6B8</item>
+        <item name="android:colorControlHighlight">#1f90a5</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat</item>
+    </style>
     <style name="AppTheme.NoActionBar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.NoActionBar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />

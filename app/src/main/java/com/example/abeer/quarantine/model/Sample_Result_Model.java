@@ -6,9 +6,9 @@ public class Sample_Result_Model {
     Long LotData_ID;
     Short AnalysisTypeID ;
     int AnalysisLabType_ID;
-    Long Committee_ID;
+//    Long Committee_ID;
     String WithdrawDate;
-    Long User_Creation_Id;
+//    Long User_Creation_Id;
     String Sample_BarCode;
      double SampleSize;
      double SampleRatio;
@@ -23,9 +23,9 @@ public class Sample_Result_Model {
     public Sample_Result_Model(Sample_Result_Model sample_result_model) {
         LotData_ID=sample_result_model.LotData_ID;
         AnalysisLabType_ID=sample_result_model.AnalysisLabType_ID;
-        Committee_ID=sample_result_model.Committee_ID;
+//        Committee_ID=sample_result_model.Committee_ID;
         WithdrawDate=sample_result_model.WithdrawDate;
-        User_Creation_Id=sample_result_model.User_Creation_Id;
+//        User_Creation_Id=sample_result_model.User_Creation_Id;
         Sample_BarCode=sample_result_model.Sample_BarCode;
         SampleSize=sample_result_model.SampleSize;
         SampleRatio=sample_result_model.SampleRatio;
@@ -43,12 +43,12 @@ public class Sample_Result_Model {
     public Sample_Result_Model(Sample_Result sampleResult) {
         LotData_ID=sampleResult.getLot_ID();
         AnalysisLabType_ID=sampleResult.getLaboratory_ID();
-        Committee_ID=sampleResult.getCommittee_ID();
+//        Committee_ID=sampleResult.getCommittee_ID();
         WithdrawDate=sampleResult.getDate();
         Sample_BarCode=sampleResult.getBarCode();
         Notes_Ar=sampleResult.getComment();
         AnalysisTypeID=sampleResult.getAnalysisType_ID();
-        User_Creation_Id= sampleResult.getEmployeeId();
+//        User_Creation_Id= sampleResult.getEmployeeId();
         SampleSize=sampleResult.getSampleSize();
         SampleRatio=sampleResult.getSampleUnderSize();
         Longitude=sampleResult.getLongitude();
@@ -132,14 +132,14 @@ public class Sample_Result_Model {
     public void setAnalysisLabType_ID(int analysisLabType_ID) {
         AnalysisLabType_ID = analysisLabType_ID;
     }
-
-    public Long getCommittee_ID() {
-        return Committee_ID;
-    }
-
-    public void setCommittee_ID(Long committee_ID) {
-        Committee_ID = committee_ID;
-    }
+//
+//    public Long getCommittee_ID() {
+//        return Committee_ID;
+//    }
+//
+//    public void setCommittee_ID(Long committee_ID) {
+//        Committee_ID = committee_ID;
+//    }
 
     public String getWithdrawDate() {
         return WithdrawDate;
@@ -149,13 +149,13 @@ public class Sample_Result_Model {
         WithdrawDate = withdrawDate;
     }
 
-    public Long getUser_Creation_Id() {
-        return User_Creation_Id;
-    }
-
-    public void setUser_Creation_Id(Long user_Creation_Id) {
-        User_Creation_Id = user_Creation_Id;
-    }
+//    public Long getUser_Creation_Id() {
+//        return User_Creation_Id;
+//    }
+//
+//    public void setUser_Creation_Id(Long user_Creation_Id) {
+//        User_Creation_Id = user_Creation_Id;
+//    }
 
     public String getSample_BarCode() {
         return Sample_BarCode;

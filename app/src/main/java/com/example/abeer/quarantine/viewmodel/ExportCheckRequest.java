@@ -102,7 +102,7 @@ public class ExportCheckRequest extends BaseObservable {
     int Row_Num;
     int IsExport;
     int Committee_Type_Id;
-    String  Emp_Committe;
+   public String  Emp_Committe;
     String Request_Treatment;
     RequestTreatmentData Request_Treatment_Data;
 
@@ -205,41 +205,30 @@ public class ExportCheckRequest extends BaseObservable {
 //        } catch (JSONException e) {
 //            e.printStackTrace();
 //        }
-        RequestTreatmentData requestTreatmentData=new RequestTreatmentData(getRequest_Treatment_Data());
-        int count=0;
-        String text="";
-//        if(hashMap.get("treatment_data")==0 && hashMap.get("sample_data")==0){
-//            RequestCommittee_Status+=
-//        }else
-       if(RequestCommittee_Status_Id==0){
+//        RequestTreatmentData requestTreatmentData=new RequestTreatmentData(getRequest_Treatment_Data());
+//        int count=0;
+//        String text="";
+//       if(RequestCommittee_Status_Id==0){
 
-           text=RequestCommittee_Status+"\n";
-           count=requestTreatmentData.getCheck_Total();
-           if(count>0){
-           //   text+= count+" فحص"+"/";
-               text+= "1 فحص"+"/";
-           }
-           count=requestTreatmentData.getTreatment_Total();
-           if(count>0){
-            text+=count+"معالجة"+"/";
-           }
-           count=requestTreatmentData.getAnalysis_Total();
-           if(count>0){
-               text+=count+"سحب عينة";
-           }
-//           if(hashMap.get("request_data")>0){
-//              text+= "1 فحص"+"/";
+//           text=RequestCommittee_Status+"\n";
+//           count=requestTreatmentData.getCheck_Total();
+//           if(count>0){
+//            text+= count+" فحص"+"/";
+//               //text+= "1 فحص"+"/";
 //           }
-//           if(hashMap.get("treatment_data")>0){
-//            text+=hashMap.get("treatment_data")+"معالجة"+"/";
+//           count=requestTreatmentData.getTreatment_Total();
+//           if(count>0){
+//            text+=count+"معالجة"+"/";
 //           }
-//           if(hashMap.get("sample_data")>0){
-//               text+=hashMap.get("sample_data")+"سحب عينة";
+//           count=requestTreatmentData.getAnalysis_Total();
+//           if(count>0){
+//               text+=count+"سحب عينة";
 //           }
-         return text;
-       }else {
+
+//         return text;
+//       }else {
            return RequestCommittee_Status;
-       }
+//       }
     }
 
     public int getCommittee_Type_Id() {
@@ -348,11 +337,12 @@ public class ExportCheckRequest extends BaseObservable {
         }
         if (f instanceof JSONArray) {
             for (int i = 0; i < ((JSONArray) f).length(); i++) {
-                emp_committeArrayList.add(new Emp_Committe(((JSONArray) f).getJSONObject(i).get("Employee_Id").toString(),((JSONArray) f).getJSONObject(i).get("ISAdmin").toString(),((JSONArray) f).getJSONObject(i).get("FullName").toString(),((JSONArray) f).getJSONObject(i).get("LoginName").toString(),((JSONArray) f).getJSONObject(i).get("Password").toString()));
+                emp_committeArrayList.add(new Emp_Committe(((JSONArray) f).getJSONObject(i).get("Employee_Id").toString(),((JSONArray) f).getJSONObject(i).get("ISAdmin").toString(),
+                        ((JSONArray) f).getJSONObject(i).get("FullName").toString(),((JSONArray) f).getJSONObject(i).get("LoginName").toString(),((JSONArray) f).getJSONObject(i).get("Password").toString(),((JSONArray) f).getJSONObject(i).get("EmpToken").toString()));
             }
 
        }else {
-            emp_committeArrayList.add(new Emp_Committe(((JSONObject) f).get("Employee_Id").toString(),((JSONObject) f).get("ISAdmin").toString(),((JSONObject) f).get("FullName").toString(),((JSONObject) f).get("LoginName").toString(),((JSONObject) f).get("Password").toString()));
+            emp_committeArrayList.add(new Emp_Committe(((JSONObject) f).get("Employee_Id").toString(),((JSONObject) f).get("ISAdmin").toString(),((JSONObject) f).get("FullName").toString(),((JSONObject) f).get("LoginName").toString(),((JSONObject) f).get("Password").toString(),((JSONObject) f).get("EmpToken").toString()));
         }
         return  emp_committeArrayList;
     }

@@ -3,16 +3,13 @@ import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 
-
-import com.example.abeer.quarantine.BR;
-
-import java.util.Date;
-
 public class Checkup_Result extends BaseObservable{
 
      String Checkup;
      int Count;
-     float Weight;
+     double Weight_ten;
+    double Weight_kelo;
+    double Weight_gram;
      int Result_ID;
      String  Comment ;
      int Kingdom_ID;
@@ -23,50 +20,18 @@ public class Checkup_Result extends BaseObservable{
      Long lot_ID;
      String Address;
      double Longitude ,Latitude ;
-     long Committee_ID;
-     long EmployeeId;
-    Context context;
-   // int Final_result;
-
     public  Checkup_Result()
     {
-//        Count =0 ;
-//        Weight = (float) 0.0;
-//        Result_ID =0;
-//        Comment ="";
-//        Kingdom_ID =0;
-//        Phylum_ID = 0;
-//        Order_ID = 0;
-//        Family_ID =0 ;
-//        Result_injury=0;
-//        Latitude=0;
-//        Longitude=0;
-//        notifyPropertyChanged(BR.checkUpResult);
-    }
 
-//    public Checkup_Result(String checkup, int count, int weight,
-//                          int result_ID, String comment, int kingdom_ID, int phylum_ID, int order_ID,int lot_num,
-//                          int family_ID) {
-//        Checkup = checkup;
-//        Count = count;
-//        Weight = weight;
-//        Result_ID = result_ID;
-//        Comment = comment;
-//        Kingdom_ID = kingdom_ID;
-//        Phylum_ID = phylum_ID;
-//        Order_ID = order_ID;
-//        Order_ID = lot_num;
-//        Family_ID = family_ID;
-//        notifyPropertyChanged(BR.checkUpResult);
-//
-//
-//    }
+    }
 
     public Checkup_Result(Checkup_Result Checkup_Result) {
 
         Checkup = Checkup_Result.Checkup;
         Count = Checkup_Result.Count;
-        Weight = Checkup_Result.Weight;
+        Weight_gram=Checkup_Result.Weight_gram;
+        Weight_kelo=Checkup_Result.Weight_kelo;
+        Weight_ten=Checkup_Result.Weight_ten;
         Result_ID = Checkup_Result.Result_ID;
         Comment = Checkup_Result.Comment;
         Kingdom_ID = Checkup_Result.Kingdom_ID;
@@ -78,9 +43,9 @@ public class Checkup_Result extends BaseObservable{
         Latitude=Checkup_Result.Latitude;
         Longitude=Checkup_Result.Longitude;
         Address=Checkup_Result.Address;
-        Committee_ID=Checkup_Result.Committee_ID;
-        EmployeeId=Checkup_Result.EmployeeId;
-        notifyPropertyChanged(BR.checkUpResult);
+//        Committee_ID=Checkup_Result.Committee_ID;
+//        EmployeeId=Checkup_Result.EmployeeId;
+//        notifyPropertyChanged(BR.checkUpResult);
 
     }
 
@@ -91,7 +56,41 @@ public class Checkup_Result extends BaseObservable{
 
     public void setAddress(String address) {
         Address = address;
-        notifyPropertyChanged(BR.address);
+//        notifyPropertyChanged(BR.address);
+    }
+@Bindable
+    public double getWeight_ten() {
+        return Weight_ten;
+    }
+
+    public void setWeight_ten(double weight_ten) {
+        Weight_ten = weight_ten;
+    }
+@Bindable
+    public double getWeight_kelo() {
+        return Weight_kelo;
+    }
+    public double getWeight() {
+        return getWeight_kelo()+(getWeight_gram()*1000)+(getWeight_ten()/1000);
+    }
+    public void setWeight_kelo(double weight_kelo) {
+        Weight_kelo = weight_kelo;
+    }
+@Bindable
+    public double getWeight_gram() {
+        return Weight_gram;
+    }
+
+    public void setWeight_gram(double weight_gram) {
+        Weight_gram = weight_gram;
+    }
+
+    public Long getLot_ID() {
+        return lot_ID;
+    }
+
+    public void setLot_ID(Long lot_ID) {
+        this.lot_ID = lot_ID;
     }
 
     @Bindable
@@ -101,7 +100,7 @@ public class Checkup_Result extends BaseObservable{
 
     public void setLatitude(double latitude) {
         Latitude = latitude;
-        notifyPropertyChanged(BR.latitude);
+//        notifyPropertyChanged(BR.latitude);
     }
 
 
@@ -112,7 +111,7 @@ public class Checkup_Result extends BaseObservable{
 
     public void setLongitude(double longitude) {
         Longitude = longitude;
-        notifyPropertyChanged(BR.longitude);
+//        notifyPropertyChanged(BR.longitude);
     }
 
     @Bindable
@@ -123,25 +122,25 @@ public class Checkup_Result extends BaseObservable{
 
     public void setCheckup(String checkup) {
         Checkup = checkup;
-        notifyPropertyChanged(BR.checkup);
+//        notifyPropertyChanged(BR.checkup);
 
     }
 
-    public long getCommittee_ID() {
-        return Committee_ID;
-    }
-
-    public void setCommittee_ID(long committee_ID) {
-        Committee_ID = committee_ID;
-    }
-
-    public long getEmployeeId() {
-        return EmployeeId;
-    }
-
-    public void setEmployeeId(long employeeId) {
-        EmployeeId = employeeId;
-    }
+//    public long getCommittee_ID() {
+//        return Committee_ID;
+//    }
+//
+//    public void setCommittee_ID(long committee_ID) {
+//        Committee_ID = committee_ID;
+//    }
+//
+//    public long getEmployeeId() {
+//        return EmployeeId;
+//    }
+//
+//    public void setEmployeeId(long employeeId) {
+//        EmployeeId = employeeId;
+//    }
 
     @Bindable
     public int getResult_injury() {
@@ -150,7 +149,7 @@ public class Checkup_Result extends BaseObservable{
 
     public void setResult_injury(int result_injury) {
         Result_injury = result_injury;
-        notifyPropertyChanged(BR.result_injury);
+//        notifyPropertyChanged(BR.result_injury);
     }
 
     @Bindable
@@ -165,25 +164,25 @@ public class Checkup_Result extends BaseObservable{
 
     public void setlot_ID(long lotID) {
         lot_ID = lotID;
-        notifyPropertyChanged(BR.lot_ID);
+//        notifyPropertyChanged(BR.lot_ID);
     }
 
     public void setCount(int count) {
         Count =count;
-        notifyPropertyChanged(BR.count);
+//        notifyPropertyChanged(BR.count);
     }
 
-    @Bindable
-    public float getWeight() {
-        return Weight;
-    }
-
-
-    public void setWeight(float weight) {
-       Weight =weight;
-      notifyPropertyChanged(BR.weight);
-
-    }
+//    @Bindable
+//    public Double getWeight() {
+//        return Weight;
+//    }
+//
+//
+//    public void setWeight(Double weight) {
+//       Weight =weight;
+////      notifyPropertyChanged(BR.weight);
+//
+//    }
 
     @Bindable
     public int getResult_ID() {
@@ -193,7 +192,7 @@ public class Checkup_Result extends BaseObservable{
 
     public void setResult_ID(int result_ID) {
         Result_ID = result_ID;
-      notifyPropertyChanged(BR.result_ID);
+//      notifyPropertyChanged(BR.result_ID);
 
     }
 
@@ -205,7 +204,7 @@ public class Checkup_Result extends BaseObservable{
 
     public void setComment(String comment) {
         Comment = comment;
-        notifyPropertyChanged(BR.comment);
+//        notifyPropertyChanged(BR.comment);
 
     }
 
@@ -217,7 +216,7 @@ public class Checkup_Result extends BaseObservable{
 
     public void setKingdom_ID(int kingdom_ID) {
         Kingdom_ID = kingdom_ID;
-      notifyPropertyChanged(BR.kingdom_ID);
+//      notifyPropertyChanged(BR.kingdom_ID);
 
     }
 
@@ -229,7 +228,7 @@ public class Checkup_Result extends BaseObservable{
 
     public void setPhylum_ID(int phylum_ID) {
         Phylum_ID = phylum_ID;
-         notifyPropertyChanged(BR.phylum_ID);
+//         notifyPropertyChanged(BR.phylum_ID);
 
     }
 
@@ -240,7 +239,7 @@ public class Checkup_Result extends BaseObservable{
 
   public void setOrder_ID(int order_ID) {
         Order_ID = order_ID;
-     notifyPropertyChanged(BR.order_ID);
+//     notifyPropertyChanged(BR.order_ID);
 
     }
 
@@ -252,6 +251,6 @@ public class Checkup_Result extends BaseObservable{
 
     public void setFamily_ID(int family_ID) {
         Family_ID = family_ID;
-         notifyPropertyChanged(BR.family_ID);
+//         notifyPropertyChanged(BR.family_ID);
     }
 }

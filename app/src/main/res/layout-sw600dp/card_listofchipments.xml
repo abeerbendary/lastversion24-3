@@ -240,7 +240,7 @@
                     android:background="@drawable/btnshadow"
                     android:fontFamily="@font/droid"
                     android:onClick="@{(view)->clicked.CheckRequest_click(view,CheckRequest)}"
-                    android:text="تفاصيل الشحنة"
+                    android:text="@{CheckRequest.isExport > 2 ? @string/cardListresult : @string/cardListdetails}"
                     android:textColor="#fff"
                     android:textSize="20dp"
                     android:textStyle="bold"
