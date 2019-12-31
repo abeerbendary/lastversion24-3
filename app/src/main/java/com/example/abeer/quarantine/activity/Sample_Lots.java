@@ -1,10 +1,17 @@
 package com.example.abeer.quarantine.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -38,7 +45,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class Sample_Lots extends AppCompatActivity {
+public class Sample_Lots extends AppCompatActivity //implements LocationListener
+{
     ActivitySampleLotsBinding ActivitySampleLotsBinding;
     Sample_Result sampleResult;
     DataManger dataManger;
@@ -53,6 +61,8 @@ public class Sample_Lots extends AppCompatActivity {
     Gson gson;
     String ipadrass;
     Public_function public_function;
+    double lat,longg;
+    LocationManager manager;
 
     SharedPreferences sharedPreferences;
     final ListLabName[] listLabs = new ListLabName[1];
@@ -84,10 +94,36 @@ public class Sample_Lots extends AppCompatActivity {
         title_value.setText(sharedPreferences.getString("num_Request",""));
     }
 
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        if (requestCode == 100) {
+//            if (grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+//                try {
+//                    manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (LocationListener) this, null);
+//                    Toast.makeText(this, "phase 2", Toast.LENGTH_SHORT).show();
+//
+//                } catch (SecurityException e) {
+//
+//                    Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }
+//    }
+
     @Override
     protected void onStart() {
         super.onStart();
-
+//        manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            String[] permissions={Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
+//            ActivityCompat.requestPermissions(this,permissions,100);
+//
+//            Toast.makeText(this, "phase 1", Toast.LENGTH_SHORT).show();
+//        }
+//        else{
+//            manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (LocationListener) this,null);
+//            Toast.makeText(this, "sent direct", Toast.LENGTH_SHORT).show();
+//        }
         dataManger.SendVollyRequestJsonObjectGet(this, Request.Method.GET, ipadrass+ApiCall.AnalysisType, new IDataValue() {
             @Override
             public void Success(Object response) {
@@ -150,12 +186,61 @@ public class Sample_Lots extends AppCompatActivity {
 
                     public_function.AlertDialog("برجاء تحديد نوع التحليل ",context,false);
                 }else {
+//                    manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                        // TODO: Consider calling
+//                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+//                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+//                    }
+//                    Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                    if(location==null){
+//                        location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                    }
+                    manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                if (Build.VERSION.SDK_INT >= 23 &&
+//                        ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+//                        ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+//
+//                }
+//                boolean isGPSEnabled = manager
+//                        .isProviderEnabled(LocationManager.PASSIVE_PROVIDER);
+//                if (isGPSEnabled) {
+//                    manager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, (LocationListener) context);
+//                    if (manager != null) {
+//                        location =getLastKnownLocation();
+//                    }
+//                }
+//                if (location == null) {
+//
+//                }
+//                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                    // TODO: Consider calling
+//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+//                }
+//                Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                if(location==null){
+//                    location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                }
+                  Location  location=public_function.getlocation(context,manager);
+                    if(location.getLatitude()==0 &&location.getLongitude()==0){
+                        location.setLatitude(sharedPreferences.getLong("Latitude",0));
+                        location.setLongitude(sharedPreferences.getLong("Longitude",0));
+                    }
+//                    lat = location.getLatitude();
+//                    longg = location.getLongitude();
                     sampleResult.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
                     sampleResult.setLot_ID(ID_lots);
+//                    sampleResult.setLongitude(longg);
+//                    sampleResult.setLatitude(lat);
                     sampleResult.setBarCode(sharedPreferences.getString("BarCode","")+ID_lots);
                     sampleResult.setCommittee_ID(sharedPreferences.getLong("Committee_ID",0));
                     sampleResult.setEmployeeId(sharedPreferences.getLong("EmpId",0));
                     Sample_Result_Model sampleResultModel = new Sample_Result_Model(sampleResult);
+                    sampleResultModel.setLatitude(location.getLatitude());
+                    sampleResultModel.setLongitude(location.getLongitude());
                     String jsonInString = gson.toJson(sampleResultModel);
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("ValuesPopUpLots", jsonInString);
@@ -174,4 +259,33 @@ public class Sample_Lots extends AppCompatActivity {
             }
         });
     }
+
+//    @Override
+//    public void onLocationChanged(Location location) {
+//        lat = location.getLatitude();
+//        longg = location.getLongitude();
+//        ///////////////////////address in arabic/////////////////////////////
+////        Locale loc=new Locale("ar");
+////        Geocoder geocoder = new Geocoder(this,loc);
+////        try {
+////            address = geocoder.getFromLocation(lat, longg, 1).get(0);
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////        }
+//    }
+//
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderEnabled(String provider) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderDisabled(String provider) {
+//
+//    }
 }

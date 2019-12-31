@@ -37,6 +37,7 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.MainActivity_subdetails"
     tools:showIn="@layout/app_bar_main_activity__listofchipment">
+
     <TextView
         android:id="@+id/title_list"
         android:layout_width="wrap_content"
@@ -300,7 +301,7 @@
     <LinearLayout
         android:id="@+id/Linearconstrans"
         android:layout_width="518dp"
-        android:layout_height="243dp"
+        android:layout_height="400dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
@@ -337,37 +338,11 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.419" >
         </android.support.v7.widget.RecyclerView>
-
-        <!--<TextView-->
-            <!--android:id="@+id/detialsconstrans"-->
-            <!--android:layout_width="449dp"-->
-            <!--android:layout_height="170dp"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginLeft="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginRight="8dp"-->
-            <!--android:layout_marginBottom="8dp"-->
-            <!--android:background="#E9F7F5"-->
-            <!--android:fontFamily="@font/droid"-->
-            <!--android:gravity="center"-->
-            <!--android:layoutDirection="rtl"-->
-            <!--android:Textsss="تفاصيل الاشتراطات"-->
-            <!--android:textColor="#009540"-->
-            <!--android:textSize="50sp"-->
-            <!--android:textStyle="bold"-->
-            <!--app:layout_constraintBottom_toTopOf="@+id/linearLayout4"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent"-->
-            <!--tools:ignore="MissingConstraints"-->
-            <!--tools:textSize="30sp" />-->
     </LinearLayout>
     <LinearLayout
         android:id="@+id/Linearlotss"
         android:layout_width="518dp"
-        android:layout_height="243dp"
+        android:layout_height="400dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="10dp"
@@ -403,47 +378,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.419" >
         </android.support.v7.widget.RecyclerView>
-        <!--<TextView-->
-            <!--android:id="@+id/detialslotss"-->
-            <!--android:layout_width="449dp"-->
-            <!--android:layout_height="170dp"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_marginStart="8dp"-->
-            <!--android:layout_marginLeft="8dp"-->
-            <!--android:layout_marginTop="8dp"-->
-            <!--android:layout_marginEnd="8dp"-->
-            <!--android:layout_marginRight="8dp"-->
-            <!--android:layout_marginBottom="8dp"-->
-            <!--android:background="#E9F7F5"-->
-            <!--android:fontFamily="@font/droid"-->
-            <!--android:gravity="center"-->
-            <!--android:layoutDirection="rtl"-->
-            <!--android:Textsss="تفاصيل اللوط"-->
-            <!--android:textColor="#009540"-->
-            <!--android:textSize="50sp"-->
-            <!--android:textStyle="bold"-->
-            <!--app:layout_constraintBottom_toTopOf="@+id/linearLayout4"-->
-            <!--app:layout_constraintEnd_toEndOf="parent"-->
-            <!--app:layout_constraintStart_toStartOf="parent"-->
-            <!--app:layout_constraintTop_toTopOf="parent"-->
-            <!--tools:ignore="MissingConstraints"-->
-            <!--tools:textSize="30sp" />-->
     </LinearLayout>
-    <!--<Button-->
-        <!--android:id="@+id/button2"-->
-        <!--android:layout_width="64dp"-->
-        <!--android:layout_height="42dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginLeft="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginBottom="4dp"-->
-        <!--android:background="@drawable/ic_arrow_forward_black_24dp"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.0"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:layout_constraintVertical_bias="0.987" />-->
 
 </android.support.constraint.ConstraintLayout>
 </layout>

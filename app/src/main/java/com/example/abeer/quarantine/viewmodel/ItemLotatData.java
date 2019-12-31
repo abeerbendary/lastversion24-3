@@ -18,7 +18,17 @@ public class ItemLotatData  extends BaseObservable {
 
 ////////////////////
 
-    public ItemLotatData() {
+
+
+    public ItemLotatData(String lot_Number) {
+        this.Lot_Number=lot_Number;
+        Item_number="";
+        Package_Count="";
+        Net_Weight="";
+        Gross_Weight="";
+        Package_Type_Name="";
+        Package_Material_Name="";
+
     }
 
     public ItemLotatData(ItemLotatData ItemLotatData) {
@@ -94,6 +104,10 @@ public class ItemLotatData  extends BaseObservable {
     }
     @Bindable
     public String getPackage_Material_Name() {
+        if(Package_Material_Name.isEmpty()) {
+
+            Package_Material_Name="لا يوجد لوطات";
+        }
         return Package_Material_Name;
     }
 
@@ -117,4 +131,18 @@ public class ItemLotatData  extends BaseObservable {
     public void setTem_number(String tem_number) {
         this.tem_number = tem_number;
     }
+    @Bindable
+    public String getLotdata() {
+        String data  ;
+        if (Item_number == "" && Package_Count == "" && Net_Weight == "" && Gross_Weight == "" && Package_Type_Name == "" && Package_Material_Name == "") {
+           data=Lot_Number;
+        }else {
+         data="م: " + Item_number + "\n" +"رقم اللوط: "+ Lot_Number + "\n" +"عدد العبوات: "+  Package_Count + "\n" + "الوزن الصافي: "+Net_Weight +
+                    "\n" + "الوزن القائم: "+Gross_Weight + "\n" + "نوع العبوة: "+Package_Type_Name + "\n"
+                    + "نوع مادة العبوة: "+ Package_Material_Name;
+        }
+
+    return data;
+    }
+
 }

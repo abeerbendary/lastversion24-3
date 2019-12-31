@@ -33,6 +33,21 @@ public class ListDetailsCheckRequestNew extends BaseObservable {
     public String Check_Date;
     public String RequestCommittee_Status;
     public String Item_Data;
+    public  int CheckRequest_Id;
+    public  String Attachment_Data;
+    public  String Exporter_Address;
+    public String ImportCompany_Address;
+    public boolean IsAccepted;
+    public int TransitCountry;
+    public boolean IsAcceppted;
+    public String ImportCompany_data;
+    public  String Request_Fees;
+    public  String ExportRequest_xml;
+    public   String AttachmentData_Xml;
+    public     String Item_Data_xml;
+    public   String ImportCompany_xml;
+    public  int IsExport;
+
 
     @Bindable
     public String get$id() {
@@ -60,6 +75,16 @@ public class ListDetailsCheckRequestNew extends BaseObservable {
         Reciever_Name = reciever_Name;
         notifyPropertyChanged(BR.detaill);
     }
+
+    @Bindable
+    public int getIsExport() {
+        return IsExport;
+    }
+
+    public void setIsExport(int isExport) {
+        IsExport = isExport;
+    }
+
     @Bindable
     public String getImportCompany() {
         return ImportCompany;
@@ -295,6 +320,110 @@ public class ListDetailsCheckRequestNew extends BaseObservable {
     public void setItem_Data(String item_Data) {
         Item_Data = item_Data;
         notifyPropertyChanged(BR.detaill);
+    }
+
+    public int getCheckRequest_Id() {
+        return CheckRequest_Id;
+    }
+
+    public void setCheckRequest_Id(int checkRequest_Id) {
+        CheckRequest_Id = checkRequest_Id;
+    }
+
+    public String getAttachment_Data() {
+        return Attachment_Data;
+    }
+
+    public void setAttachment_Data(String attachment_Data) {
+        Attachment_Data = attachment_Data;
+    }
+
+    public String getExporter_Address() {
+        return Exporter_Address;
+    }
+
+    public void setExporter_Address(String exporter_Address) {
+        Exporter_Address = exporter_Address;
+    }
+
+    public String getImportCompany_Address() {
+        return ImportCompany_Address;
+    }
+
+    public void setImportCompany_Address(String importCompany_Address) {
+        ImportCompany_Address = importCompany_Address;
+    }
+
+    public boolean isAccepted() {
+        return IsAccepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        IsAccepted = accepted;
+    }
+
+    public int getTransitCountry() {
+        return TransitCountry;
+    }
+
+    public void setTransitCountry(int transitCountry) {
+        TransitCountry = transitCountry;
+    }
+
+    public boolean isAcceppted() {
+        return IsAcceppted;
+    }
+
+    public void setAcceppted(boolean acceppted) {
+        IsAcceppted = acceppted;
+    }
+
+    public String getImportCompany_data() {
+        return ImportCompany_data;
+    }
+
+    public void setImportCompany_data(String importCompany_data) {
+        ImportCompany_data = importCompany_data;
+    }
+
+    public String getRequest_Fees() {
+        return Request_Fees;
+    }
+
+    public void setRequest_Fees(String request_Fees) {
+        Request_Fees = request_Fees;
+    }
+
+    public String getExportRequest_xml() {
+        return ExportRequest_xml;
+    }
+
+    public void setExportRequest_xml(String exportRequest_xml) {
+        ExportRequest_xml = exportRequest_xml;
+    }
+
+    public String getAttachmentData_Xml() {
+        return AttachmentData_Xml;
+    }
+
+    public void setAttachmentData_Xml(String attachmentData_Xml) {
+        AttachmentData_Xml = attachmentData_Xml;
+    }
+
+    public String getItem_Data_xml() {
+        return Item_Data_xml;
+    }
+
+    public void setItem_Data_xml(String item_Data_xml) {
+        Item_Data_xml = item_Data_xml;
+    }
+
+    public String getImportCompany_xml() {
+        return ImportCompany_xml;
+    }
+
+    public void setImportCompany_xml(String importCompany_xml) {
+        ImportCompany_xml = importCompany_xml;
     }
 
 //

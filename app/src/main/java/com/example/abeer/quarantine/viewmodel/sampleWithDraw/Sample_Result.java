@@ -13,12 +13,12 @@ public class Sample_Result  extends BaseObservable {
     String place;
     double SampleSize;
     double SampleUnderSize;
-    String Address;
+    //String Address;
     Long lot_ID;
     String BarCode;
     String  Comment ;
     Long Committee_ID;
-    double Latitude,Longitude;
+    double Longitude ,Latitude ;
     long EmployeeId;
 
     public Sample_Result() {
@@ -33,7 +33,7 @@ public class Sample_Result  extends BaseObservable {
         this.place = sampleresult.place;
         SampleSize = sampleresult.SampleSize;
         SampleUnderSize = sampleresult.SampleUnderSize;
-        Address =sampleresult.Address;
+    //    Address =sampleresult.Address;
         Latitude=sampleresult.Latitude;
         BarCode=sampleresult.BarCode;
         Comment = sampleresult.Comment;
@@ -55,11 +55,11 @@ public class Sample_Result  extends BaseObservable {
         notifyPropertyChanged(BR.lot_ID);
     }
 
-    @Bindable
-    public String getAddress() {
-        return Address;
-
-    }
+//    @Bindable
+//    public String getAddress() {
+//        return Address;
+//
+//    }
 
     public String getBarCode() {
         return BarCode;
@@ -77,10 +77,10 @@ public class Sample_Result  extends BaseObservable {
         Committee_ID = committee_ID;
     }
 
-    public void setAddress(String address) {
-        Address = address;
-        notifyPropertyChanged(BR.address);
-    }
+//    public void setAddress(String address) {
+//        Address = address;
+//        notifyPropertyChanged(BR.address);
+//    }
 
 
     @Bindable

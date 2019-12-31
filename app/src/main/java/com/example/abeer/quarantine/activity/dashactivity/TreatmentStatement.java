@@ -395,7 +395,7 @@ public class TreatmentStatement extends AppCompatActivity  implements LocationLi
             public void OnClickSaveTreatment(View view, TreatmentResult TreatmentResult) {
 
                 TreatmentResult.setDate(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date()));
-                TreatmentResult.setAddress(""+address.getAddressLine(0));
+           //     TreatmentResult.setAddress(""+address.getAddressLine(0));
                 TreatmentResult.setLatitude(lat);
                 TreatmentResult.setLongitude(longg);
                 String jsonInString = gson.toJson(TreatmentResult);

@@ -52,4 +52,5 @@ dependencies {
     //noinspection GradleCompatible
     implementation 'androidx.multidex:multidex:2.0.0'
     implementation files('libs/java-json.jar')
+    implementation files('libs/sqliteassethelper-2.0.1.jar')
 }

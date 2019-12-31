@@ -59,7 +59,8 @@ public class ApiCall  {
     public static String UrlCommitteeResult="/api/CommitteeResult";
     public static String UrlSampleDataResult="/api/Ex_SampleData";
     public static String UrlTreatmentsResult="/api/RequestTreatments";
-    public static String UrlListOfChipment  ="/api/Export_CheckRequest?";
+    public static String UrlListOfChipment  ="/api/ExportImportActivity?";
+
     public static String UrlSavemultprocess="/api/CommitteeResult?x=1";
 
 }

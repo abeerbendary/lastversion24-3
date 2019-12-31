@@ -22,4 +22,8 @@
     <string name="title_activity_mapforadmin">Map</string>
     <string name="title_activity_main_subdetails">MainActivity_subdetails</string>
     <string name="title_activity_main__confirm">MainActivity_Confirm</string>
+    <string name="Import">تفاصيل الشحنة (وارد)</string>
+    <string name="Export">تفاصيل الشحنة (صادر)</string>
+    <string name="Extra">التفاصيل</string>
+
 </resources>

@@ -74,7 +74,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity_TreatmentStatement extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,LocationListener {
+        implements NavigationView.OnNavigationItemSelectedListener//,LocationListener
+{
     Context context=this;
     ActivityMainTreatmentStatementBinding activityMainTreatmentStatementBinding;
   //  ActivityTreatmentStatementBinding;
@@ -86,7 +87,7 @@ public class MainActivity_TreatmentStatement extends AppCompatActivity
     LinearLayout linear_Layout_btns_Treatment;
    // LinearLayout linear_Layout_num_treatment;
     TextView title_radio_group;
-    double lat,longg;
+ //   double lat,longg;
     LocationManager manager;
     String num_Request;
     boolean checked;
@@ -103,6 +104,7 @@ public class MainActivity_TreatmentStatement extends AppCompatActivity
     JSONArray datasendarray = new JSONArray();
     Address address;
     View viewforbutton;
+    Location location;
     SharedPreferences.Editor prefsEditor;
     JSONObject ValuesPopUpLots;
     JSONObject datas;
@@ -157,18 +159,27 @@ public class MainActivity_TreatmentStatement extends AppCompatActivity
     @Override
     protected void onStart() {
         super.onStart();
-
-        manager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            String[] permissions={Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
-            ActivityCompat.requestPermissions(this,permissions,100);
-
-            Toast.makeText(this, "phase 1", Toast.LENGTH_SHORT).show();
+        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        location = public_function.getlocation(context,manager);
+        if (location.getLongitude()!=0 && location.getLatitude()!=0)
+        {
+            prefsEditor = sharedPreferences.edit();
+            prefsEditor.putLong("Latitude", (long) location.getLatitude());
+            prefsEditor.putLong("Longitude", (long) location.getLongitude());
+            prefsEditor.apply();
+            Toast.makeText(context,""+location.getLatitude()+ location.getLongitude() , Toast.LENGTH_SHORT).show();
         }
-        else{
-            manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (LocationListener) this,null);
-            Toast.makeText(this, "sent direct", Toast.LENGTH_SHORT).show();
-        }
+//        manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            String[] permissions={Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
+//            ActivityCompat.requestPermissions(this,permissions,100);
+//
+//            Toast.makeText(this, "phase 1", Toast.LENGTH_SHORT).show();
+//        }
+//        else{
+//            manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (LocationListener) this,null);
+//            Toast.makeText(this, "sent direct", Toast.LENGTH_SHORT).show();
+//        }
     }
 
 
@@ -187,13 +198,11 @@ public class MainActivity_TreatmentStatement extends AppCompatActivity
                     e.printStackTrace();
                 }
                 if (datas != null) {
-                    if(datasendarray!=null){
-                        datasendarray.put(datas);
-                    }
-                    else {
+                    if(datasendarray==null){
+
                         datasendarray=new JSONArray();
-                        datasendarray.put(datas);
                     }
+                    datasendarray.put(datas);
                 }
                 Toast.makeText(this, result, Toast.LENGTH_SHORT).show();
 //                ValuesPopUpLots =new JSONObject();
@@ -405,13 +414,17 @@ public class MainActivity_TreatmentStatement extends AppCompatActivity
 //                finish();
                 try {
                 prefsEditor=sharedPreferences.edit();
-                prefsEditor.putInt("treatment_data",sharedPreferences.getInt("treatment_data",-2)-1);
-                prefsEditor.putInt("totalprocess",sharedPreferences.getInt("totalprocess",-2)-1);
+                    prefsEditor.putInt("treatment_data",sharedPreferences.getInt("treatment_data",-2)-1);
+                    prefsEditor.putInt("totalprocess",sharedPreferences.getInt("totalprocess",-2)-1);
                     prefsEditor.apply();
                     String Treatment_Dto = sharedPreferences.getString("Treatment_Dto","");
                     if(Treatment_Dto==""){
                         prefsEditor=sharedPreferences.edit();
-                        prefsEditor.putString("Treatment_Dto",String.valueOf(datasendarray));
+                        if(datasendarray !=null) {
+                            prefsEditor.putString("Treatment_Dto", String.valueOf(datasendarray));
+                        }else {
+                            Toast.makeText(context, "nulllottreatment", Toast.LENGTH_LONG).show();
+                        }
                         prefsEditor.apply();
 
                     }else {
@@ -447,20 +460,17 @@ public class MainActivity_TreatmentStatement extends AppCompatActivity
 
             @Override
             public void OnClickcancel(View view, TreatmentResult TreatmentResult) {
-                linear_Layout_Treatment_full.setVisibility(View.GONE);
-                linear_Layout_btns_Treatment.setVisibility(View.GONE);
-                title_radio_group.setText("بيان المعالجة ");
                 datasendarray=null;
-                //  linear_Layout_num_treatment.setVisibility(View.GONE);
-                radioGroup_Treatment.setVisibility(View.VISIBLE);
-                linear_Layout_Treatment_part.setVisibility(View.GONE);
+                finish();
+                startActivity(getIntent());
             }
         });
 
 
     }
 
-    private void Treatment_full() {
+    private void Treatment_full()
+    {
        // dataManger.SendVollyRequestJsonObjectGet(this, Request.Method.GET, ApiCall.UrlTreatmentType, new IDataValue() {
 
         dataManger.SendVollyRequestJsonObjectGet(this, Request.Method.GET,ipadrass+ApiCall.UrlTreatmentType, new IDataValue() {
@@ -517,7 +527,6 @@ public class MainActivity_TreatmentStatement extends AppCompatActivity
 
                     }
                 });
-               // dataManger.SendVollyRequestJsonObjectGet(context, Request.Method.GET, ApiCall.UrlTreatmentMaterial + ID_itemSelected, new IDataValue() {
 
                 dataManger.SendVollyRequestJsonObjectGet(context, Request.Method.GET, ipadrass+ApiCall.UrlTreatmentMaterial + ID_itemSelected, new IDataValue() {
                     @Override
@@ -621,37 +630,60 @@ public class MainActivity_TreatmentStatement extends AppCompatActivity
                 }
                  else{
                 ///////////////////////
+//                    manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                        // TODO: Consider calling
+//                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+//                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+//                    }
+//                    Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                    if(location==null){
+//                        location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                    }
+                    manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                if (Build.VERSION.SDK_INT >= 23 &&
+//                        ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+//                        ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+//
+//                }
+//                boolean isGPSEnabled = manager
+//                        .isProviderEnabled(LocationManager.PASSIVE_PROVIDER);
+//                if (isGPSEnabled) {
+//                    manager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, (LocationListener) context);
+//                    if (manager != null) {
+//                        location =getLastKnownLocation();
+//                    }
+//                }
+//                if (location == null) {
+//
+//                }
+//                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                    // TODO: Consider calling
+//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+//                }
+//                Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                if(location==null){
+//                    location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                }
+               location=public_function.getlocation(context,manager);
+                    if(location.getLongitude()==0 && location.getLatitude()==0){
+                        location.setLatitude(sharedPreferences.getLong("Latitude",0));
+                        location.setLongitude(sharedPreferences.getLong("Longitude",0));
+                    }
                      TreatmentResult.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
-//                   TreatmentResult.setAddress(""+address.getAddressLine(0));
-//                   TreatmentResult.setLatitude(lat);
-//                   TreatmentResult.setLongitude(longg);
                      TreatmentResult.setCommittee_ID(sharedPreferences.getLong("Committee_ID", 0));
                      TreatmentResult.setEmployeeId(sharedPreferences.getLong("EmpId", 0));
                      TreatmentResult.setLot_ID((long) 0);
+                     TreatmentResult.setLatitude(location.getLatitude());
+                     TreatmentResult.setLongitude(location.getLongitude());
                      treatmentResultModel = new Treatment_Result_Model(TreatmentResult);
                      treatmentResultModel.setIsLot(18);
-//                if(sampleResult.getAnalysisType_ID()==0) {
-//
-//                    public_function.AlertDialog("برجاء تحديد نوع التحليل ",context);
-//                }
-//                else {
                      final String json = new Gson().toJson(treatmentResultModel);
-                    //  final String json = "{\"CommitteeResultType_ID\":2,\"Committee_ID\":40010,\"Date\":\"2019-08-19 09:04:12\",\"EmployeeId\":30580,\"Ex_RequestLotData_ID\":0,\"ID\":0,\"Item_ID\":1,\"Item__OrderID\":65,\"QuantitySize\":21,\"Result_injuryID\":6,\"Weight\":3}";
                     try {
                         JSONObject datasend = new JSONObject(json);
-//////////////
-//                        if(datasendarray!=null){
-//                            datasendarray.put(datasend);
-//                        }
-//                        else {
-//                            datasendarray=new JSONArray();
-//                            datasendarray.put(datasend);
-//                        }
-                       // public_function.senddataonlinetoserver(datasendarray, context, ipadrass + ApiCall.UrlTreatmentsResult);
-                        //////////////
-//                        if(datasendarray==null) {
-//                          datasendarray=new JSONArray();
-//                        }
                         prefsEditor=sharedPreferences.edit();
                         prefsEditor.putInt("treatment_data",sharedPreferences.getInt("treatment_data",-2)-1);
                         prefsEditor.putInt("totalprocess",sharedPreferences.getInt("totalprocess",-2)-1);
@@ -680,97 +712,38 @@ public class MainActivity_TreatmentStatement extends AppCompatActivity
                             jsonObject.put("SampleDto", sharedPreferences.getString("SampleDto",""));
                             jsonObject.put("Treatment_Dto", sharedPreferences.getString("Treatment_Dto",""));
                             public_function.senddataonlinetoserverformoreprocess(jsonObject,context,ipadrass + ApiCall.UrlSavemultprocess);
-
+                            //////fabrc code comfirm /////////
+                            prefsEditor = sharedPreferences.edit();
+                            prefsEditor.putString("confirmresult", String.valueOf(jsonObject));
+                            prefsEditor.apply();
+                            ///////////////////
+                            prefsEditor.clear();
                         }else {
 
                             public_function.AlertDialog("برجاء اتمام العمليات ",context,true);
 
                         }
 
-//                        if(Committee_Type_Id==1 && treatmentprocess!=0 ) {
-//
-//                            String Treatment_Dto=sharedPreferences.getString("Treatment_Dto","");
-//                            JSONArray Treatment_DtoArray=new JSONArray(Treatment_Dto);
-//                            Treatment_DtoArray.put(datasend);
-//                            prefsEditor = sharedPreferences.edit();
-//                            prefsEditor.putString("Treatment_Dto", String.valueOf(Treatment_DtoArray));
-//                            prefsEditor.putInt("treatment_data",treatmentprocess);
-//                            prefsEditor.apply();
-//                            prefsEditor.commit();
-//                            public_function.AlertDialog("برجاء اتمام العمليات ",context,true);
-//
-//                       } else if(Committee_Type_Id==6&&treatmentprocess==0){
-//
-//                        }
-//                        if(treatmentprocess==0 && sampleprocess==0){
-//                           JSONObject jsonObject=new JSONObject();
-//                           String Committe_Dto=sharedPreferences.getString("Committe_Dto","");
-//                           String SampleDto=sharedPreferences.getString("SampleDto","");
-//                           String Treatment_Dto=sharedPreferences.getString("Treatment_Dto","");
-//                           jsonObject.put("Treatment_Dto",Treatment_Dto);
-//                           jsonObject.put("Committe_Dto",Committe_Dto);
-//                           jsonObject.put("SampleDto",SampleDto);
-//                           public_function.senddataonlinetoserverformoreprocess(jsonObject,context,ipadrass+ ApiCall.UrlSavemultprocess);
-//
-//                       }
 
-//                        else if(treatmentprocess>1&&Committee_Type_Id==1&&counttreatmentprocess!=0) {
-//                            Intent intent=new Intent(context,MainActivity_TreatmentStatement.class);
-//                         //   intent.putExtra("EX_Request",(Serializable)datasendarray);
-//                            prefsEditor = sharedPreferences.edit();
-//                            prefsEditor.putInt("counttreatmentprocess",treatmentprocess-1);
-//                            prefsEditor.commit();
-//                            startActivityForResult(intent,context,datasend);
-//                        }else if(treatmentprocess>1&&Committee_Type_Id==1&&counttreatmentprocess==0){
-//                         //   public_function.senddataonlinetoserver(datasendarray, context, ipadrass + ApiCall.UrlCommitteeResult);
-//                            text.setText(datasendarray.toString());
-//
-//                            //  public_function.senddataonlinetoserverformoreprocess();
-//                        }
-//                        else if(Committee_Type_Id==1&&treatmentprocess!=0&&sampleprocess==0&&counttreatmentprocess==-1){
-//                            //treanment activity we need alert
-//                     //      public_function
-//                            //    intent.putExtra()
-//
-//                        }
-//                         else  if(treatmentprocess==0&&sampleprocess!=0){
-//                            //sample activity we need alert
-//                            Intent intent=new Intent(context,MainActivity_SampleWithDraw.class);
-//                            intent.putExtra("EX_Request", (Serializable) datasendarray);
-//                            startActivity(intent);
-//                        }
-//                        else if( treatmentprocess!=0 && sampleprocess!=0 ){
-//                            //
-//                            Intent intent=new Intent(context,MainActivity_TreatmentStatement.class);
-//                            intent.putExtra("EX_Request", (Serializable) datasendarray);
-//                            startActivity(intent);
-//                        }
                         datasendarray = null;
 
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                //    String jsonInString = gson.toJson(TreatmentResult);
-                  //  Textsss.setText(jsonInString);
                 }
-           // }
 
             @Override
             public void OnClickcancel(View view, TreatmentResult TreatmentResult) {
-                linear_Layout_Treatment_full.setVisibility(View.GONE);
-                linear_Layout_btns_Treatment.setVisibility(View.GONE);
-                title_radio_group.setText("بيان المعالجة ");
                 datasendarray=null;
-                radioGroup_Treatment.setVisibility(View.VISIBLE);
-                linear_Layout_Treatment_part.setVisibility(View.GONE);
+                finish();
+                startActivity(getIntent());
             }
         });
     }
 
     private void startActivityForResult(Intent intent, Context context,JSONObject jsonObject ) {
         if(context instanceof MainActivity_TreatmentStatement){
-           // treatmentalldata.put(jsonObject);
             datasendarray.put(jsonObject);
         }
     }
@@ -789,7 +762,6 @@ public class MainActivity_TreatmentStatement extends AppCompatActivity
                     linear_treatment_place.setVisibility(View.VISIBLE);
                 spinner_place.setVisibility(View.VISIBLE);
                 edittext_place.setVisibility(View.INVISIBLE);
-               // dataManger.SendVollyRequestJsonObjectGet(context, Request.Method.GET, ApiCall.UrlTreatmentPlace, new IDataValue() {
                 dataManger.SendVollyRequestJsonObjectGet(context, Request.Method.GET,ipadrass+ApiCall.UrlTreatmentPlace, new IDataValue() {
                     @Override
                     public void Success(Object response) {
@@ -819,32 +791,33 @@ public class MainActivity_TreatmentStatement extends AppCompatActivity
         }
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        lat = location.getLatitude();
-        longg = location.getLongitude();
-        Locale loc=new Locale("ar");
-        Geocoder geocoder = new Geocoder(this,loc);
-        try {
-            address = geocoder.getFromLocation(lat, longg, 1).get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
+//    @Override
+//    public void onLocationChanged(Location location) {
+//        lat = location.getLatitude();
+//        longg = location.getLongitude();
+//        ///////////////////////address in arabic/////////////////////////////
+////        Locale loc=new Locale("ar");
+////        Geocoder geocoder = new Geocoder(this,loc);
+////        try {
+////            address = geocoder.getFromLocation(lat, longg, 1).get(0);
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////        }
+//    }
+//
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderEnabled(String provider) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderDisabled(String provider) {
+//
+//    }
  }
 

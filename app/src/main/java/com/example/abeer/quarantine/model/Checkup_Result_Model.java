@@ -9,73 +9,7 @@ import org.w3c.dom.Text;
 import java.util.Date;
 
 public class Checkup_Result_Model {
-//    String  Checkup;
-//    int Count;
-//    int Weight;
-//    int Result_ID;
-//    Text Comment;
-//    int Kingdom_ID;
-//    int Phylum_ID;
-//    int Order_ID;
-//    int Lot_Num;
-//    int Family_ID;
-//    int Final_result;
-//    int Result_injury;
-//Context context;
-//
-//
-//    public  Checkup_Result(Context context)
-//    {
-//        this.context=context;
-//    }
-//
-//    public Checkup_Result(String checkup, int count, int weight,
-//                               int result_ID, Text comment, int kingdom_ID, int phylum_ID, int order_ID,int lot_num,
-//                               int family_ID, int final_result,int result_injury) {
-//        Checkup = checkup;
-//        Count = count;
-//        Weight = weight;
-//        Result_ID = result_ID;
-//        Comment = comment;
-//        Kingdom_ID = kingdom_ID;
-//        Phylum_ID = phylum_ID;
-//        Order_ID = order_ID;
-//        Order_ID = lot_num;
-//        Family_ID = family_ID;
-//        Final_result = final_result;
-//        Result_injury=result_injury;
-//    }
-//
-//    public Checkup_Result(Checkup_Result Checkup_Result) {
-//
-//        Checkup = Checkup_Result.Checkup;
-//        Count = Checkup_Result.Count;
-//        Weight = Checkup_Result.Weight;
-//        Result_ID = Checkup_Result.Result_ID;
-//        Comment = Checkup_Result.Comment;
-//        Kingdom_ID = Checkup_Result.Kingdom_ID;
-//        Phylum_ID = Checkup_Result.Phylum_ID;
-//        Order_ID = Checkup_Result.Order_ID;
-//        Lot_Num = Checkup_Result.Lot_Num;
-//        Family_ID = Checkup_Result.Family_ID;
-//        Final_result = Checkup_Result.Final_result;
-//        Result_injury=Checkup_Result.Result_injury;
-//
-//    }
 
-//nbmnbm
-//    {
-//        "ID": 0,
-//            "Ex_RequestLotData_ID": null,
-//            "Committee_ID": 40011,
-//            "EmployeeId": 18244,
-//            "CommitteeResultType_ID":4,
-//            "Weight": 5.5,
-//            "QuantitySize": 0,
-//            "Notes":"note-----",
-//            "Item_ID": 5,
-//            "Item__OrderID": 65
-//    }
 
     long ID;
     long Ex_RequestLotData_ID;
@@ -89,7 +23,7 @@ public class Checkup_Result_Model {
     int Item__OrderID;
     byte Result_injuryID;
     String Date;
-
+    double Longitude ,Latitude ;
     public Checkup_Result_Model(Checkup_Result_Model checkupResult) {
         this.ID = checkupResult.ID;
         this.Ex_RequestLotData_ID = checkupResult.Ex_RequestLotData_ID;
@@ -103,18 +37,22 @@ public class Checkup_Result_Model {
         this.Item__OrderID = checkupResult.Item__OrderID;
         this.Date=checkupResult.Date;
         this.Result_injuryID=checkupResult.Result_injuryID;
+        this.Latitude=checkupResult.Latitude;
+        this.Longitude=checkupResult.Longitude;
 
     }
 
     public Checkup_Result_Model(Checkup_Result checkupResult) {
         this.ID=0;
         this.Ex_RequestLotData_ID =checkupResult.getlot_ID();
-        this.Committee_ID = checkupResult.getCommittee_ID();
-        this.EmployeeId = checkupResult.getEmployeeId();
+//        this.Committee_ID = checkupResult.getCommittee_ID();
+//        this.EmployeeId = checkupResult.getEmployeeId();
         this.CommitteeResultType_ID = checkupResult.getResult_ID();
         this.Weight = checkupResult.getWeight();
         this.QuantitySize = checkupResult.getCount();
         this.Notes = checkupResult.getComment();
+        this.Latitude=checkupResult.getLatitude();
+        this.Longitude=checkupResult.getLongitude();
         if(checkupResult.getFamily_ID()!= 0)
         {
             this.Item_ID = checkupResult.getFamily_ID();
@@ -142,6 +80,22 @@ public class Checkup_Result_Model {
         }
         this.Result_injuryID= (byte) checkupResult.getResult_injury();
         this.Date=checkupResult.getCheckup();
+    }
+
+    public double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        Longitude = longitude;
     }
 
     public long getID() {

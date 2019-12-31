@@ -174,9 +174,8 @@
                 android:text=""
                 android:textColor="#1f90a5"
                 android:textDirection="rtl"
-                android:textSize="40sp"
                 android:textStyle="bold"
-                tools:textSize="30sp" />
+                tools:textSize="20sp" />
 
         </LinearLayout>
         <!--<ScrollView-->

@@ -14,6 +14,7 @@ public class ItemData extends BaseObservable {
     public String  ItemStatus;
     public String ItemPurpose;
     public String Item_ShortName;
+    public int IsExport;
     public ItemData(){
 
     }
@@ -26,8 +27,18 @@ public class ItemData extends BaseObservable {
      this.ItemPurpose  = itemData.ItemPurpose;
     this.ItemStatus =itemData.ItemStatus;
     this.Item_ShortName=itemData.Item_ShortName;
+    this.IsExport=itemData.IsExport;
     notifyPropertyChanged(BR.itemm);
     }
+@Bindable
+    public int getIsExport() {
+        return IsExport;
+    }
+
+    public void setIsExport(int isExport) {
+        IsExport = isExport;
+    }
+
     @Bindable
     public String getItem_ShortName() {
         return Item_ShortName;

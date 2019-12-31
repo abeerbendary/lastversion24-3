@@ -8,8 +8,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.location.Address;
+import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,7 +51,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class Treatment_Lots extends AppCompatActivity {
+public class Treatment_Lots extends AppCompatActivity  //implements LocationListener
+{
 
     ActivityTreatmentLotsBinding ActivityTreatmentLotsBinding;
     DataManger dataManger;
@@ -63,8 +66,10 @@ public class Treatment_Lots extends AppCompatActivity {
     String ID_itemSelected;
     Gson gson;
     String data;
+    LocationManager manager;
     SharedPreferences sharedPreferences;
     String ipadrass;
+    double lat,longg;
     Public_function public_function;
     final ListTreatmentType[] ListTreatmentType = new ListTreatmentType[1];
     final ListTreatmentCompany[] ListTreatmentCompany = new ListTreatmentCompany[1];
@@ -100,10 +105,34 @@ public class Treatment_Lots extends AppCompatActivity {
         //  setContentView(R.layout.activity_treatment__lots);
     }
 
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        if (requestCode == 100) {
+//            if (grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+//                try {
+//                    manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, this, null);
+//                    Toast.makeText(this, "phase 2", Toast.LENGTH_SHORT).show();
+//
+//                } catch (SecurityException e) {
+//
+//                    Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        }
+//    }
+
     @Override
     protected void onStart() {
         super.onStart();
-
+//        manager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+//            ActivityCompat.requestPermissions(this, permissions, 100);
+//
+//            Toast.makeText(this, "phase 1", Toast.LENGTH_SHORT).show();
+//        } else {
+//            manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (LocationListener) this, null);
+//            Toast.makeText(this, "sent direct", Toast.LENGTH_SHORT).show();
+//        }
         dataManger.SendVollyRequestJsonObjectGet(this, Request.Method.GET, ipadrass+ApiCall.UrlTreatmentType, new IDataValue() {
             @Override
             public void Success(Object response) {
@@ -258,16 +287,32 @@ public class Treatment_Lots extends AppCompatActivity {
                     public_function.AlertDialog(" برجاء تحديد كمية المادة المستخدمة",context,false);
 
                 }else {
+//                    manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                    if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                        // TODO: Consider calling
+//                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+//                        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+//                    }
+//                    Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                    if(location==null){
+//                        location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                    }
+                    manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+                   Location location = public_function.getlocation(context,manager);
+                    if(location.getLatitude()==0&&location.getLongitude()==0){
+                        location.setLatitude(sharedPreferences.getLong("Latitude",0));
+                        location.setLongitude(sharedPreferences.getLong("Longitude",0));
+                    }
+
                     TreatmentResult.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
-//                TreatmentResult.setAddress(""+address.getAddressLine(0));
-//                TreatmentResult.setLatitude(lat);
-//                TreatmentResult.setLongitude(longg);
+                    TreatmentResult.setLatitude(location.getLatitude());
+                    TreatmentResult.setLongitude(location.getLongitude());
                     TreatmentResult.setCommittee_ID(sharedPreferences.getLong("Committee_ID", 0));
                     TreatmentResult.setEmployeeId(sharedPreferences.getLong("EmpId", 0));
                     TreatmentResult.setLot_ID(ID_lots);
                     Treatment_Result_Model treatmentResultModel = new Treatment_Result_Model(TreatmentResult);
                     String jsonInString = gson.toJson(treatmentResultModel);
-                    //   Textsss.setText(jsonInString);
                     Intent resultIntent = new Intent();
                     resultIntent.putExtra("ValuesPopUpLots", jsonInString);
                     setResult(Activity.RESULT_OK, resultIntent);
@@ -328,5 +373,34 @@ public class Treatment_Lots extends AppCompatActivity {
                 spinner_place.setVisibility(View.GONE);
         }
     }
-    }
+
+//    @Override
+//    public void onLocationChanged(Location location) {
+//        lat = location.getLatitude();
+//        longg = location.getLongitude();
+//        ///////////////////////address in arabic/////////////////////////////
+////        Locale loc=new Locale("ar");
+////        Geocoder geocoder = new Geocoder(this,loc);
+////        try {
+////            address = geocoder.getFromLocation(lat, longg, 1).get(0);
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////        }
+//    }
+//
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderEnabled(String provider) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderDisabled(String provider) {
+//
+//    }
+}
 

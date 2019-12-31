@@ -30,6 +30,8 @@
             name="Adapter7"
             type="com.example.abeer.quarantine.adapter.AdapterLotat">
         </variable>
+
+
     </data>
 
 <android.support.constraint.ConstraintLayout
@@ -338,7 +340,7 @@
             <!--android:fontFamily="@font/droid"-->
             <!--android:gravity="center"-->
             <!--android:layoutDirection="rtl"-->
-            <!--android:Textsss="تفاصيل الاشتراطات"-->
+            <!--android:text="تفاصيل الاشتراطات"-->
             <!--android:textColor="#009540"-->
             <!--android:textSize="50sp"-->
             <!--android:textStyle="bold"-->
@@ -404,7 +406,7 @@
             <!--android:fontFamily="@font/droid"-->
             <!--android:gravity="center"-->
             <!--android:layoutDirection="rtl"-->
-            <!--android:Textsss="تفاصيل اللوط"-->
+            <!--android:text="تفاصيل اللوط"-->
             <!--android:textColor="#009540"-->
             <!--android:textSize="50sp"-->
             <!--android:textStyle="bold"-->

@@ -303,7 +303,7 @@ public class SampleWithDraw extends AppCompatActivity   implements LocationListe
             @Override
             public void OnClickSaveLots(View view, Sample_Result sampleResult) {
               sampleResult.setDate(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date()));
-                sampleResult.setAddress(""+address.getAddressLine(0));
+           //     sampleResult.setAddress(""+address.getAddressLine(0));
                 sampleResult.setLatitude(lat);
                 sampleResult.setLongitude(longg);
                 String jsonInString = gson.toJson(sampleResult);

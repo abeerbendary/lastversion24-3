@@ -25,6 +25,7 @@
             android:layout_width="450dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="#E9F7F5"
             android:layoutDirection="rtl">
             <TextView
                 android:id="@+id/title"

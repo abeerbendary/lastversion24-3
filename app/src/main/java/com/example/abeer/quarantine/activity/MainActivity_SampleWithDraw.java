@@ -69,7 +69,8 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity_SampleWithDraw extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,LocationListener {
+        implements NavigationView.OnNavigationItemSelectedListener//,LocationListener
+{
 Context context=this;
     String num_Request;
 ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
@@ -81,7 +82,6 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
     LinearLayout linear_Layout_Sample_part;
     LinearLayout linear_Layout_btns_Sample;
     LinearLayout linear_Layout_num_talab;
- //   LinearLayout linear_Layout_num_sample;
     LocationManager manager;
     TextView title_radio_group;
     String data;
@@ -93,13 +93,12 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
     final ListAnalysis[] listAnalysis = new ListAnalysis[1];
     final List<SampleData_LOts>[] SampleData_LOts = new List[1];
     Address address;
-    double lat,longg;
+   // double lat,longg;
     JSONObject datas;
     View viewforbutton;
-    JSONObject ValuesPopUpLots ;
     TextView value_sample;
-    String EX_Request;
-    TextView text;
+    Location location;
+   // TextView text;
     SharedPreferences sharedPreferences;
     JSONArray datasendarray = new JSONArray();
     Public_function public_function;
@@ -113,7 +112,7 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
         dataManger = new DataManger(this);
         sampleResult=new Sample_Result();
         radioGroup_Samples  = findViewById(R.id.radioGroup_Samples);
-        text=findViewById(R.id.txt);
+       // text=findViewById(R.id.txt);
         linear_Layout_Sample_full =  findViewById(R.id.linear_Layout_Sample_full);
         linear_Layout_Sample_part = findViewById(R.id.linear_Layout_Sample_part);
         linear_Layout_btns_Sample =findViewById(R.id.btns_Sample);
@@ -141,35 +140,19 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
         navigationView.setItemIconTintList(null);
         navigationView.setNavigationItemSelectedListener(this);
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == 100) {
-            if (grantResults != null && grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                try {
-                    manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (LocationListener) this, null);
-                    Toast.makeText(this, "phase 2", Toast.LENGTH_SHORT).show();
-
-                } catch (SecurityException e) {
-
-                    Toast.makeText(this, "error", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
-    }
 
     @Override
     protected void onStart() {
         super.onStart();
-        manager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            String[] permissions={Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION};
-            ActivityCompat.requestPermissions(this,permissions,100);
-
-            Toast.makeText(this, "phase 1", Toast.LENGTH_SHORT).show();
-        }
-        else{
-            manager.requestSingleUpdate(LocationManager.NETWORK_PROVIDER, (LocationListener) this,null);
-            Toast.makeText(this, "sent direct", Toast.LENGTH_SHORT).show();
+        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        location = public_function.getlocation(context,manager);
+        if (location.getLongitude()!=0 && location.getLatitude()!=0)
+        {
+            prefsEditor = sharedPreferences.edit();
+            prefsEditor.putLong("Latitude", (long) location.getLatitude());
+            prefsEditor.putLong("Longitude", (long) location.getLongitude());
+            prefsEditor.apply();
+            Toast.makeText(context,""+location.getLatitude()+ location.getLongitude() , Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -197,7 +180,10 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
                                  datasendarray.put(datas);
                              }
                     try {
-                        barcod_cards.add(new Barcod_Card(num_Request,datas.getString("ID"),datas.getString("Sample_BarCode")));
+                        barcod_cards.add(new Barcod_Card(num_Request,datas.getString("LotData_ID"),datas.getString("Sample_BarCode")));
+                       // barcod_cards.add(new Barcod_Card(num_Request,"0",sampleResult.getBarCode()+"0"));
+
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -256,9 +242,7 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
                 ID_itemSelected = String.valueOf(listAnalysis[0].obj.get(pos).Value);
                 sample_result.setAnalysisType_ID(Short.parseShort(ID_itemSelected));
                 Toast.makeText(MainActivity_SampleWithDraw.this, ""+ID_itemSelected, Toast.LENGTH_SHORT).show();
-
                // dataManger.SendVollyRequestJsonObjectGet(MainActivity_SampleWithDraw.this, Request.Method.GET, ApiCall.UrlLabName+ID_itemSelected, new IDataValue() {
-
                 dataManger.SendVollyRequestJsonObjectGet(MainActivity_SampleWithDraw.this, Request.Method.GET, ipadrass+ApiCall.UrlLabName+ID_itemSelected, new IDataValue() {
                     @Override
                     public void Success(Object response) {
@@ -284,16 +268,29 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
 
             @Override
             public void OnClickSaveLots(View view, Sample_Result sampleResult) {
+              //  manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                    // TODO: Consider calling
+//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+//                    ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+//                }
+//                Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//                if(location==null){
+//                    location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//                }
+////                lat = ;
+////                longg = ;
 
-//                sampleResult.setDate(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date()));
-//                sampleResult.setAddress(""+address.getAddressLine(0));
-//                sampleResult.setLatitude(lat);
-//                sampleResult.setLongitude(longg);
-//                String jsonInString = gson.toJson(sampleResult);
-//                Textsss.setText(jsonInString);
-
+                manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                location=public_function.getlocation(context,manager);
+                if(location.getLatitude()==0 && location.getLongitude()==0){
+                    location.setLatitude(sharedPreferences.getLong("Latitude",0));
+                    location.setLongitude(sharedPreferences.getLong("Longitude",0));
+                }
                 sampleResult.setDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date()));
                 sampleResult.setLot_ID((long) 0);
+                sampleResult.setLatitude(location.getLatitude());
+                sampleResult.setLongitude(location.getLongitude());
                 sampleResult.setBarCode(sharedPreferences.getString("BarCode","")+0);
                 sampleResult.setCommittee_ID(sharedPreferences.getLong("Committee_ID",0));
                 sampleResult.setEmployeeId(sharedPreferences.getLong("EmpId",0));
@@ -304,15 +301,9 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
                 }
                 else {
                     final String json = new Gson().toJson(sampleResultModel);
-                    //  final String json = "{\"CommitteeResultType_ID\":2,\"Committee_ID\":40010,\"Date\":\"2019-08-19 09:04:12\",\"EmployeeId\":30580,\"Ex_RequestLotData_ID\":0,\"ID\":0,\"Item_ID\":1,\"Item__OrderID\":65,\"QuantitySize\":21,\"Result_injuryID\":6,\"Weight\":3}";
                     try {
                         JSONObject datasend = new JSONObject(json);
-//                        if(datasendarray==null){
-//                            datasendarray=new JSONArray();
-//                        }
-                        //public_function.senddataonlinetoserver(datasendarray,context, ApiCall.UrlCommitteeResult,findViewById(R.id.btns));
                         barcod_cards.add(new Barcod_Card(num_Request,"0",sampleResult.getBarCode()+"0"));
-                       // public_function.senddataonlinetoserver(datasendarray,context, ipadrass+ApiCall.UrlSampleDataResult,barcod_cards);
                         prefsEditor=sharedPreferences.edit();
                         prefsEditor.putInt("sample_data",sharedPreferences.getInt("sample_data",-2)-1);
                         prefsEditor.putInt("totalprocess",sharedPreferences.getInt("totalprocess",-2)-1);
@@ -340,7 +331,11 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
                             jsonObject.put("SampleDto", sharedPreferences.getString("SampleDto",""));
                             jsonObject.put("Treatment_Dto", sharedPreferences.getString("Treatment_Dto",""));
                             public_function.senddataonlinetoserverformoreprocess(jsonObject,context,ipadrass + ApiCall.UrlSavemultprocess,barcod_cards);
-
+                            //////fabrc code comfirm /////////
+//                            prefsEditor = sharedPreferences.edit();
+//                            prefsEditor.putString("confirmresult", String.valueOf(jsonObject));
+//                            prefsEditor.apply();
+                            ///////////////////
                         }else {
                             public_function.showbarcodelist(context,barcod_cards);
                             public_function.AlertDialog("برجاء اتمام العمليات ",context,true);
@@ -357,181 +352,15 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
 
             @Override
             public void OnClickcancel(View view, Sample_Result sampleResult) {
-
-                linear_Layout_Sample_full.setVisibility(View.GONE);
-                linear_Layout_btns_Sample.setVisibility(View.GONE);
-                title_radio_group.setText("سحب العينات ");
                 datasendarray=null;
-                linear_Layout_num_talab.setVisibility(View.GONE);
-                radioGroup_Samples.setVisibility(View.VISIBLE);
-                linear_Layout_Sample_part.setVisibility(View.GONE);
-
+                finish();
+                startActivity(getIntent());
             }
         });
-//        DataManger.SendVollyRequestJsonObjectGet(context, Request.Method.GET, ApiCall.UrlCommitteeResultType, new IDataValue() {
-//            @Override
-//            public void Success(Object response) {
-//                data=response.toString();
-//                gson=new Gson();
-//                CommitteeResultTypeLIST[0]=gson.fromJson(data, CommitteeResultType.class);
-//                activityExRequestCommitteeResultBinding.setCommitteeResultType(CommitteeResultTypeLIST[0]);
-//            }
-//
-//            @Override
-//            public void Error(VolleyError error) {
-//
-//            }
-//        });
-//
-//        activityExRequestCommitteeResultBinding.setCheckUpResult(checkup_result);
-//
-//        activityExRequestCommitteeResultBinding.setPresenter(new IPresenter() {
-//
-//            @Override
-//            public void OnItemSelectedSpinner_CommitteeResultType(AdapterView<?> parent, View view, int pos, long id, Checkup_Result CheckUpResult) {
-//                if(pos!=0){
-//                    IDItemSelect = String.valueOf(CommitteeResultTypeLIST[0].obj.get(pos).Value);
-//                    CheckUpResult.setResult_ID(Integer.parseInt(IDItemSelect));
-//                    if (IDItemSelect.equals("1") || IDItemSelect.equals("6")) {
-//                        linear_Layout_Damaged.setVisibility(View.GONE);
-//
-//                    } else {
-//                        linear_Layout_Damaged.setVisibility(View.VISIBLE);
-//                        DataManger.SendVollyRequestJsonObjectGet(context, Request.Method.GET, ApiCall.UrlPlantKingdom, new IDataValue() {
-//                            @Override
-//                            public void Success(Object response) {
-//                                data = response.toString();
-//                                gson = new Gson();
-//                                LISTMKingdom[0] = gson.fromJson(data, LISTMKingdom.class);
-//                                activityExRequestCommitteeResultBinding.setLISTMKingdom((LISTMKingdom[0]));
-//                            }
-//
-//                            @Override
-//                            public void Error(VolleyError error) {
-//
-//                            }
-//                        });
-//
-//                        DataManger.SendVollyRequestJsonObjectGet(context, Request.Method.GET, ApiCall.UrlIm_ProcedureType, new IDataValue() {
-//                            @Override
-//                            public void Success(Object response) {
-//                                data=response.toString();
-//                                gson=new Gson();
-//                                LISTIm_ProcedureType[0]=gson.fromJson(data, LISTIm_ProcedureType.class);
-//                                activityExRequestCommitteeResultBinding.setLISTImProcedureType(LISTIm_ProcedureType[0]);
-//                            }
-//
-//                            @Override
-//                            public void Error(VolleyError error) {
-//
-//                            }
-//                        });
-//                    }
-//                }
-        //          }
 
-//
-//            @Override
-//            public void OnItemSelectedSpinner_Kingdom(AdapterView<?> parent, View view, int pos, long id, Checkup_Result CheckUpResult) {
-//                IDItemSelect = String.valueOf( LISTMKingdom[0].obj.get(pos).Value);
-//                CheckUpResult.setKingdom_ID(Integer.parseInt(IDItemSelect));
-//                DataManger.SendVollyRequestJsonObjectGet(context, Request.Method.GET, ApiCall.UrlPlantPhylum+IDItemSelect, new IDataValue() {
-//                    @Override
-//                    public void Success(Object response) {
-//                        data=response.toString();
-//                        gson=new Gson();
-//                        LISTPhylum[0] = gson.fromJson(data , LISTPhylum.class);
-//                        activityExRequestCommitteeResultBinding.setLISTPhylums(LISTPhylum[0]);
-//                    }
-//
-//                    @Override
-//                    public void Error(VolleyError error) {
-//
-//                    }
-//                });
-//            }
-//            @Override
-//            public void OnItemSelectedSpinner_Phylum(AdapterView<?> parent, View view, int pos, long id,Checkup_Result CheckUpResult) {
-//                IDItemSelect = String.valueOf(LISTPhylum[0].obj.get(pos).Value);
-//                CheckUpResult.setPhylum_ID(Integer.parseInt(IDItemSelect));
-//                DataManger.SendVollyRequestJsonObjectGet(context, Request.Method.GET, ApiCall.UrlPlantOrder + IDItemSelect, new IDataValue() {
-//                    @Override
-//                    public void Success(Object response) {
-//                        data=response.toString();
-//                        gson=new Gson();
-//                        LISTOrder[0]=gson.fromJson(data, LISTOrder.class);
-//                        activityExRequestCommitteeResultBinding.setLISTOrder(LISTOrder[0]);
-//                    }
-//
-//                    @Override
-//                    public void Error(VolleyError error) {
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void OnItemSelectedSpinner_Order(AdapterView<?> parent, View view, int pos, long id,Checkup_Result CheckUpResult) {
-//                IDItemSelect=String.valueOf(LISTOrder[0].obj.get(pos).Value);
-//                CheckUpResult.setOrder_ID(Integer.parseInt(IDItemSelect));
-//                DataManger.SendVollyRequestJsonObjectGet(context, Request.Method.GET, ApiCall.UrlPlantFamily+IDItemSelect, new IDataValue() {
-//                    @Override
-//                    public void Success(Object response) {
-//                        data=response.toString();
-//                        gson=new Gson();
-//                        LISTFamily[0]=gson.fromJson(data, LISTFamily.class);
-//                        activityExRequestCommitteeResultBinding.setLISTFamily(LISTFamily[0]);
-//                    }
-//
-//                    @Override
-//                    public void Error(VolleyError error) {
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void OnItemSelectedSpinner_Family(AdapterView<?> parent, View view, int pos, long id,Checkup_Result CheckUpResult) {
-//                IDItemSelect=String.valueOf(LISTFamily[0].obj.get(pos).Value);
-//                CheckUpResult.setFamily_ID(Integer.parseInt(IDItemSelect));
-//            }
-//
-//            @Override
-//            public void OnItemSelectedSpinner_Im_ProcedureType(AdapterView<?> parent, View view, int pos, long id, Checkup_Result CheckUpResult) {
-//                IDItemSelect=String.valueOf(LISTIm_ProcedureType[0].obj.get(pos).Value);
-//                CheckUpResult.setResult_injury(Integer.parseInt(IDItemSelect));
-//
-//            }
-//
-//
-//            @Override
-//            public void OnClickSaveLots(View view,Checkup_Result checkupResult) {
-//                checkupResult.setCheckup(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date()));
-//                checkupResult.setAddress(""+address.getAddressLine(0));
-//                checkupResult.setLatitude(lat);
-//                checkupResult.setLongitude(longg);
-//                String jsonInString = gson.toJson(checkupResult);
-//                Textsss.setText(jsonInString);
-//                //send request to save data in database
-//                //    finish();
-//            }
-//
-//            @Override
-//            public void OnClickcancel(View view, Checkup_Result CheckUpResult) {
-//                checkup_result=null;
-//                linear_Layout_Examination_full.setVisibility(View.GONE);
-//                linear_Layout_btns.setVisibility(View.GONE);
-//                title_radio_group.setText("نوع الفحص");
-//                radioGroup.setVisibility(View.VISIBLE);
-//                linear_Layout_Examination_part.setVisibility(View.GONE);
-//            }
-//
-//        });
 
     }
     public  void Sample_part(){
-     //   dataManger.SendVollyRequestJsonArrayGet(this, Request.Method.GET, "http://"+ipadrass+ApiCall.UrlEx_SampleData+getIntent().getStringExtra("num_Request"), new IDataValue() {
-
         dataManger.SendVollyRequestJsonArrayGet(this, Request.Method.GET, ipadrass+ApiCall.UrlEx_SampleData+Request_id, new IDataValue() {
             @Override
             public void Success(Object response) {
@@ -543,12 +372,8 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
                     @Override
                     public void button_click(View view,SampleData_LOts sampleData_lOts) {
                         Intent i= new Intent(context, Sample_Lots.class);
-//                        SharedPreferences.Editor   prefsEditor = sharedPreferences.edit();
-//                        prefsEditor.putLong("ID",sampleData_lOts.getLot_Id());
-//                        prefsEditor.putString("LOTS_NUM",sampleData_lOts.getLot_Number());
                         i.putExtra("ID",  sampleData_lOts.getLot_Id());
                         i.putExtra("LOTS_NUM", "" + sampleData_lOts.getLot_Number());
-//                        i.putExtra("ipadrass",ipadrass);
                         viewforbutton=view;
                         startActivityForResult(i,1);
                     }
@@ -586,12 +411,6 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
 
             @Override
             public void OnClickSaveLots(View view, Sample_Result sampleResult) {
-//                Textsss.setText(ValuesPopUpLots.toString());
-//                //send request to save data in database
-//                finish();
-
-                //////////////
-//                public_function.senddataonlinetoserver(datasendarray,context, ipadrass+ApiCall.UrlSampleDataResult,barcod_cards);
                 try {
                 prefsEditor=sharedPreferences.edit();
                 prefsEditor.putInt("sample_data",sharedPreferences.getInt("sample_data",-2)-1);
@@ -620,8 +439,9 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
                     jsonObject.put("Committe_Dto", sharedPreferences.getString("Committe_Dto",""));
                     jsonObject.put("SampleDto", sharedPreferences.getString("SampleDto",""));
                     jsonObject.put("Treatment_Dto", sharedPreferences.getString("Treatment_Dto",""));
+                    Toast.makeText(context, jsonObject.toString(), Toast.LENGTH_LONG).show();
                     public_function.senddataonlinetoserverformoreprocess(jsonObject,context,ipadrass + ApiCall.UrlSavemultprocess,barcod_cards);
-
+                    prefsEditor.clear();
                 } else {
                     public_function.showbarcodelist(context,barcod_cards);
                     public_function.AlertDialog("برجاء اتمام العمليات ",context,true);
@@ -638,67 +458,11 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
 
             @Override
             public void OnClickcancel(View view, Sample_Result sampleResult) {
-                linear_Layout_Sample_full.setVisibility(View.GONE);
-                linear_Layout_btns_Sample.setVisibility(View.GONE);
-                title_radio_group.setText("سحب العينات ");
                 datasendarray=null;
-                linear_Layout_num_talab.setVisibility(View.GONE);
-                radioGroup_Samples.setVisibility(View.VISIBLE);
-                linear_Layout_Sample_part.setVisibility(View.GONE);
+                finish();
+                startActivity(getIntent());
             }
         });
-//        activityExRequestCommitteeResultBinding.setPresenter(new IPresenter() {
-//            @Override
-//            public void OnItemSelectedSpinner_Kingdom(AdapterView<?> parent, View view, int pos, long id, Checkup_Result CheckUpResult) {
-//
-//            }
-//
-//            @Override
-//            public void OnItemSelectedSpinner_Phylum(AdapterView<?> parent, View view, int pos, long id, Checkup_Result CheckUpResult) {
-//
-//            }
-//
-//            @Override
-//            public void OnItemSelectedSpinner_Order(AdapterView<?> parent, View view, int pos, long id, Checkup_Result CheckUpResult) {
-//
-//            }
-//
-//            @Override
-//            public void OnItemSelectedSpinner_Family(AdapterView<?> parent, View view, int pos, long id, Checkup_Result CheckUpResult) {
-//
-//            }
-//
-//            @Override
-//            public void OnItemSelectedSpinner_Im_ProcedureType(AdapterView<?> parent, View view, int pos, long id, Checkup_Result CheckUpResult) {
-//
-//            }
-//
-//            @Override
-//            public void OnItemSelectedSpinner_CommitteeResultType(AdapterView<?> parent, View view, int pos, long id, Checkup_Result CheckUpResult) {
-//
-//            }
-//
-//            @Override
-//            public void OnClickSaveLots(View view, Checkup_Result CheckUpResult) {
-////            CheckUpResult.setCheckup(new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.getDefault()).format(new Date()));
-////
-//                //String jsonInString = gson.toJson(nb);
-//                Textsss.setText(ValuesPopUpLots.toString());
-//                //send request to save data in database
-//                finish();
-//            }
-//
-//            @Override
-//            public void OnClickcancel(View view, Checkup_Result CheckUpResult) {
-//
-//                checkup_result=null;
-//                linear_Layout_Examination_full.setVisibility(View.GONE);
-//                linear_Layout_btns.setVisibility(View.GONE);
-//                title_radio_group.setText("نوع الفحص");
-//                radioGroup.setVisibility(View.VISIBLE);
-//                linear_Layout_Examination_part.setVisibility(View.GONE);
-//            }
-//        });
     }
 
     public void onRadioButtonClicked(View view) {
@@ -711,11 +475,9 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
                     linear_Layout_Sample_full.setVisibility(View.VISIBLE);
                 linear_Layout_btns_Sample.setVisibility(View.VISIBLE);
                 title_radio_group.setText("سحب عينة للشحنة");
-              //  btn_generat.setVisibility(View.VISIBLE);
                 radioGroup_Samples.setVisibility(View.GONE);
                 linear_Layout_Sample_part.setVisibility(View.GONE);
                 linear_Layout_num_talab.setVisibility(View.VISIBLE);
-            //    linear_Layout_num_sample.setVisibility(View.VISIBLE);
                 Sample_full();
                 break;
             case R.id.radio_Sample_part:
@@ -724,23 +486,18 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
                 linear_Layout_btns_Sample.setVisibility(View.VISIBLE);
                 radioGroup_Samples.setVisibility(View.GONE);
                 title_radio_group.setText("سحب عينات للوطات");
-               // btn_generat.setVisibility(View.GONE);
                 Sample_part();
                 linear_Layout_Sample_part.setVisibility(View.VISIBLE);
                 linear_Layout_num_talab.setVisibility(View.VISIBLE);
-                //   linear_Layout_num_sample.setVisibility(View.VISIBLE);
                 break;
 
             default:
                 linear_Layout_Sample_full.setVisibility(View.GONE);
                 linear_Layout_btns_Sample.setVisibility(View.GONE);
                 title_radio_group.setText("سحب العينات ");
-                //btn_generat.setVisibility(View.GONE);
                 radioGroup_Samples.setVisibility(View.VISIBLE);
                 linear_Layout_Sample_part.setVisibility(View.GONE);
                 linear_Layout_num_talab.setVisibility(View.GONE);
-            //    linear_Layout_num_sample.setVisibility(View.GONE);
-              //  btn_generat.setVisibility(View.GONE);
                 break;
 
         }
@@ -769,10 +526,6 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -793,79 +546,45 @@ ActivityMainSampleWithDrawBinding activityMainSampleWithDrawBinding;
         } catch (JSONException e) {
             e.printStackTrace();
         }
-//        if (id == R.id.language) {
-//            // Handle the camera action
-//        } else if (id == R.id.sample_title) {
-//            Intent i=new Intent(context,MainActivity_SampleWithDraw.class);
-//            startActivity(i);
-//
-//
-//        } else if (id == R.id.treatment_title) {
-//            Intent i=new Intent(context,MainActivity_TreatmentStatement.class);
-//            startActivity(i);
-//
-//
-//        } else if (id == R.id.Committee_title) {
-//            Intent i=new Intent(context,MainActivity_Ex_RequestCommitteeResult.class);
-//            startActivity(i);
-//
-//
-//        }else if (id == R.id.todolist) {
-//            Intent i=new Intent(context,MainActivity_Listofchipment.class);
-//            startActivity(i);
-//
-//        }
-//        else if (id == R.id.logout) {
-//
-//            Intent i=new Intent(context,LogIn.class);
-//            startActivity(i);
-//
-//        } else if (id == R.id.nav_send) {
-//
-//        }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    @Override
-    public void onLocationChanged(Location location) {
-        lat = location.getLatitude();
-        longg = location.getLongitude();
-        Locale loc=new Locale("ar");
-        Geocoder geocoder = new Geocoder(this,loc);
-        try {
-            address = geocoder.getFromLocation(lat, longg, 1).get(0);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Override
+//    public void onLocationChanged(Location location) {
+//        lat = location.getLatitude();
+//        longg = location.getLongitude();
+//        /////////////address in arabic////////////////////
+////        Locale loc=new Locale("ar");
+////        Geocoder geocoder = new Geocoder(this,loc);
+////        try {
+////            address = geocoder.getFromLocation(lat, longg, 1).get(0);
+////        } catch (IOException e) {
+////            e.printStackTrace();
+////        }
+//    }
+//
+//    @Override
+//    public void onStatusChanged(String provider, int status, Bundle extras) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderEnabled(String provider) {
+//
+//    }
+//
+//    @Override
+//    public void onProviderDisabled(String provider) {
+//
+//    }
 
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
     public void Generat_Barcode() {
 
         Intent i= new Intent(context, Generate_barcode.class);
         i.putExtra("barcode",sharedPreferences.getString("BarCode","")+0);
         startActivity(i);
     }
-//    public void Generat_Barcode(View view) {
-//
-//        Intent i= new Intent(context, Generate_barcode.class);
-//        i.putExtra("barcode",sharedPreferences.getString("BarCode","")+0);
-//        startActivity(i);
-//    }
 }

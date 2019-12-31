@@ -1,13 +1,20 @@
 package com.example.abeer.quarantine.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -37,39 +44,42 @@ import org.json.JSONObject;
 public class LogIn extends AppCompatActivity {
 
     String login;
-   TextView test;
-   Context context;
-   EditText ipadrass;
-   EditText name;
+    TextView test;
+    Context context;
+    EditText ipadrass;
+    EditText name;
     ActivityLogInBinding activityLogInBinding;
     Request_login requestLogin;
     DataManger DataManger;
     Gson gson;
     String data;
+    Location location;
     Response_login responseLogin;
     SharedPreferences sharedPreferences;
-   SharedPreferences.Editor prefsEditor;
-   Public_function public_function =new Public_function();
+    SharedPreferences.Editor prefsEditor;
+    LocationManager manager;
+    Public_function public_function = new Public_function();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context=this;
-      activityLogInBinding =
-               DataBindingUtil.setContentView((Activity) context, R.layout.activity_log_in);
-         sharedPreferences = context.getSharedPreferences("SharedPreference",MODE_PRIVATE);
+        context = this;
+        activityLogInBinding =
+                DataBindingUtil.setContentView((Activity) context, R.layout.activity_log_in);
+        sharedPreferences = context.getSharedPreferences("SharedPreference", MODE_PRIVATE);
         DataManger = new DataManger(this);
-        requestLogin=new Request_login();
-        responseLogin=new Response_login();
+        requestLogin = new Request_login();
+        responseLogin = new Response_login();
         gson = new Gson();
-       // setContentView(R.layout.activity_log_in);
+        // setContentView(R.layout.activity_log_in);
 
 //          name=findViewById(R.id.name);
 //   // test  =findViewById(R.id.test);
 //    String USername="iscc";
 //    String Password="123";
 //    login="{LoginName:'iscc',Password:'123'}";
-  ipadrass=findViewById(R.id.ipadarss);
-}
+        ipadrass = findViewById(R.id.ipadarss);
+    }
 
 //    public void login(View view) {
 ////
@@ -123,18 +133,29 @@ public class LogIn extends AppCompatActivity {
         super.onStart();
 
         activityLogInBinding.setLoginRequest(requestLogin);
+        manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+//        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//            // TODO: Consider calling
+//            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+//            ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+//        }
+//    location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//        if(location==null){
+//            location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+//        }
+        location = public_function.getlocation(context, manager);
+        // Toast.makeText(context,""+ location.getLongitude()+location.getLatitude() , Toast.LENGTH_SHORT).show();
         activityLogInBinding.setClicLogin(new IClickLogin() {
             @Override
-            public void OnClickLogin(View view, final Request_login requestLogin)  {
-             //   Toast.makeText(context, requestLogin.toString(), Toast.LENGTH_LONG).show();
-                if(requestLogin.getLoginName().equals("admin")) {
+            public void OnClickLogin(View view, final Request_login requestLogin) {
+                //   Toast.makeText(context, requestLogin.toString(), Toast.LENGTH_LONG).show();
+                if (requestLogin.getLoginName().equals("admin")) {
                     Intent i = new Intent(LogIn.this, Admin.class);
                     startActivity(i);
-                }else if(requestLogin.getLoginName().equals("")||requestLogin.getPassword().equals("")) {
-                    public_function.AlertDialog("أدخل إسم المستخدم وكلمه المرور",context,false);
+                } else if (requestLogin.getLoginName().equals("") || requestLogin.getPassword().equals("")) {
+                    public_function.AlertDialog("أدخل إسم المستخدم وكلمه المرور", context, false);
 
-                }
-                else if(requestLogin.getLoginName()!=""&&requestLogin.getPassword()!="") {
+                } else if (requestLogin.getLoginName() != "" && requestLogin.getPassword() != "") {
                     data = gson.toJson(requestLogin);
                     JSONObject jsonObject = null;
                     try {
@@ -143,61 +164,74 @@ public class LogIn extends AppCompatActivity {
                         e.printStackTrace();
                     }
 //try {
-    //DataManger.SendVolleyRequestJsonObjectpost(context, Request.Method.POST, "http://                                                                                                                                                                                                          " + ipadrass.getText().toString() + ApiCall.UrlLogin, jsonObject, new IDataValue() {
-   DataManger.SendVolleyRequestJsonObjectpost(context, Request.Method.POST, "http://"+ipadrass.getText().toString()+ApiCall.UrlLogin, jsonObject, new IDataValue() {
+                    //DataManger.SendVolleyRequestJsonObjectpost(context, Request.Method.POST, "http://                                                                                                                                                                                                          " + ipadrass.getText().toString() + ApiCall.UrlLogin, jsonObject, new IDataValue() {
+                    ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+                    if (mWifi.isConnected()) {
+                        DataManger.SendVolleyRequestJsonObjectpost(context, Request.Method.POST, "http://" + ipadrass.getText().toString() + ApiCall.UrlLogin, jsonObject, new IDataValue() {
 
-        @Override
-        public void Success(Object response) {
-            //   Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
-            data = response.toString();
-            responseLogin = gson.fromJson(data, Response_login.class);
-            if (responseLogin.getState_Code() == 1) {
+                            @Override
+                            public void Success(Object response) {
+                                //   Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
+                                data = response.toString();
+                                responseLogin = gson.fromJson(data, Response_login.class);
+                                if (responseLogin.getState_Code() == 1) {
 
-                prefsEditor = sharedPreferences.edit();
-                //ده صح بس هما محتاجين يعدلو الlogin وهشتغل موقت بالسطر التاني
-                //  prefsEditor.putLong("UserId", responseLogin.getObj().getUserId());// Saving boolean - true/false
-                ///////////////////////
-                // prefsEditor.putLong("UserId", 31810);
-                prefsEditor.putLong("UserId", responseLogin.getObj().getUserId());
-                prefsEditor.putLong("EmpId", responseLogin.getObj().getEmpId());
-                prefsEditor.putString("FullName", responseLogin.getObj().getFullName());        // Saving integer
-                prefsEditor.putString("Token", responseLogin.getObj().getToken());
-                prefsEditor.putString("ipadrass", "http://" + ipadrass.getText().toString());
-                prefsEditor.commit();
-                // ipadrass.setText(responseLogin.getObj().getToken());
+                                    prefsEditor = sharedPreferences.edit();
+                                    //ده صح بس هما محتاجين يعدلو الlogin وهشتغل موقت بالسطر التاني
+                                    //  prefsEditor.putLong("UserId", responseLogin.getObj().getUserId());// Saving boolean - true/false
+                                    ///////////////////////
+                                    // prefsEditor.putLong("UserId", 31810);
+                                    prefsEditor.putLong("UserId", responseLogin.getObj().getUserId());
+                                    prefsEditor.putLong("EmpId", responseLogin.getObj().getEmpId());
+                                    prefsEditor.putString("FullName", responseLogin.getObj().getFullName());        // Saving integer
+                                    prefsEditor.putString("Token", responseLogin.getObj().getToken());
+                                    // prefsEditor.putString("ipadrass", "http://10.5.1.6:9090");
+                                    prefsEditor.putString("ipadrass", "http://" + ipadrass.getText().toString());
+//               172.16.2.92:9050
+                                    if (location.getLongitude() != 0 && location.getLatitude() != 0) {
+                                        prefsEditor.putLong("Latitude", (long) location.getLatitude());
+                                        prefsEditor.putLong("Longitude", (long) location.getLongitude());
+                                        // Toast.makeText(context,""+ location.getLatitude()+ location.getLongitude(), Toast.LENGTH_LONG).show();
+                                    }
+                                    prefsEditor.commit();
+                                    // ipadrass.setText(responseLogin.getObj().getToken());
 
-                Intent intent = new Intent(context, MainActivity_Listofchipment.class);
-                startActivity(intent);
+                                    Intent intent = new Intent(context, MainActivity_Listofchipment.class);
+                                    startActivity(intent);
 
-            } else if (responseLogin.getState_Code() == 2) {
-                //not right username password
-                public_function.AlertDialog("اسم المستخدم وكلمه المرور خطا", context,false);
-            } else if (responseLogin.getState_Code() == 5) {
-                // user register from ather device
-                public_function.AlertDialog("تم تسجيل الدخول من جهاز اخر", context,false);
-            } else {
-                public_function.AlertDialog("حدث خطا ما", context,false);
-            }
-        }
+                                } else if (responseLogin.getState_Code() == 2) {
+                                    //not right username password
+                                    public_function.AlertDialog("اسم المستخدم وكلمه المرور خطا", context, false);
+                                } else if (responseLogin.getState_Code() == 5) {
+                                    // user register from ather device
+                                    public_function.AlertDialog("تم تسجيل الدخول من جهاز اخر", context, false);
+                                } else {
+                                    public_function.AlertDialog("حدث خطا ما", context, false);
+                                }
+                            }
 
-        @Override
-        public void Error(VolleyError error) {
+                            @Override
+                            public void Error(VolleyError error) {
 
-        }
-    });
-//}catch (Exception ex)
-//{
-//    int x=0;
-//}
+                            }
+                        });
+
+                    }else {
+
+
+
+                    }
+
                 }
 
-              // ipadrass.setText(String.valueOf(sharedPreferences.getLong("UserId",0)));
+                // ipadrass.setText(String.valueOf(sharedPreferences.getLong("UserId",0)));
             }
         });
     }
 
     public void imageclick(View view) {
-       // ipadrass.setVisibility(View.GONE);
+        // ipadrass.setVisibility(View.GONE);
     }
 //    public void AlertDialog(String massage) {
 //        final Dialog dialog = new Dialog(context);
@@ -216,5 +250,4 @@ public class LogIn extends AppCompatActivity {
 //        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 //        dialog.show();
 //    }
-
 }

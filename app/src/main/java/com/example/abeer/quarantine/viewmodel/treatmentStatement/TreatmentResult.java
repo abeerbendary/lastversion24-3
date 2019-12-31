@@ -20,12 +20,12 @@ public class TreatmentResult extends BaseObservable {
    int Exposure_Hour;
       int Exposure_Day;
    float temperature;
-   String Address;
+  // String Address;
     String Date;
    Long lot_ID;
     String  Comment ;
     float ThermalSealNumber;
-   double Latitude,Longitude;
+    double Longitude ,Latitude ;
     long EmployeeId;
 
 
@@ -48,7 +48,7 @@ public class TreatmentResult extends BaseObservable {
         Exposure_Hour=treatmentResult.Exposure_Hour;
         Exposure_Day=treatmentResult.Exposure_Day;
         temperature = treatmentResult.temperature;
-        Address = treatmentResult.Address;
+      //  Address = treatmentResult.Address;
         lot_ID = treatmentResult.lot_ID;
         Comment = treatmentResult.Comment;
         Date=treatmentResult.Date;
@@ -239,15 +239,15 @@ public class TreatmentResult extends BaseObservable {
         notifyPropertyChanged(BR.temperature);
     }
 
-    @Bindable
-    public String getAddress() {
-        return Address;
-    }
-
-    public void setAddress(String address) {
-        Address = address;
-        notifyPropertyChanged(BR.address);
-    }
+//    @Bindable
+//    public String getAddress() {
+//        return Address;
+//    }
+//
+//    public void setAddress(String address) {
+//        Address = address;
+//        notifyPropertyChanged(BR.address);
+//    }
 
     @Bindable
     public Long getLot_ID() {

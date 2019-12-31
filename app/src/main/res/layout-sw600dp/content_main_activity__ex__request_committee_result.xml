@@ -168,7 +168,7 @@
             android:text=""
             android:textColor="#1f90a5"
             android:textDirection="rtl"
-            android:textSize="40sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             tools:textSize="30sp" />
 
@@ -566,132 +566,9 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.419" />
-
-
-        <!--<TableLayout-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:id="@+id/table"-->
-        <!--android:gravity="center"-->
-        <!--android:background="#F5F5F5" >-->
-
-        <!--</TableLayout>-->
-        <!--<EditText-->
-        <!--android:id="@+id/editText"-->
-        <!--android:layout_width="370dp"-->
-        <!--android:layout_height="78dp"-->
-        <!--android:ems="10"-->
-        <!--android:hint="إضافة تعليق"-->
-        <!--android:inputType="textMultiLine"-->
-        <!--/>-->
-        <!--<TableLayout-->
-        <!--android:id="@+id/table"-->
-        <!--android:layout_width="312dp"-->
-        <!--android:layout_height="152dp"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginLeft="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginRight="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:layoutDirection="rtl"-->
-        <!--android:textDirection="rtl"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent">-->
-
-        <!--<TableRow-->
-        <!--android:id="@+id/display_row"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent">-->
-
-
-        <!--<TextView-->
-        <!--android:id="@+id/textView7"-->
-        <!--android:layout_width="80dp"-->
-        <!--android:background="@color/colorPrimary"-->
-        <!--android:textColor="#ff9855"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:Textsss="ID" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/textView4"-->
-        <!--android:layout_width="80dp"-->
-        <!--android:background="@color/colorPrimary"-->
-        <!--android:textColor="#ff9855"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:Textsss="NAME" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/textView6"-->
-        <!--android:layout_width="80dp"-->
-        <!--android:background="@color/colorPrimary"-->
-        <!--android:textColor="#ff9855"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:Textsss="ADRESS" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/textView5"-->
-        <!--android:layout_width="101dp"-->
-        <!--android:background="@color/colorPrimary"-->
-        <!--android:textColor="#ff9855"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:Textsss="LOCATION" />-->
-        <!--</TableRow>-->
-
-        <!--</TableLayout>-->
     </LinearLayout>
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/btns"-->
-        <!--android:layout_width="0dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginLeft="8dp"-->
-        <!--android:layout_marginTop="8dp"-->
-        <!--android:layout_marginEnd="8dp"-->
-        <!--android:layout_marginRight="8dp"-->
-        <!--android:layout_marginBottom="8dp"-->
-        <!--android:gravity="center_horizontal"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:visibility="visible"-->
-        <!--app:layout_constraintBottom_toBottomOf="parent"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.462"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toTopOf="parent"-->
-        <!--app:layout_constraintVertical_bias="0.976"-->
-        <!--tools:ignore="MissingConstraints">-->
 
-        <!--<Button-->
-            <!--android:id="@+id/Btn_Save"-->
-            <!--android:layout_width="124dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginRight="25dp"-->
-            <!--android:background="@drawable/btnshadow"-->
-            <!--android:fontFamily="@font/droid"-->
-            <!--android:onClick="@{(view)->presenter.OnClickSaveLots(view,CheckUpResult)}"-->
-            <!--android:Textsss="حفظ"-->
-            <!--android:textColor="#fff"-->
-            <!--android:textSize="25sp"-->
-            <!--android:textStyle="bold"-->
-            <!--tools:textSize="30sp" />-->
-
-        <!--<Button-->
-            <!--android:id="@+id/btn_cancel"-->
-            <!--android:layout_width="124dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:background="@drawable/btnshadow"-->
-            <!--android:fontFamily="@font/droid"-->
-            <!--android:lineSpacingExtra="30sp"-->
-            <!--android:onClick="@{(view)->presenter.OnClickcancel(view,CheckUpResult)}"-->
-            <!--android:Textsss="إلغاء"-->
-            <!--android:textColor="#fff"-->
-            <!--android:textSize="25sp"-->
-            <!--android:textStyle="bold"-->
-            <!--tools:textSize="30sp" />-->
-    <!--</LinearLayout>-->
     <LinearLayout
         android:id="@+id/btns"
         android:layout_width="wrap_content"
@@ -742,13 +619,5 @@
             tools:textSize="30sp" />
 
     </LinearLayout>
-
-    <!--<TextView-->
-    <!--android:id="@+id/text1"-->
-    <!--android:layout_width="305dp"-->
-    <!--android:layout_height="210dp"-->
-    <!--android:Textsss="TextView"-->
-    <!--tools:layout_editor_absoluteX="144dp"-->
-    <!--tools:layout_editor_absoluteY="729dp" />-->
 </android.support.constraint.ConstraintLayout>
 </layout>

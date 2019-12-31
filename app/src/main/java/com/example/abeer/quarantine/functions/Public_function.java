@@ -1,13 +1,20 @@
 package com.example.abeer.quarantine.functions;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
@@ -75,6 +82,7 @@ public  class  Public_function  {
     public void showbarcodelist(Context context,final List<Barcod_Card>barcod_cards){
         Intent i= new Intent(context,Generate_barcode.class);
         i.putExtra("barcode", (Serializable) barcod_cards);
+        i.putExtra("contextsample","false");
         ((Activity) context).startActivity(i);
     }
 //    public void AlertDialog(String massage , Context context) {
@@ -163,6 +171,7 @@ public  class  Public_function  {
                     Toast.makeText(context, "تم الحفظ بنجاح", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(context,MainActivity_Listofchipment.class);
                     ((Activity) context).startActivity(intent);
+
                 } else {
                     Toast.makeText(context, "حدث خطا ما", Toast.LENGTH_LONG).show();
                 }
@@ -238,12 +247,16 @@ public  class  Public_function  {
                 ((Activity) context).startActivity(i);
             }
 
-        } else if(context instanceof MainActivity_DetailsListOfChimpments || context instanceof MainActivity_subdetails)
+        }else if(context instanceof MainActivity_DetailsListOfChimpments){
+            AlertDialog("رجاء اختيار النبات او المنتج ....",context,false);
+        } else if(context instanceof MainActivity_subdetails)
           {
             if (Is_Admin) {
                 if (RequestCommittee_Status_Id == 1) {
-                    if (sample_data != 0) {
+                    if (sample_data == 0) {
                         AlertDialog("تم سحب العينة", context,false);
+                    }else {
+                        AlertDialog("لا يوجد بالاشتراطات سحب عينة", context,false);
                     }
                 } else{
                     if (sample_data == -1) {
@@ -295,13 +308,16 @@ public  class  Public_function  {
                 Intent i = new Intent(context, MainActivity_TreatmentStatement.class);
                 ((Activity) context).startActivity(i);
             }
-        }
-        else if(context instanceof MainActivity_DetailsListOfChimpments || context instanceof MainActivity_subdetails)
+        }else if(context instanceof MainActivity_DetailsListOfChimpments){
+            AlertDialog("رجاء اختيار النبات او المنتج ....",context,false);
+        } else if(context instanceof MainActivity_subdetails)
         {
             if (Is_Admin) {
                 if (RequestCommittee_Status_Id == 1) {
-                    if (treatment_data != 0) {
+                    if (treatment_data == 0) {
                         AlertDialog("تم المعالجة", context,false);
+                    }else {
+                        AlertDialog("لا يوجد بالاشتراطات معالجة", context, false);
                     }
                 } else {
                     if (treatment_data == -1) {
@@ -326,21 +342,64 @@ public  class  Public_function  {
                 }
             }
         }
-    }else if(id==R.id.Committee_title){
+    }else if(id==R.id.confirm_title){
+
+        if (context instanceof MainActivity_Listofchipment) {
+            AlertDialog("رجاء اختيار الشحنة", context,false);
+        }
+        else if(context instanceof MainActivity_TreatmentStatement){
+            AlertDialog("ليس لديك صلاحية ", context,false);
+        }else if (context instanceof MainActivity_SampleWithDraw){
+            AlertDialog("ليس لديك صلاحية ", context,false);
+        }else if (context instanceof MainActivity_Ex_RequestCommitteeResult){
+            AlertDialog("ليس لديك صلاحية ", context,false);
+        }else if(context instanceof MainActivity_DetailsListOfChimpments){
+            AlertDialog("رجاء اختيار النبات او المنتج ....",context,false);
+        }
+        else if( context instanceof MainActivity_subdetails)
+        {
+            if (Is_Admin) {
+                if (RequestCommittee_Status_Id == 1 ) {
+                    AlertDialog("ليس لديك صلاحية", context,false);
+                } else if (RequestCommittee_Status_Id == 0 ) {
+                        AlertDialog("برجاء العمل علي الشحنةاولا", context,false);
+                }
+//                Intent i = new Intent(context, MainActivity_Ex_RequestCommitteeResult.class);
+//                  ((Activity) context).startActivity(i);
+            } else  {
+                if (RequestCommittee_Status_Id == 1) {
+                    Intent i = new Intent(context, MainActivity_Confirm.class);
+                    ((Activity) context).startActivity(i);
+                } else if (RequestCommittee_Status_Id == 0) {
+                    AlertDialog("لم يتم العمل علي الشحنة", context,false);
+
+                }
+            }
+
+
+        }
+
+
+    } else if(id==R.id.Committee_title){
         if (context instanceof MainActivity_Listofchipment) {
             AlertDialog("رجاء اختيار الشحنة", context,false);
         }
        else if(context instanceof MainActivity_TreatmentStatement){
-
-            AlertDialog("تم الفحص  ", context,false);
-
+            if (request_data == 0) {
+                AlertDialog("تم الفحص  ", context, false);
+            }else {
+                AlertDialog(" تم العمل عليها ", context, false);
+            }
         }else if (context instanceof MainActivity_SampleWithDraw){
             AlertDialog("تم الفحص ", context,false);
+        }else if(context instanceof MainActivity_DetailsListOfChimpments){
+            AlertDialog("رجاء اختيار النبات او المنتج ....",context,false);
         }
-        else if(context instanceof MainActivity_DetailsListOfChimpments || context instanceof MainActivity_subdetails)
+        else if( context instanceof MainActivity_subdetails)
         {
             if (Is_Admin) {
                 if (RequestCommittee_Status_Id == 1 ) {
+
                           AlertDialog("تم فحص الشحنة", context,false);
                 } else if (RequestCommittee_Status_Id == 0 ) {
                     if(Committee_Type_Id==1) {
@@ -370,31 +429,80 @@ public  class  Public_function  {
         ((Activity)context).startActivity(i);
     }
     else if (id == R.id.logout) {
-        JSONObject jsonObject = new JSONObject();
-                jsonObject.put("Token",Token);
-
-        DataManger=new DataManger(context);
-        DataManger.SendVolleyRequestJsonObjectPut(context, Request.Method.PUT, ipadrass+ApiCall.UrlLogin, jsonObject, new IDataValue() {
-            @Override
-            public void Success(Object response) {
-
-                   Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void Error(VolleyError error) {
-
-            }
-        });
-    SharedPreferences sharedPreferences = context.getSharedPreferences("SharedPreference",0);
-        SharedPreferences.Editor   prefsEditor = sharedPreferences.edit();
-        prefsEditor.clear();
-        prefsEditor.commit();
-        Intent i=new Intent(context, LogIn.class);
-        ((Activity)context).startActivity(i);
-
+//        JSONObject jsonObject = new JSONObject();
+//                jsonObject.put("Token",Token);
+//
+//        DataManger=new DataManger(context);
+//        DataManger.SendVolleyRequestJsonObjectPut(context, Request.Method.PUT, ipadrass+ApiCall.UrlLogin, jsonObject, new IDataValue() {
+//            @Override
+//            public void Success(Object response) {
+//
+//                   Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
+//            }
+//
+//            @Override
+//            public void Error(VolleyError error) {
+//
+//            }
+//        });
+//    SharedPreferences sharedPreferences = context.getSharedPreferences("SharedPreference",0);
+//        SharedPreferences.Editor   prefsEditor = sharedPreferences.edit();
+//        prefsEditor.clear();
+//        prefsEditor.commit();
+//        Intent i=new Intent(context, LogIn.class);
+//        ((Activity)context).startActivity(i);
+              logout(context,ipadrass,Token);
     } else if (id == R.id.nav_send) {
 
     }
+}
+
+public Location getlocation(Context context ,LocationManager manager)
+{
+    if (Build.VERSION.SDK_INT >= 23 &&
+            ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+            ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 200);
+        ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 200);
+
+    }
+
+    Location location = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+    if(location==null){
+        location = manager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+    }
+    if(location==null){
+        location=new Location("");
+        location.setLongitude(0);
+        location.setLatitude(0);
+    }
+    return location;
+}
+
+public  void logout(final Context context,String ipadrass, String Token) throws JSONException {
+    JSONObject jsonObject = new JSONObject();
+    jsonObject.put("Token",Token);
+
+    DataManger=new DataManger(context);
+    DataManger.SendVolleyRequestJsonObjectPut(context, Request.Method.PUT, ipadrass+ApiCall.UrlLogin, jsonObject, new IDataValue() {
+        @Override
+        public void Success(Object response) {
+
+            Toast.makeText(context, response.toString(), Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void Error(VolleyError error) {
+
+        }
+    });
+    SharedPreferences sharedPreferences = context.getSharedPreferences("SharedPreference",0);
+    SharedPreferences.Editor   prefsEditor = sharedPreferences.edit();
+    prefsEditor.clear();
+    prefsEditor.commit();
+    Intent i=new Intent(context, LogIn.class);
+    ((Activity)context).startActivity(i);
+
 }
 }

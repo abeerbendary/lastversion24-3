@@ -50,6 +50,7 @@ public  float ThermalSealNumber;
 public  long User_Creation_Id;
 public  String User_Creation_Date;
 public  String Note;
+    double Longitude ,Latitude ;
 
     public Treatment_Result_Model(Treatment_Result_Model treatment_result_model) {
         this.ID = treatment_result_model.ID;
@@ -70,6 +71,8 @@ public  String Note;
         IsLot = treatment_result_model.IsLot;
         Ex_Request_LotData_ID = treatment_result_model.Ex_Request_LotData_ID;
         ThermalSealNumber = treatment_result_model.ThermalSealNumber;
+        Latitude=treatment_result_model.Latitude;
+        Longitude=treatment_result_model.Longitude;
     }
 
     public Treatment_Result_Model(TreatmentResult treatmentResult) {
@@ -79,6 +82,8 @@ public  String Note;
        this.TreatmentType_ID=treatmentResult.getTreatment_Type_ID();
        this.Company_ID=treatmentResult.getTreatment_company_ID();
        this.Station_ID=treatmentResult.getCertified_place_ID();
+       this.Longitude=treatmentResult.getLongitude();
+       this.Latitude=treatmentResult.getLatitude();
        if(Station_ID==0)
        {
            this.Station_Place=treatmentResult.getUncertified_place();
@@ -260,6 +265,22 @@ public  String Note;
 
     public void setUser_Creation_Date(String user_Creation_Date) {
         User_Creation_Date = user_Creation_Date;
+    }
+
+    public double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        Longitude = longitude;
     }
 
     public String getNote() {

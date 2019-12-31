@@ -3,18 +3,7 @@ package com.example.abeer.quarantine.model;
 import com.example.abeer.quarantine.viewmodel.sampleWithDraw.Sample_Result;
 
 public class Sample_Result_Model {
-//    public long ID { get; set; }
-//    public Nullable<int> AnalysisLabType_ID { get; set; }
-//    public long Committee_ID { get; set; }
-//    public System.DateTime WithdrawDate { get; set; }
-//    public long User_Creation_Id { get; set; }
-//    public string Sample_BarCode { get; set; }
-//    public double SampleSize { get; set; }
-//    public double SampleRatio { get; set; }
-//    public bool IsAccepted { get; set; }
-//    public string WithDrawPlace { get; set; }
-
-    Long ID;
+    Long LotData_ID;
     Short AnalysisTypeID ;
     int AnalysisLabType_ID;
     Long Committee_ID;
@@ -29,9 +18,10 @@ public class Sample_Result_Model {
     String RejectReason_En ;
     String Notes_Ar;
     String Notes_En;
+    double Longitude ,Latitude ;
 
     public Sample_Result_Model(Sample_Result_Model sample_result_model) {
-        ID=sample_result_model.ID;
+        LotData_ID=sample_result_model.LotData_ID;
         AnalysisLabType_ID=sample_result_model.AnalysisLabType_ID;
         Committee_ID=sample_result_model.Committee_ID;
         WithdrawDate=sample_result_model.WithdrawDate;
@@ -43,13 +33,15 @@ public class Sample_Result_Model {
         WithDrawPlace=sample_result_model.WithDrawPlace;
         AnalysisTypeID=sample_result_model.AnalysisTypeID;
         Notes_Ar=sample_result_model.Notes_Ar;
+        Latitude=sample_result_model.Latitude;
+        Longitude=sample_result_model.Longitude;
         Notes_En="";
         RejectReason_Ar="";
         RejectReason_En="";
     }
 
     public Sample_Result_Model(Sample_Result sampleResult) {
-        ID=sampleResult.getLot_ID();
+        LotData_ID=sampleResult.getLot_ID();
         AnalysisLabType_ID=sampleResult.getLaboratory_ID();
         Committee_ID=sampleResult.getCommittee_ID();
         WithdrawDate=sampleResult.getDate();
@@ -59,12 +51,30 @@ public class Sample_Result_Model {
         User_Creation_Id= sampleResult.getEmployeeId();
         SampleSize=sampleResult.getSampleSize();
         SampleRatio=sampleResult.getSampleUnderSize();
+        Longitude=sampleResult.getLongitude();
+        Latitude=sampleResult.getLatitude();
         IsAccepted=false;
         Notes_En="";
         RejectReason_Ar="";
         RejectReason_En="";
         WithDrawPlace=sampleResult.getPlace();
 
+    }
+
+    public double getLatitude() {
+        return Latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        Latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return Longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        Longitude = longitude;
     }
 
     public Short getAnalysisTypeID() {
@@ -107,12 +117,12 @@ public class Sample_Result_Model {
         Notes_En = notes_En;
     }
 
-    public Long getID() {
-        return ID;
+    public Long getLotData_ID() {
+        return LotData_ID;
     }
 
-    public void setID(Long ID) {
-        this.ID = ID;
+    public void setLotData_ID(Long LotData_ID) {
+        this.LotData_ID = LotData_ID;
     }
 
     public int getAnalysisLabType_ID() {

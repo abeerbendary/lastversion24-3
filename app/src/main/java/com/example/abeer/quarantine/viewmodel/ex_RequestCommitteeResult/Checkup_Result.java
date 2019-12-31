@@ -12,24 +12,36 @@ public class Checkup_Result extends BaseObservable{
 
      String Checkup;
      int Count;
-     int Weight;
+     float Weight;
      int Result_ID;
-      String  Comment ;
-      int Kingdom_ID;
-       int Phylum_ID;
-      int Order_ID;
+     String  Comment ;
+     int Kingdom_ID;
+     int Phylum_ID;
+     int Order_ID;
      int Family_ID;
      int Result_injury;
      Long lot_ID;
-    String Address;
-    double Latitude,Longitude;
-    long Committee_ID;
-    long EmployeeId;
+     String Address;
+     double Longitude ,Latitude ;
+     long Committee_ID;
+     long EmployeeId;
     Context context;
    // int Final_result;
 
     public  Checkup_Result()
     {
+//        Count =0 ;
+//        Weight = (float) 0.0;
+//        Result_ID =0;
+//        Comment ="";
+//        Kingdom_ID =0;
+//        Phylum_ID = 0;
+//        Order_ID = 0;
+//        Family_ID =0 ;
+//        Result_injury=0;
+//        Latitude=0;
+//        Longitude=0;
+//        notifyPropertyChanged(BR.checkUpResult);
     }
 
 //    public Checkup_Result(String checkup, int count, int weight,
@@ -162,12 +174,12 @@ public class Checkup_Result extends BaseObservable{
     }
 
     @Bindable
-    public int getWeight() {
+    public float getWeight() {
         return Weight;
     }
 
 
-    public void setWeight(int weight) {
+    public void setWeight(float weight) {
        Weight =weight;
       notifyPropertyChanged(BR.weight);
 
@@ -226,8 +238,7 @@ public class Checkup_Result extends BaseObservable{
         return Order_ID;
     }
 
-
-    public void setOrder_ID(int order_ID) {
+  public void setOrder_ID(int order_ID) {
         Order_ID = order_ID;
      notifyPropertyChanged(BR.order_ID);
 
@@ -243,6 +254,4 @@ public class Checkup_Result extends BaseObservable{
         Family_ID = family_ID;
          notifyPropertyChanged(BR.family_ID);
     }
-
-
 }

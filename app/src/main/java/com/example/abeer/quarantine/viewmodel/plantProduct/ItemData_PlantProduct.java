@@ -13,8 +13,9 @@ public class ItemData_PlantProduct extends BaseObservable {
     public String  ItemPartTypeName;
     public String  ItemStatus;
     public String ItemPurpose;
+   public int IsExport;
 
-    public ItemData_PlantProduct(String item_number, String item_Type, String item_Name, String item_Cat_Name,String itemPartTypeName, String itemStatus, String itemPurpose) {
+    public ItemData_PlantProduct(String item_number, String item_Type, String item_Name, String item_Cat_Name,String itemPartTypeName, String itemStatus, String itemPurpose,int isExport) {
         Item_number = item_number;
         Item_Type = item_Type;
         Item_Name = item_Name;
@@ -22,6 +23,10 @@ public class ItemData_PlantProduct extends BaseObservable {
         ItemPartTypeName= itemPartTypeName;
         ItemStatus = itemStatus;
         ItemPurpose = itemPurpose;
+        IsExport=isExport;
+    }
+    public ItemData_PlantProduct(int isExport) {
+        IsExport=isExport;
     }
     @Bindable
     public String getItemPartTypeName() {
@@ -30,6 +35,14 @@ public class ItemData_PlantProduct extends BaseObservable {
 
     public void setItemPartTypeName(String itemPartTypeName) {
         ItemPartTypeName = itemPartTypeName;
+    }
+@Bindable
+    public int getIsExport() {
+        return IsExport;
+    }
+
+    public void setIsExport(int isExport) {
+        IsExport = isExport;
     }
 
     @Bindable
