@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:bind="http://schemas.android.com/apk/res/android">
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.MainActivity_Listofchipment">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+
+    <!--<include layout="@layout/content_main_activity__listofchipment"-->
+        <!--android:id="@+id/list_chipments"/>-->
+
+    <!--<include layout="@layout/content_main_activity_login"-->
+        <!--android:visibility="gone"-->
+        <!--android:id="@+id/main_activity_login"/>-->
+
+    <!--<include layout="@layout/activity_ex__request_committee_result"-->
+        <!--android:visibility="gone"-->
+        <!--android:id="@+id/request_committee"/>-->
+
+    <!--&lt;!&ndash;<include layout="@layout/activity_list_of_chipments"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:visibility="gone"&ndash;&gt;-->
+        <!--&lt;!&ndash;android:id="@+id/list_chipments"/>&ndash;&gt;-->
+
+    <!--<include layout="@layout/activity_sample_with_draw"-->
+        <!--android:visibility="gone"-->
+        <!--android:id="@+id/sample_with"/>-->
+
+    <!--<include layout="@layout/activity_treatment_statement"-->
+        <!--android:visibility="gone"-->
+        <!--android:id="@+id/treatments"/>-->
+
+</android.support.design.widget.CoordinatorLayout>
+</layout>

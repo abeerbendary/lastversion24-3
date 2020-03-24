@@ -1,0 +1,446 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="StationResult"
+            type="com.example.abeer.quarantine.viewmodel.Station" />
+
+        <variable
+            name="IStationPresenter"
+            type="com.example.abeer.quarantine.presenter.IStationPresenter" />
+        <variable
+            name="IStationconfirmPresenter"
+            type="com.example.abeer.quarantine.presenter.IStationConfirm" />
+        <variable
+            name="StationDataConfirm"
+            type="com.example.abeer.quarantine.viewmodel.StationDataConfirm" />
+        <variable
+            name="StationConfirmResult"
+            type="com.example.abeer.quarantine.viewmodel.StationConfirmResult"/>
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/h2"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:context=".activity.MainActivity_Station"
+        tools:showIn="@layout/app_bar_main_activity__listofchipment">
+
+        <TextView
+            android:id="@+id/title_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:fontFamily="@font/droid"
+            android:text="  إعتماد محطة "
+            android:textColor="#009540"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/num_request"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0"
+            tools:ignore="MissingConstraints" />
+
+        <Button
+            android:id="@+id/shownavbar"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/ic_menu_black_24dp"
+            android:layoutDirection="ltr"
+            android:onClick="shownav"
+            app:layout_constraintBottom_toTopOf="@+id/scrollView3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.953"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.166" />
+
+        <LinearLayout
+            android:id="@+id/num_request"
+            android:layout_width="wrap_content"
+            android:layout_height="66dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:layoutDirection="rtl"
+            android:orientation="horizontal"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/Station"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.514"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.772"
+            app:layout_goneMarginTop="100dp">
+
+            <TextView
+                android:id="@+id/title_request"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/droid"
+                android:text="رقم الطلب: "
+                android:textColor="#1f90a5"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/value_request"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/droid"
+                android:gravity="center"
+                android:inputType="numberSigned"
+                android:layoutDirection="rtl"
+                android:text=""
+                android:textColor="#1f90a5"
+                android:textDirection="rtl"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/Station"
+            android:layout_width="wrap_content"
+            android:layout_height="773dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.942">
+
+            <LinearLayout
+                android:id="@+id/station_result"
+                android:layout_width="wrap_content"
+                android:layout_height="508dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <RadioGroup
+                    android:id="@+id/radioGroup_Examination"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layoutDirection="rtl"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    tools:ignore="MissingConstraints">
+
+                    <RadioButton
+                        android:id="@+id/radio_accept"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="#000"
+                        android:fontFamily="@font/droid"
+                        android:layoutDirection="rtl"
+                        android:onClick="@{(view)->IStationPresenter.OnClickRadioStation(view,StationResult)}"
+                        android:text="أوافق"
+                        android:textColor="#cd322e"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:theme="@style/confirmCheck" />
+
+                    <RadioButton
+                        android:id="@+id/radio_reject"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="60dp"
+                        android:layout_weight="1"
+                        android:buttonTint="#000"
+                        android:fontFamily="@font/droid"
+                        android:layoutDirection="rtl"
+                        android:onClick="@{(view)->IStationPresenter.OnClickRadioStation(view,StationResult)}"
+                        android:text="لا أوافق"
+                        android:textColor="#cd322e"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:theme="@style/confirmCheck" />
+
+
+                </RadioGroup>
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp" />
+
+                <EditText
+                    android:layout_width="525dp"
+                    android:layout_height="159dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rectshadow"
+                    android:ems="10"
+                    android:fontFamily="@font/droid"
+                    android:hint="إضافة تعليق"
+                    android:inputType="textMultiLine"
+                    android:paddingRight="10dp"
+                    android:text="@={StationResult.comment}"
+                    android:textColorHint="#1f90a5"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="38dp"
+                    tools:layout_editor_absoluteY="491dp"
+                    tools:textSizeHint="30sp" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout5"
+                    android:layout_width="650dp"
+                    android:layout_height="67dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteY="658dp">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/btnshadow"
+                        android:fontFamily="@font/droid"
+                        android:onClick="@{(view)->IStationPresenter.OnClickSaveStation(view,StationResult)}"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="حفظ"
+                        android:textColor="#fff"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        tools:textSize="30sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/btnshadow"
+                        android:fontFamily="@font/droid"
+                        android:onClick="@{(view)->IStationPresenter.OnClickcancel(view,StationResult)}"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="إلغاء"
+                        android:textColor="#fff"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        tools:textSize="30sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/station_confirm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.064">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layoutDirection="rtl"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/title_SampleUnderSizeconfirm"
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:fontFamily="@font/droid"
+                        android:text="رأي المشرف"
+                        android:textSize="30sp"
+                        android:textColor="#1f90a5"
+                        android:textStyle="bold"
+                        tools:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/value_SampleUnderSizeconfirm"
+                        android:layout_width="300dp"
+                        android:layout_height="50dp"
+                        android:fontFamily="@font/droid"
+                        android:text="@{StationDataConfirm.accepted ? @string/Accept : @string/Reject}"
+                        android:textColor="#1f90a5"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:textSize="20sp" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="100dp"
+                    android:layoutDirection="rtl"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/title_commentconfirm"
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:fontFamily="@font/droid"
+                        android:text="تعليق المشرف:"
+                        android:textColor="#1f90a5"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        tools:textSize="30sp" />
+
+                    <TextView
+                        android:id="@+id/value_commentconfirm"
+                        android:layout_width="300dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/droid"
+                        android:text="@{StationDataConfirm.notes}"
+                        android:textColor="#1f90a5"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        tools:textSize="20sp" />
+
+                </LinearLayout>
+
+                <RadioGroup
+                    android:id="@+id/radioGroup_Examinationconfirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layoutDirection="rtl"
+                    android:orientation="horizontal"
+                    android:visibility="visible"
+                    tools:ignore="MissingConstraints">
+
+                    <RadioButton
+                        android:id="@+id/radio_acceptconfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:buttonTint="#000"
+                        android:fontFamily="@font/droid"
+                        android:layoutDirection="rtl"
+                        android:onClick="@{(view)->IStationconfirmPresenter.OnClickRadioStation(view,StationConfirmResult)}"
+                        android:text="أوافق"
+                        android:textColor="#cd322e"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:theme="@style/confirmCheck" />
+
+                    <RadioButton
+                        android:id="@+id/radio_rejectconfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="60dp"
+                        android:layout_weight="1"
+                        android:buttonTint="#000"
+                        android:fontFamily="@font/droid"
+                        android:layoutDirection="rtl"
+                        android:onClick="@{(view)->IStationconfirmPresenter.OnClickRadioStation(view,StationConfirmResult)}"
+                        android:text="لا أوافق"
+                        android:textColor="#cd322e"
+                        android:textSize="30sp"
+                        android:textStyle="bold"
+                        android:theme="@style/confirmCheck" />
+
+
+                </RadioGroup>
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp" />
+
+                <EditText
+                    android:layout_width="525dp"
+                    android:layout_height="159dp"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rectshadow"
+                    android:ems="10"
+                    android:fontFamily="@font/droid"
+                    android:hint="إضافة تعليق"
+                    android:inputType="textMultiLine"
+                    android:paddingRight="10dp"
+                    android:text="@={StationConfirmResult.notes_Ar}"
+                    android:textColorHint="#1f90a5"
+                    android:textStyle="bold"
+                    tools:layout_editor_absoluteX="38dp"
+                    tools:layout_editor_absoluteY="491dp"
+                    tools:textSizeHint="30sp" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout15"
+                    android:layout_width="650dp"
+                    android:layout_height="67dp"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    tools:ignore="MissingConstraints"
+                    tools:layout_editor_absoluteY="658dp">
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/btnshadow"
+                        android:fontFamily="@font/droid"
+                        android:onClick="@{(view)->IStationconfirmPresenter.OnClickSaveStation(view,StationConfirmResult)}"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="حفظ"
+                        android:textColor="#fff"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        tools:textSize="30sp" />
+
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="20dp"
+                        android:background="@drawable/btnshadow"
+                        android:fontFamily="@font/droid"
+                        android:onClick="@{(view)->IStationconfirmPresenter.OnClickcancel(view,StationConfirmResult)}"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:text="إلغاء"
+                        android:textColor="#fff"
+                        android:textSize="25sp"
+                        android:textStyle="bold"
+                        tools:textSize="30sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
+</layout>
